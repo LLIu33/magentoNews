@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Oggetto_Newsblock>
+            <version>1.0.0</version>
+        </Oggetto_Newsblock>
+    </modules>
+    <global>
+        <helpers>
+            <Oggetto_Newsblock>
+                <class>Oggetto_Newsblock_Helper</class>
+            </Oggetto_Newsblock>
+        </helpers>
+    </global>
+    <frontend>
+        <routers>
+            <newsblock>
+                <use>standard</use>
+                <args>
+                    <module>Oggetto_Newsblock</module>
+                    <frontName>newsblock</frontName>
+                </args>
+            </newsblock>
+        </routers>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Oggetto_Newsblock after="Mage_Adminhtml">AG_Newsblock</Oggetto_Newsblock>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <defalut>
+
+    </defalut>
+</config>

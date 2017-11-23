@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <AG_Newsblock>
+            <active>true</active>
+            <codePool>local</codePool>
+        </AG_Newsblock>
+    </modules>
+</config>
