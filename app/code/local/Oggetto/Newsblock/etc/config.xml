@@ -28,7 +28,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <Oggetto_Newsblock after="Mage_Adminhtml">AG_Newsblock</Oggetto_Newsblock>
+                        <Oggetto_Newsblock after="Mage_Adminhtml">Oggetto_Newsblock</Oggetto_Newsblock>
                     </modules>
                 </args>
             </adminhtml>
