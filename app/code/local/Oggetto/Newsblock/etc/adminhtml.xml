@@ -2,10 +2,10 @@
     <menu>
         <cms translate="title" module="cms">
             <children>
-                <news_menu translate="title" module="Oggetto_Newsblock">
+                <news_menu translate="title" module="newsblock">
                     <title>News</title>
                     <sort_order>65</sort_order>
-                    <action>adminhtml/newsblock/index</action>
+                    <action>adminhtml/newsblock</action>
                 </news_menu>
             </children>
         </cms>
@@ -16,7 +16,7 @@
                 <children>
                     <cms translate="title" module="cms">
                         <children>
-                            <news_menu translate="title" module="Oggetto_Newsblock">
+                            <news_menu translate="title" module="newsblock">
                                 <title>Oggetto_Newsblock</title>
                                 <sort_order>1</sort_order>
                             </news_menu>

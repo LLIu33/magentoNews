@@ -6,10 +6,36 @@
         </Oggetto_Newsblock>
     </modules>
     <global>
+        <blocks>
+            <newsblock>
+                <class>Oggetto_Newsblock_Block</class>
+            </newsblock>
+        </blocks>
+        <models>
+            <newsblock>
+                <class>Oggetto_Newsblock_Model</class>
+                <resourceModel>newsblock_resource</resourceModel>
+            </newsblock>
+            <newsblock_resource>
+                <class>Oggetto_Newsblock_Model_Resource</class>
+                <entities>
+                    <item>
+                        <table>oggetto_newsblock</table>
+                    </item>
+                </entities>
+            </newsblock_resource>
+        </models>
+        <resources>
+            <newsblock_setup>
+                <setup>
+                    <module>Oggetto_Newsblock</module>
+                </setup>
+            </newsblock_setup>
+        </resources>
         <helpers>
-            <Oggetto_Newsblock>
+            <newsblock>
                 <class>Oggetto_Newsblock_Helper</class>
-            </Oggetto_Newsblock>
+            </newsblock>
         </helpers>
     </global>
     <frontend>
@@ -28,13 +54,18 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <Oggetto_Newsblock after="Mage_Adminhtml">Oggetto_Newsblock</Oggetto_Newsblock>
+                        <newsblock_module after="Mage_Adminhtml">Oggetto_Newsblock_Adminhtml</newsblock_module>
                     </modules>
                 </args>
             </adminhtml>
         </routers>
     </admin>
     <defalut>
-
+        <newsblock>
+            <settings>
+                <enabled>1</enabled>
+                <block_count>10</block_count>
+            </settings>
+        </newsblock>
     </defalut>
 </config>
