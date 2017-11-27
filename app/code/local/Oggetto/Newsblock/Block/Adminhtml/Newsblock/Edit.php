@@ -27,7 +27,7 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Block_Adminhtml_Newsblock_Edit
+ * @subpackage Form_Container
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
@@ -67,7 +67,6 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
         );
 
         $this->_formScripts[] = "
-
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
             }

@@ -27,7 +27,7 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Model_Source_Status
+ * @subpackage Model_Source
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Model_Source_Status

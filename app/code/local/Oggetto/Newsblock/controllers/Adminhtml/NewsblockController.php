@@ -27,7 +27,7 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Adminhtml_NewsblockController
+ * @subpackage NewsblockController
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Adminhtml_NewsblockController
@@ -136,7 +136,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             Mage::getSingleton('adminhtml/session')
-                ->setBlockObject($block->getData());
+                ->setBlockObject($block->getUserData());
             return  $this->_redirect(
                 '*/*/edit',
                 ['item_id' => $this->getRequest()->getParam('item_id')]
@@ -174,7 +174,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             Mage::getSingleton('adminhtml/session')
-                ->setBlockObject($block->getData());
+                ->setBlockObject($block->getUserData());
         }
         return $this->_redirect('*/*/');
     }
@@ -218,7 +218,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         $blocks = $this->getRequest()->getParams();
         try {
             $block = Mage::getModel('newsblock/item');
-            foreach($blocks['massaction'] as $id) {
+            foreach ($blocks['massaction'] as $id) {
                 $block->setId($id)->delete();
             }
 

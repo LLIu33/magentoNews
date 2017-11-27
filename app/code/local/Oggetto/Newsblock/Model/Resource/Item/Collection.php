@@ -27,7 +27,7 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Model_Resource_Item_Collection
+ * @subpackage Collection
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
