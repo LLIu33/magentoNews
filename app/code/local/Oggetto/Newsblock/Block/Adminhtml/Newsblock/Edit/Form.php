@@ -18,6 +18,19 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
     }
 
     /**
+     * Load Wysiwyg on demand and Prepare layout
+     *
+     * @return void
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
+            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+        }
+    }
+
+    /**
      * Preparing form
      *
      * @method Oggetto_Newsblock_Model_Item setHtmlIdPrefix(string $value)
@@ -36,7 +49,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
                     '*/*/save',
                     array('item_id' => $this->getRequest()->getParam('item_id'))
                 ),
-                'method' => 'post'
+                'method' => 'post',
+                'enctype' => 'multipart/form-data'
             )
         );
 
@@ -104,12 +118,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
             )
         );
 
-        $fieldset->addField('image', 'image', array(
-            'name'      => 'image',
-            'label'     => Mage::helper('newsblock')->__('Image'),
-            'title'     => Mage::helper('newsblock')->__('Image'),
-            'required'  => true,
-        ));
+        $fieldset->addField(
+            'image',
+            'image',
+            array(
+                'name'      => 'image',
+                'label'     => Mage::helper('newsblock')->__('Image'),
+                'title'     => Mage::helper('newsblock')->__('Image'),
+                'required'  => false,
+            )
+        );
 
         $fieldset->addField('description', 'textarea', array(
             'name'      => 'description',
@@ -117,17 +135,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
             'title'     => Mage::helper('newsblock')->__('Description'),
             'style'     => 'height:12em',
             'required'  => true,
-
         ));
 
-
-        $fieldset->addField('content', 'textarea', array(
+        $fieldset->addField('content', 'editor', array(
             'name'      => 'content',
             'label'     => Mage::helper('newsblock')->__('Content'),
             'title'     => Mage::helper('newsblock')->__('Content'),
             'style'     => 'height:36em',
             'required'  => true,
-
+            'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
+            'wysiwyg'   => true,
         ));
 
         $form->setValues($model->getData());

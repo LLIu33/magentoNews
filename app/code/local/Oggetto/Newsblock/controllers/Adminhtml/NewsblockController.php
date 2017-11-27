@@ -53,31 +53,84 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         $this->renderLayout();
     }
 
+    public function removeFile($file)
+    {
+        $_helper = Mage::helper('newsblock');
+        $file = $_helper->updateDirSepereator($file);
+        $directory = Mage::getBaseDir('media') . DS .'Newsblock' ;
+        $io = new Varien_Io_File();
+        $result = $io->rmdir($directory, true);
+    }
+
     /**
      * Save changes for News
      *
      * @return Mage_Core_Controller_Varien_Action
      *
      */
-
     public function saveAction()
     {
         try {
             $id = $this->getRequest()->getParam('item_id');
             $currentTime = Mage::app()->getLocale()->date();
             $block = Mage::getModel('newsblock/item')->load($id);
+            $post_data = $this->getRequest()->getParams();
             if ((!$block->getId() || $block->isObjectNew()) && !$block->getCreatedAt()) {
                 $block->setCreatedAt($currentTime);
             }
-            $block
-                ->setData($this->getRequest()->getParams())
-                ->setUpdatedAt($currentTime)
-                ->save();
 
             if (!$block->getId()) {
                 Mage::getSingleton('adminhtml/session')
                     ->addError('Cannot save the news');
             }
+
+            if (!empty($_FILES['image']['name'] ))
+            {
+//                $block['image'] = $_FILES['image']['name'];
+                if ($this->getRequest()->getParam("id")) {
+                    if ($block->getData('image')) {
+                        $io = new Varien_Io_File();
+                        $io->rm(
+                            Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image'))));
+                    }
+                }
+
+                $path = Mage::getBaseDir('media') . DS . 'Newsblock' . DS;
+                $uploader = new Varien_File_Uploader('image');
+                $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
+                $uploader->setAllowRenameFiles(false);
+                $uploader->setFilesDispersion(false);
+                $destFile = $path . $_FILES['image']['name'];
+                $filename = $uploader->getNewFileName($destFile);
+                $uploader->save($path, $filename);
+
+                $post_data['image'] = 'Newsblock' . DS . $filename;
+
+//                $mediaAttribute = array (
+//                    'image',
+//                    'thumbnail',
+//                    'small_image'
+//                );
+            }
+            else
+            {
+                if (isset($post_data['image']['delete']) && $post_data['image']['delete'] == 1)
+                {
+                    if ($post_data['image']['value'] != '')
+                        $this->removeFile($post_data['image']['value']);
+                    $post_data['image'] = '';
+                }
+                else
+                {
+                    unset($post_data['image']);
+                }
+            }
+
+            $block
+                ->setData($post_data)
+                ->setUpdatedAt($currentTime)
+                ->save();
+
         } catch (Exception $e) {
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());

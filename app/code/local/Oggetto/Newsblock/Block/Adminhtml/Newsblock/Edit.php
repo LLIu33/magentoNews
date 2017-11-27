@@ -4,7 +4,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     /**
-     * Constructor
+     * Init Edit Page
      *
      * @return void
      */
@@ -45,6 +45,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
             }
         ";
     }
+
 
     /**
      * Get edit form container header text
