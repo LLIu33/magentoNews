@@ -6,7 +6,9 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
     /**
      * Init form
      *
-     * @return Mage_Adminhtml_Block_Widget_Form
+     * @method Oggetto_Newsblock_Model_Item setTitle(string $value)
+     * @method string setTitle()
+     * @return void
      */
     public function _construct()
     {
@@ -15,6 +17,15 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
         $this->setTitle(Mage::helper('newsblock')->__('Item Information'));
     }
 
+    /**
+     * Preparing form
+     *
+     * @method Oggetto_Newsblock_Model_Item setHtmlIdPrefix(string $value)
+     * @method string setHtmlIdPrefix
+     * @method Oggetto_Newsblock_Model_Item setUseContainer(bool $value)
+     * @method string setUseContainer
+     * @return Mage_Adminhtml_Block_Widget_Form
+     */
     protected function _prepareForm()
     {
         $model = Mage::registry('newsblock_item');
@@ -127,4 +138,3 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
     }
 
 }
-

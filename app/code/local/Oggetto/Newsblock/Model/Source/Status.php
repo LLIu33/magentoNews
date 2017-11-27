@@ -38,4 +38,3 @@ class Oggetto_Newsblock_Model_Source_Status
     }
 
 }
-

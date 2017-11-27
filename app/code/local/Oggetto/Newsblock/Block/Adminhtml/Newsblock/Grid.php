@@ -3,7 +3,9 @@
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
-
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         parent::__construct();
@@ -12,14 +14,24 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
         $this->setDefaultDir('ASC');
     }
 
+    /**
+     * Prepearing collection
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     */
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('newsblock/item')->getCollection();
-        /* @var $collection Mage_Cms_Model_Mysql4_Block_Collection */
+        /** @var $collection Mage_Cms_Model_Mysql4_Block_Collection */
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
 
+    /**
+     * Prepearing columns
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     */
     protected function _prepareColumns()
     {
 
@@ -59,6 +71,11 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
         return parent::_prepareColumns();
     }
 
+    /**
+     * Prepearing mass actions
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     */
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('item_id');
@@ -85,7 +102,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
                                 'values' => Mage::getModel('newsblock/source_status')
                                     ->toOptionArray()
                             )
-                    )
+                        )
                 )
             );
 
@@ -95,6 +112,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     /**
      * Row click url
      *
+     * @param string $row
      * @return string
      */
     public function getRowUrl($row)
@@ -103,4 +121,3 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     }
 
 }
-

@@ -3,6 +3,12 @@
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+
     public function _construct()
     {
         $this->_objectId = 'item_id';

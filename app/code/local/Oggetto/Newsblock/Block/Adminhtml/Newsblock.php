@@ -3,7 +3,11 @@
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock
     extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     public function _construct()
     {
         $this->_controller = 'adminhtml_newsblock';
@@ -12,6 +16,4 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock
         $this->_addButtonLabel = Mage::helper('newsblock')->__('Add News');
         parent::_construct();
     }
-
 }
-
