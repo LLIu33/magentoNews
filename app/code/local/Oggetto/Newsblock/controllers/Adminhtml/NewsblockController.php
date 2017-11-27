@@ -1,4 +1,35 @@
 <?php
+/**
+ * Oggetto Web extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto Api module to newer versions in the future.
+ * If you wish to customize the Oggetto Api module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_Newsblock
+ * @copyright  Copyright (C) 2017 Oggetto Web ltd (http://oggettoweb.com/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Oggetto api model
+ *
+ * @category   Oggetto
+ * @package    Oggetto_Newsblock
+ * @subpackage Adminhtml_NewsblockController
+ * @author     Artem Grechko <agrechko@oggettoweb.com>
+ */
 class Oggetto_Newsblock_Adminhtml_NewsblockController
     extends Mage_Adminhtml_Controller_Action
 {
@@ -53,15 +84,6 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         $this->renderLayout();
     }
 
-    public function removeFile($file)
-    {
-        $_helper = Mage::helper('newsblock');
-        $file = $_helper->updateDirSepereator($file);
-        $directory = Mage::getBaseDir('media') . DS .'Newsblock' ;
-        $io = new Varien_Io_File();
-        $result = $io->rmdir($directory, true);
-    }
-
     /**
      * Save changes for News
      *
@@ -74,27 +96,15 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             $id = $this->getRequest()->getParam('item_id');
             $currentTime = Mage::app()->getLocale()->date();
             $block = Mage::getModel('newsblock/item')->load($id);
-            $post_data = $this->getRequest()->getParams();
-            if ((!$block->getId() || $block->isObjectNew()) && !$block->getCreatedAt()) {
-                $block->setCreatedAt($currentTime);
-            }
+            $postData = $this->getRequest()->getParams();
+
 
             if (!$block->getId()) {
                 Mage::getSingleton('adminhtml/session')
                     ->addError('Cannot save the news');
             }
 
-            if (!empty($_FILES['image']['name'] ))
-            {
-//                $block['image'] = $_FILES['image']['name'];
-                if ($this->getRequest()->getParam("id")) {
-                    if ($block->getData('image')) {
-                        $io = new Varien_Io_File();
-                        $io->rm(
-                            Mage::getBaseDir('media') . DS . implode(DS, explode('/', $model->getData('image'))));
-                    }
-                }
-
+            if (!empty($_FILES['image']['name'] )) {
                 $path = Mage::getBaseDir('media') . DS . 'Newsblock' . DS;
                 $uploader = new Varien_File_Uploader('image');
                 $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
@@ -103,33 +113,25 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
                 $destFile = $path . $_FILES['image']['name'];
                 $filename = $uploader->getNewFileName($destFile);
                 $uploader->save($path, $filename);
-
-                $post_data['image'] = 'Newsblock' . DS . $filename;
-
-//                $mediaAttribute = array (
-//                    'image',
-//                    'thumbnail',
-//                    'small_image'
-//                );
-            }
-            else
-            {
-                if (isset($post_data['image']['delete']) && $post_data['image']['delete'] == 1)
-                {
-                    if ($post_data['image']['value'] != '')
-                        $this->removeFile($post_data['image']['value']);
-                    $post_data['image'] = '';
-                }
-                else
-                {
-                    unset($post_data['image']);
+                $postData['image'] = 'Newsblock' . DS . $filename;
+            } else {
+                if (isset($postData['image']['delete']) && $postData['image']['delete'] == 1) {
+                    if ($postData['image']['value'] != '') {
+                        unlink(Mage::getBaseDir('media') . DS . $postData['image']['value']);
+                    }
+                    $postData['image'] = '';
+                } else {
+                    unset($postData['image']);
                 }
             }
 
-            $block
-                ->setData($post_data)
-                ->setUpdatedAt($currentTime)
-                ->save();
+            $block->setData($postData);
+
+            if ((!$block->getId() || $block->isObjectNew()) && !$block->getCreatedAt()) {
+                $block->setCreatedAt($currentTime);
+            }
+            $block->setUpdatedAt($currentTime);
+            $block->save();
 
         } catch (Exception $e) {
             Mage::logException($e);
