@@ -29,12 +29,10 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
             'index'     => 'title',
         ));
 
-        $this->addColumn('item_status', array(
-            'header'    => Mage::helper('cms')->__('Status'),
-            'align'     => 'left',
-            'type'      => 'options',
-            'options'   => Mage::getModel('newsblock/source_status')->toArray(),
-            'index'     => 'item_status'
+        $this->addColumn('created_at', array(
+            'header'    => Mage::helper('newsblock')->__('Created At'),
+            'index'     => 'created_at',
+            'type'      => 'date',
         ));
 
         $this->addColumn('updated_at', array(
@@ -43,10 +41,18 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
             'type'      => 'date',
         ));
 
-        $this->addColumn('created_at', array(
-            'header'    => Mage::helper('newsblock')->__('Created At'),
-            'index'     => 'created_at',
-            'type'      => 'date',
+        $this->addColumn('description', array(
+            'header'    => Mage::helper('newsblock')->__('Description'),
+            'align'     => 'left',
+            'index'     => 'description',
+        ));
+
+        $this->addColumn('item_status', array(
+            'header'    => Mage::helper('cms')->__('Status'),
+            'align'     => 'left',
+            'type'      => 'options',
+            'options'   => Mage::getModel('newsblock/source_status')->toArray(),
+            'index'     => 'item_status'
         ));
 
 
@@ -76,7 +82,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
                                 'type'   => 'select',
                                 'class'  => 'required-entry',
                                 'label'  => Mage::helper('newsblock')->__('Status'),
-                                'values' => Mage::getModel('newsblock/source_status')->toOptionArray()
+                                'values' => Mage::getModel('newsblock/source_status')
+                                    ->toOptionArray()
                             )
                     )
                 )

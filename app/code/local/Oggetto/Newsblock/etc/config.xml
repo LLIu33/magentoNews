@@ -60,12 +60,12 @@
             </adminhtml>
         </routers>
     </admin>
-    <defalut>
+    <default>
         <newsblock>
             <settings>
                 <enabled>1</enabled>
-                <block_count>10</block_count>
+                <news_count>10</news_count>
             </settings>
         </newsblock>
-    </defalut>
+    </default>
 </config>

@@ -14,6 +14,17 @@
         <resources>
             <admin>
                 <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <newsblock translate="title" module="newsblock">
+                                        <title>Oggetto_Newsblock</title>
+                                    </newsblock>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
                     <cms translate="title" module="cms">
                         <children>
                             <news_menu translate="title" module="newsblock">

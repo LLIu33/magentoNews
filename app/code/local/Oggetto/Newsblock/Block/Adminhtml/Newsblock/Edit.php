@@ -3,21 +3,21 @@
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
-    public function __construct()
+    public function _construct()
     {
-        $this->_objectId = 'block_id';
+        $this->_objectId = 'item_id';
         $this->_controller = 'adminhtml_newsblock';
         $this->_blockGroup = 'newsblock';
 
-        parent::__construct();
+        parent::_construct();
 
         $this->_updateButton(
             'save',
-            'label', Mage::helper('newsblock')->__('Save Block')
+            'label', Mage::helper('newsblock')->__('Save News')
         );
         $this->_updateButton(
             'delete',
-            'label', Mage::helper('newsblock')->__('Delete Block')
+            'label', Mage::helper('newsblock')->__('Delete News')
         );
 
         $this->_addButton(
@@ -47,13 +47,13 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
      */
     public function getHeaderText()
     {
-        if (Mage::registry('newsblock_block')->getId()) {
+        if (Mage::registry('newsblock_item')->getId()) {
             return Mage::helper('newsblock')->__(
-                "Edit Block '%s'",
-                $this->escapeHtml(Mage::registry('newsblock_block')->getTitle())
+                "Edit News",
+                $this->escapeHtml(Mage::registry('newsblock_item')->getTitle())
             );
         } else {
-            return Mage::helper('newsblock')->__('New Block');
+            return Mage::helper('newsblock')->__('New News');
         }
     }
 

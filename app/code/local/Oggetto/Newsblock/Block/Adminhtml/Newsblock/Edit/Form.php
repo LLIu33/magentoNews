@@ -1,34 +1,36 @@
 <?php
-
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
     extends Mage_Adminhtml_Block_Widget_Form
 {
 
     /**
      * Init form
+     *
+     * @return Mage_Adminhtml_Block_Widget_Form
      */
-    public function __construct()
+    public function _construct()
     {
-        parent::__construct();
+        parent::_construct();
         $this->setId('block_form');
-        $this->setTitle(Mage::helper('newsblock')->__('Block Information'));
+        $this->setTitle(Mage::helper('newsblock')->__('Item Information'));
     }
 
     protected function _prepareForm()
     {
-        $model = Mage::registry('newsblock_block');
+        $model = Mage::registry('newsblock_item');
         $form = new Varien_Data_Form(
             array(
                 'id' => 'edit_form',
                 'action' => $this->getUrl(
                     '*/*/save',
-                    array('block_id' => $this->getRequest()->getParam('block_id'))
+                    array('item_id' => $this->getRequest()->getParam('item_id'))
                 ),
                 'method' => 'post'
             )
         );
 
-        $form->setHtmlIdPrefix('block_');
+        $form->setHtmlIdPrefix('item_');
+        $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
 
         $fieldset = $form->addFieldset(
             'base_fieldset',
@@ -38,30 +40,74 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
             )
         );
 
-        if ($model->getBlockId()) {
-            $fieldset->addField('block_id', 'hidden', array(
-                'name' => 'block_id',
+        if ($model->getItemId()) {
+            $fieldset->addField('item_id', 'hidden', array(
+                'name' => 'item_id',
             ));
         }
 
-        $fieldset->addField('title', 'text', array(
+        $fieldset->addField('title', 'textarea', array(
             'name'      => 'title',
-            'label'     => Mage::helper('newsblock')->__('Block Title'),
-            'title'     => Mage::helper('newsblock')->__('Block Title'),
+            'label'     => Mage::helper('newsblock')->__('News Title'),
+            'title'     => Mage::helper('newsblock')->__('News Title'),
             'required'  => true,
         ));
 
+        if ($model->getItemId()) {
+            $fieldset->addField(
+                'created_at',
+                'date',
+                array(
+                    'label'     => Mage::helper('newsblock')->__('Created at'),
+                    'readonly'  => true,
+                    'class'     => 'readonly',
+                    'name'      => 'created_at',
+                    'format'    => $dateFormatIso,
+                    'time' => true,
+                )
+            );
+
+            $fieldset->addField(
+                'updated_at',
+                'date',
+                array(
+                    'label'     => Mage::helper('newsblock')->__('Updated at'),
+                    'readonly'  => true,
+                    'class'     => 'readonly',
+                    'name'      => 'updated_at',
+                    'format'    => $dateFormatIso,
+                    'time' => true,
+                )
+            );
+        }
 
         $fieldset->addField(
-            'block_status',
-            'select', array(
+            'item_status',
+            'select',
+            array(
                 'label'     => Mage::helper('newsblock')->__('Status'),
                 'title'     => Mage::helper('newsblock')->__('Status'),
-                'name'      => 'block_status',
+                'name'      => 'item_status',
                 'required'  => true,
                 'options'   => Mage::getModel('newsblock/source_status')->toArray(),
             )
         );
+
+        $fieldset->addField('image', 'image', array(
+            'name'      => 'image',
+            'label'     => Mage::helper('newsblock')->__('Image'),
+            'title'     => Mage::helper('newsblock')->__('Image'),
+            'required'  => true,
+        ));
+
+        $fieldset->addField('description', 'textarea', array(
+            'name'      => 'description',
+            'label'     => Mage::helper('newsblock')->__('Description'),
+            'title'     => Mage::helper('newsblock')->__('Description'),
+            'style'     => 'height:12em',
+            'required'  => true,
+
+        ));
 
 
         $fieldset->addField('content', 'textarea', array(
