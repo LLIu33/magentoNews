@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -96,42 +96,41 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             $id = $this->getRequest()->getParam('item_id');
             $currentTime = Mage::app()->getLocale()->date();
             $block = Mage::getModel('newsblock/item')->load($id);
-            $postData = $this->getRequest()->getParams();
-
-
-            if (!$block->getId()) {
-                Mage::getSingleton('adminhtml/session')
-                    ->addError('Cannot save the news');
-            }
+            $data = $this->getRequest()->getParams();
 
             if (!empty($_FILES['image']['name'] )) {
                 $path = Mage::getBaseDir('media') . DS . 'Newsblock' . DS;
                 $uploader = new Varien_File_Uploader('image');
-                $uploader->setAllowedExtensions(array('jpg', 'png', 'gif'));
+                $uploader->setAllowedExtensions(['jpg', 'png', 'gif']);
                 $uploader->setAllowRenameFiles(false);
                 $uploader->setFilesDispersion(false);
                 $destFile = $path . $_FILES['image']['name'];
                 $filename = $uploader->getNewFileName($destFile);
                 $uploader->save($path, $filename);
-                $postData['image'] = 'Newsblock' . DS . $filename;
+                $data['image'] = 'Newsblock' . DS . $filename;
             } else {
-                if (isset($postData['image']['delete']) && $postData['image']['delete'] == 1) {
-                    if ($postData['image']['value'] != '') {
-                        unlink(Mage::getBaseDir('media') . DS . $postData['image']['value']);
+                if (isset($data['image']['delete']) && $data['image']['delete'] == true) {
+                    if ($data['image']['value']) {
+                        unlink(Mage::getBaseDir('media') . DS . $data['image']['value']);
                     }
-                    $postData['image'] = '';
+                    $data['image'] = '';
                 } else {
-                    unset($postData['image']);
+                    unset($data['image']);
                 }
             }
 
-            $block->setData($postData);
+            $block->setData($data);
 
-            if ((!$block->getId() || $block->isObjectNew()) && !$block->getCreatedAt()) {
+            if (!$block->getId()) {
                 $block->setCreatedAt($currentTime);
             }
             $block->setUpdatedAt($currentTime);
             $block->save();
+
+            if (!$block->getId()) {
+                Mage::getSingleton('adminhtml/session')
+                    ->addError('Cannot save the news');
+            }
 
         } catch (Exception $e) {
             Mage::logException($e);
@@ -140,16 +139,16 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
                 ->setBlockObject($block->getData());
             return  $this->_redirect(
                 '*/*/edit',
-                array('item_id' => $this->getRequest()->getParam('item_id'))
+                ['item_id' => $this->getRequest()->getParam('item_id')]
             );
         }
 
         Mage::getSingleton('adminhtml/session')
-            ->addSuccess('News was saved successfully!');
+            ->addSuccess('News has been successfully saved');
 
         return $this->_redirect(
             '*/*/' . $this->getRequest()->getParam('back', 'index'),
-            array('item_id' => $block->getId())
+            ['item_id' => $block->getId()]
         );
     }
 
@@ -162,12 +161,20 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
 
     public function deleteAction()
     {
-        $block = Mage::getModel('newsblock/item')
-            ->setId($this->getRequest()->getParam('item_id'))
-            ->delete();
-        if ($block->getId()) {
+        try {
+            $block = Mage::getModel('newsblock/item')
+                ->setId($this->getRequest()->getParam('item_id'))
+                ->delete();
+            if ($block->getId()) {
+                Mage::getSingleton('adminhtml/session')
+                    ->addSuccess('News has been successfully deleted !');
+            }
+
+        } catch (Exception $e) {
+            Mage::logException($e);
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             Mage::getSingleton('adminhtml/session')
-                ->addSuccess('News was deleted successfully!');
+                ->setBlockObject($block->getData());
         }
         return $this->_redirect('*/*/');
     }
@@ -185,7 +192,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         try {
             $blocks = Mage::getModel('newsblock/item')
                 ->getCollection()
-                ->addFieldToFilter('item_id', array('in' => $statuses['massaction']));
+                ->addFieldToFilter('item_id', ['in' => $statuses['massaction']]);
             foreach ($blocks as $block) {
                 $block->setItemStatus($statuses['item_status'])->save();
             }
@@ -194,7 +201,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             return $this->_redirect('*/*/');
         }
-        Mage::getSingleton('adminhtml/session')->addSuccess('News were updated!');
+        Mage::getSingleton('adminhtml/session')->addSuccess('News has been updated!');
 
         return $this->_redirect('*/*/');
     }
@@ -210,18 +217,17 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     {
         $blocks = $this->getRequest()->getParams();
         try {
-            $blocks = Mage::getModel('newsblock/item')
-                ->getCollection()
-                ->addFieldToFilter('item_id', array('in' => $blocks['massaction']));
-            foreach ($blocks as $block) {
-                $block->delete();
+            $block = Mage::getModel('newsblock/item');
+            foreach($blocks['massaction'] as $id) {
+                $block->setId($id)->delete();
             }
+
         } catch (Exception $e) {
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             return $this->_redirect('*/*/');
         }
-        Mage::getSingleton('adminhtml/session')->addSuccess('Blocks were deleted!');
+        Mage::getSingleton('adminhtml/session')->addSuccess('News has been deleted!');
 
         return $this->_redirect('*/*/');
     }

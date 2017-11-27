@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -32,14 +32,4 @@
  */
 class Oggetto_Newsblock_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    /**
-     * Helper for path separator
-     *
-     * @param string $path
-     * @return string
-     */
-    public function updateDirSepereator($path)
-    {
-        return str_replace('\\', DS, $path);
-    }
 }

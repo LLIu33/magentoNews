@@ -13,8 +13,8 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Oggetto AsSeenIn module to newer versions in the future.
- * If you wish to customize the Oggetto AsSeenIn module for your needs
+ * the Oggetto Newsblock module to newer versions in the future.
+ * If you wish to customize the Oggetto Newsblock module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Oggetto
@@ -27,11 +27,11 @@
     <menu>
         <cms translate="title" module="cms">
             <children>
-                <news_menu translate="title" module="newsblock">
+                <news translate="title" module="newsblock">
                     <title>News</title>
-                    <sort_order>65</sort_order>
+                    <sort_order>70</sort_order>
                     <action>adminhtml/newsblock</action>
-                </news_menu>
+                </news>
             </children>
         </cms>
     </menu>
@@ -52,10 +52,10 @@
                     </system>
                     <cms translate="title" module="cms">
                         <children>
-                            <news_menu translate="title" module="newsblock">
+                            <news translate="title" module="newsblock">
                                 <title>Oggetto_Newsblock</title>
-                                <sort_order>1</sort_order>
-                            </news_menu>
+                                <sort_order>10</sort_order>
+                            </news>
                         </children>
                     </cms>
                 </children>

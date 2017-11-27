@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -38,7 +38,6 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
      *
      * @return void
      */
-
     public function _construct()
     {
         $this->_objectId = 'item_id';
@@ -58,17 +57,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
 
         $this->_addButton(
             'saveandcontinue',
-            array(
+            [
                 'label'     =>
                     Mage::helper('adminhtml')->__('Save and Continue Edit'),
                 'onclick'   => 'saveAndContinueEdit()',
                 'class'     => 'save',
-            ),
+            ],
             -100
         );
 
         $this->_formScripts[] = "
-
 
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
@@ -84,14 +82,13 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit
      */
     public function getHeaderText()
     {
-        if (Mage::registry('newsblock_item')->getId()) {
-            return Mage::helper('newsblock')->__(
-                "Edit News",
-                $this->escapeHtml(Mage::registry('newsblock_item')->getTitle())
-            );
-        } else {
-            return Mage::helper('newsblock')->__('New News');
+        if (!Mage::registry('newsblock_item')->getId()) {
+            return Mage::helper('newsblock')->__('Fresh News');
         }
+        return Mage::helper('newsblock')->__(
+            "Edit News",
+            $this->escapeHtml(Mage::registry('newsblock_item')->getTitle())
+        );
     }
 
 }

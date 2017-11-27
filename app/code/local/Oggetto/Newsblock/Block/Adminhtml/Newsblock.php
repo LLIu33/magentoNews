@@ -23,11 +23,11 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Block_Adminhtml_Newsblock
+ * @subpackage Block
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Block_Adminhtml_Newsblock

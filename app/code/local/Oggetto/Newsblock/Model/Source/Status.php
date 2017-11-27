@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -32,8 +32,8 @@
  */
 class Oggetto_Newsblock_Model_Source_Status
 {
-    const ENABLED = '1';
-    const DISABLED = '0';
+    const ENABLED = 1;
+    const DISABLED = 0;
 
     /**
      * Options getter
@@ -42,16 +42,16 @@ class Oggetto_Newsblock_Model_Source_Status
      */
     public function toOptionArray()
     {
-        return array(
-            array(
+        return [
+            [
                 'value' => self::ENABLED,
                 'label' => Mage::helper('newsblock')->__('Enabled')
-            ),
-            array(
+            ],
+            [
                 'value' => self::DISABLED,
                 'label' => Mage::helper('newsblock')->__('Disabled')
-            ),
-        );
+            ]
+        ];
     }
 
     /**
@@ -61,10 +61,10 @@ class Oggetto_Newsblock_Model_Source_Status
      */
     public function toArray()
     {
-        return array(
+        return [
             self::DISABLED => Mage::helper('newsblock')->__('Disabled'),
             self::ENABLED => Mage::helper('newsblock')->__('Enabled'),
-        );
+        ];
     }
 
 }

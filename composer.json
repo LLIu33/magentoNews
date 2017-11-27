@@ -1,11 +1,5 @@
 {
-    "name": "oggetto/newsblock",
-    "authors": [
-        {
-            "name": "Artem Grechko",
-            "email": "agrechko@oggettoweb.com"
-        }
-    ],
+    "name": "oggetto/testshop",
     "require": {
         "oggettoweb/coding_standard": "dev-master"
     },

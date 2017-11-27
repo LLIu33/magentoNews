@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -32,21 +32,43 @@
  */
 
 /** @var Mage_Core_Model_Resource_Setup $installer */
+
 $installer = $this;
 $installer->startSetup();
+try {
+    $table = $installer->getConnection()
+        ->newTable($installer->getTable('newsblock/item'))
+        ->addColumn('item_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+            'identity' => true,
+            'unsigned' => true,
+            'nullable' => false,
+            'primary' => true,
+        ], 'Id')
+        ->addColumn('title', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, [
+            'nullable' => false,
+        ], 'Title')
+        ->addColumn('description', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'nullable' => false,
+        ], 'Description')
+        ->addColumn('content', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'nullable' => false,
+        ], 'Content')
+        ->addColumn('image', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, [
+            'nullable' => false,
+        ], 'Image')
+        ->addColumn('item_status', Varien_Db_Ddl_Table::TYPE_BOOLEAN, null, [
+            'nullable' => false,
+        ], 'Status')
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, [
+            'nullable' => false,
+        ], 'Created at')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, [
+            'nullable' => false,
+        ], 'Updated at');
 
-$installer->run("
-CREATE TABLE IF NOT EXISTS `{$this->getTable('newsblock/item')}` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(500) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `content` text NOT NULL,
-  `image` varchar(500),
-  `item_status` tinyint(4) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-");
+    $installer->getConnection()->createTable($table);
+} catch (Exception $e) {
+    Mage::log('Something went wrong.', null, 'newsblock_setup.log', true);
+}
 
 $installer->endSetup();

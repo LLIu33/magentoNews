@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -65,39 +65,39 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     protected function _prepareColumns()
     {
         $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-        $this->addColumn('title', array(
+        $this->addColumn('title', [
             'header'    => Mage::helper('newsblock')->__('Title'),
             'align'     => 'left',
             'index'     => 'title',
-        ));
+        ]);
 
-        $this->addColumn('created_at', array(
+        $this->addColumn('created_at', [
             'header'    => Mage::helper('newsblock')->__('Created At'),
             'index'     => 'created_at',
             'type'      => 'date',
             'format'    => $dateFormatIso
-        ));
+        ]);
 
-        $this->addColumn('updated_at', array(
+        $this->addColumn('updated_at', [
             'header'    => Mage::helper('newsblock')->__('Updated At'),
             'index'     => 'updated_at',
             'type'      => 'date',
             'format'    => $dateFormatIso
-        ));
+        ]);
 
-        $this->addColumn('description', array(
+        $this->addColumn('description', [
             'header'    => Mage::helper('newsblock')->__('Description'),
             'align'     => 'left',
             'index'     => 'description',
-        ));
+        ]);
 
-        $this->addColumn('item_status', array(
+        $this->addColumn('item_status', [
             'header'    => Mage::helper('cms')->__('Status'),
             'align'     => 'left',
             'type'      => 'options',
             'options'   => Mage::getModel('newsblock/source_status')->toArray(),
             'index'     => 'item_status'
-        ));
+        ]);
 
 
         return parent::_prepareColumns();
@@ -114,28 +114,28 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
         $this->getMassactionBlock()->setIdFieldName('item_id');
         $this->getMassactionBlock()
             ->addItem('delete',
-                array(
+                [
                     'label' => Mage::helper('newsblock')->__('Delete'),
                     'url' => $this->getUrl('*/*/massDelete'),
                     'confirm' => Mage::helper('newsblock')->__('Are you sure?')
-                )
+                ]
             )
             ->addItem('status',
-                array(
+                [
                     'label' => Mage::helper('newsblock')->__('Update status'),
                     'url' => $this->getUrl('*/*/massStatus'),
                     'additional' =>
-                        array('item_status' =>
-                            array(
+                        ['item_status' =>
+                            [
                                 'name'   => 'item_status',
                                 'type'   => 'select',
                                 'class'  => 'required-entry',
                                 'label'  => Mage::helper('newsblock')->__('Status'),
                                 'values' => Mage::getModel('newsblock/source_status')
                                     ->toOptionArray()
-                            )
-                        )
-                )
+                            ]
+                        ]
+                ]
             );
 
         return $this;
@@ -149,7 +149,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/edit', array('item_id' => $row->getId()));
+        return $this->getUrl('*/*/edit', ['item_id' => $row->getId()]);
     }
 
 }
