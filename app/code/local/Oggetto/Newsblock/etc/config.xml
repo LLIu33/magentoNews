@@ -84,6 +84,17 @@
             </adminhtml>
         </routers>
     </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Oggetto_Newsblock>
+                    <files>
+                        <default>Oggetto_Newsblock.csv</default>
+                    </files>
+                </Oggetto_Newsblock>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
         <newsblock>
             <settings>

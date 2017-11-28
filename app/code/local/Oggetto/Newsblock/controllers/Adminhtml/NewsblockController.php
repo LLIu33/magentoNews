@@ -78,8 +78,8 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::registry('newsblock_item')->setData($blockObject);
         }
         $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock(
-            'newsblock/adminhtml_newsblock_edit')
+        $this->_addContent($this->getLayout()
+            ->createBlock('newsblock/adminhtml_newsblock_edit')
         );
         $this->renderLayout();
     }
@@ -129,7 +129,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
 
             if (!$block->getId()) {
                 Mage::getSingleton('adminhtml/session')
-                    ->addError('Cannot save the news');
+                    ->addError(Mage::helper('newsblock')->__('Cannot save the news'));
             }
 
         } catch (Exception $e) {
@@ -144,7 +144,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         }
 
         Mage::getSingleton('adminhtml/session')
-            ->addSuccess('News has been successfully saved');
+            ->addSuccess(Mage::helper('newsblock')->__('News has been successfully saved'));
 
         return $this->_redirect(
             '*/*/' . $this->getRequest()->getParam('back', 'index'),
@@ -167,7 +167,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
                 ->delete();
             if ($block->getId()) {
                 Mage::getSingleton('adminhtml/session')
-                    ->addSuccess('News has been successfully deleted !');
+                    ->addSuccess(Mage::helper('newsblock')->__('News has been successfully deleted !'));
             }
 
         } catch (Exception $e) {
@@ -201,7 +201,8 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             return $this->_redirect('*/*/');
         }
-        Mage::getSingleton('adminhtml/session')->addSuccess('News has been updated!');
+        Mage::getSingleton('adminhtml/session')
+            ->addSuccess(Mage::helper('newsblock')->__('News has been updated!'));
 
         return $this->_redirect('*/*/');
     }
@@ -227,7 +228,8 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             return $this->_redirect('*/*/');
         }
-        Mage::getSingleton('adminhtml/session')->addSuccess('News has been deleted!');
+        Mage::getSingleton('adminhtml/session')
+            ->addSuccess(Mage::helper('newsblock')->__('News has been deleted!'));
 
         return $this->_redirect('*/*/');
     }
