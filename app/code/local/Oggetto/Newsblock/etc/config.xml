@@ -85,6 +85,13 @@
         </routers>
     </admin>
     <adminhtml>
+        <layout>
+            <updates>
+                <oggetto_newsblock>
+                    <file>newsblock.xml</file>
+                </oggetto_newsblock>
+            </updates>
+        </layout>
         <translate>
             <modules>
                 <Oggetto_Newsblock>

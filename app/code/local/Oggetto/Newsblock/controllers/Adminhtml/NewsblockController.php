@@ -41,9 +41,6 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     public function indexAction()
     {
         $this->loadLayout();
-        $this->_addContent(
-            $this->getLayout()->createBlock('newsblock/adminhtml_newsblock')
-        );
         $this->renderLayout();
     }
 
@@ -78,9 +75,6 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::registry('newsblock_item')->setData($blockObject);
         }
         $this->loadLayout();
-        $this->_addContent($this->getLayout()
-            ->createBlock('newsblock/adminhtml_newsblock_edit')
-        );
         $this->renderLayout();
     }
 
