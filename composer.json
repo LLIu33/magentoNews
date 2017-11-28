@@ -1,0 +1,12 @@
+{
+    "name": "oggetto/testshop",
+    "require": {
+        "oggettoweb/coding_standard": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/OggettoWeb/Oggetto-Coding-Standard"
+        }
+    ]
+}
