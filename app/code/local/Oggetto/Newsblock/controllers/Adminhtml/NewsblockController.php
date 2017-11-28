@@ -84,7 +84,8 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
      * @param array $data
      * @return array
      */
-    protected function processImage(array $data) {
+    protected function processImage(array $data)
+    {
         $imageFolder = 'newsblock';
         if (!empty($_FILES['image']['name'] )) {
             $path = Mage::getBaseDir('media') . DS . $imageFolder . DS;
