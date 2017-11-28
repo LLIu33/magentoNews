@@ -79,6 +79,36 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     }
 
     /**
+     * Save or delete news image
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function processImage(array $data) {
+        $imageFolder = 'newsblock';
+        if (!empty($_FILES['image']['name'] )) {
+            $path = Mage::getBaseDir('media') . DS . $imageFolder . DS;
+            $uploader = Mage::getModel('core/file_uploader', 'image');
+            $uploader->setAllowedExtensions(['jpg', 'jpeg', 'png', 'gif']);
+            $uploader->setAllowRenameFiles(false);
+            $uploader->setFilesDispersion(false);
+            $filename = $uploader->getNewFileName($path . $_FILES['image']['name']);
+            $uploader->save($path, $filename);
+            $data['image'] = $imageFolder . DS . $filename;
+        } else {
+            if (isset($data['image']['delete']) && $data['image']['delete'] == true) {
+                if ($data['image']['value']) {
+                    unlink(Mage::getBaseDir('media') . DS . $data['image']['value']);
+                }
+                $data['image'] = '';
+            } else {
+                unset($data['image']);
+            }
+        }
+        return $data;
+    }
+
+    /**
      * Save changes for News
      *
      * @return Mage_Core_Controller_Varien_Action
@@ -92,29 +122,8 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             $block = Mage::getModel('newsblock/item')->load($id);
             $data = $this->getRequest()->getParams();
 
-            if (!empty($_FILES['image']['name'] )) {
-                $path = Mage::getBaseDir('media') . DS . 'Newsblock' . DS;
-                $uploader = new Varien_File_Uploader('image');
-                $uploader->setAllowedExtensions(['jpg', 'png', 'gif']);
-                $uploader->setAllowRenameFiles(false);
-                $uploader->setFilesDispersion(false);
-                $destFile = $path . $_FILES['image']['name'];
-                $filename = $uploader->getNewFileName($destFile);
-                $uploader->save($path, $filename);
-                $data['image'] = 'Newsblock' . DS . $filename;
-            } else {
-                if (isset($data['image']['delete']) && $data['image']['delete'] == true) {
-                    if ($data['image']['value']) {
-                        unlink(Mage::getBaseDir('media') . DS . $data['image']['value']);
-                    }
-                    $data['image'] = '';
-                } else {
-                    unset($data['image']);
-                }
-            }
-
+            $data = $this->processImage($data);
             $block->setData($data);
-
             if (!$block->getId()) {
                 $block->setCreatedAt($currentTime);
             }
