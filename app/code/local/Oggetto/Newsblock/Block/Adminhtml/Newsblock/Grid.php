@@ -40,7 +40,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     {
         parent::__construct();
         $this->setId('cmsBlockGrid');
-        $this->setDefaultSort('item_identifier');
+        $this->setDefaultSort('item_id');
         $this->setDefaultDir('ASC');
     }
 
@@ -52,7 +52,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('newsblock/item')->getCollection();
-        /** @var $collection Mage_Cms_Model_Mysql4_Block_Collection */
+        /** @var $collection Oggetto_Newsblock_Model_Resource_Item_Collection */
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }

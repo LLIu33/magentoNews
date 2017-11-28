@@ -68,7 +68,7 @@ try {
 
     $installer->getConnection()->createTable($table);
 } catch (Exception $e) {
-    Mage::log('Something went wrong.', null, 'newsblock_setup.log', true);
+    Mage::logException($e);
 }
 
 $installer->endSetup();
