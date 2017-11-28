@@ -1,0 +1,10 @@
+<?php foreach($this->getBlocks() as $block):?>
+    <div class="newsblock-item">
+        <div class="block-title"><?php echo $block->getTitle()?></div>
+        <div class="block-created-at"><?php echo $block->getCreatedAt()?></div>
+        <div class="block-image"><img src="<?php echo Mage::getBaseUrl('media') . $block->getImage();?>" width="60" height="60"/></div>
+        <div class="block-description"><?php echo $block->getDescription()?></div>
+    </div>
+<?php endforeach;?>
+
+<?php echo $this->getLayout()->createBlock('newsblock/list')->setTemplate('newsblock/list.phtml')?>

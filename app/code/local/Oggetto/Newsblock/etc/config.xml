@@ -63,6 +63,13 @@
         </helpers>
     </global>
     <frontend>
+        <layout>
+            <updates>
+                <newsblock module="newsblock">
+                    <file>newsblock.xml</file>
+                </newsblock>
+            </updates>
+        </layout>
         <routers>
             <newsblock>
                 <use>standard</use>

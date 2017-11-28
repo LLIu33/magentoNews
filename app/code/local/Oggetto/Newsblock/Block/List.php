@@ -23,25 +23,27 @@
  */
 
 /**
- * Oggetto Newsblock
+ * Oggetto api model
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage IndexController
+ * @subpackage Item_List
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Newsblock_IndexController extends Mage_Core_Controller_Front_Action
+class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
 {
     /**
-     * Render News page
+     * Render News
      *
-     * @return void
+     * @return  Mage_Core_Model_Abstract|false
+     *
      */
-    public function indexAction()
+    public function getBlocks()
     {
-        $this->loadLayout();
-        $this->renderLayout();
+        return Mage::getModel('newsblock/item')->getCollection()
+            ->addFieldToFilter(
+                'item_status',
+                array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED)
+            );
     }
 }
-
-
