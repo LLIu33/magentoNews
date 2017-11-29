@@ -34,19 +34,4 @@
             <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
         </reference>
     </newsblock_index_index>
-
-    <catalog_category_default>
-        <reference name="left">
-            <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
-        </reference>
-        <reference name="right">
-            <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
-        </reference>
-    </catalog_category_default>
-
-    <catalog_product_view>
-        <reference name="product.info.extrahint">
-            <block name="newsblock.list" before="-" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
-        </reference>
-    </catalog_product_view>
 </layout>

@@ -12,8 +12,8 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Oggetto Api module to newer versions in the future.
- * If you wish to customize the Oggetto Api module for your needs
+ * the Oggetto Newsblock module to newer versions in the future.
+ * If you wish to customize the Oggetto Newsblock module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Oggetto
@@ -23,7 +23,7 @@
  */
 
 /**
- * Oggetto api model
+ * Oggetto Newsblock
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
@@ -33,17 +33,95 @@
 class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
 {
     /**
-     * Render News
-     *
-     * @return  Mage_Core_Model_Abstract|false
-     *
+     * Oggetto_Newsblock_Block_List constructor.
+     * @param array $args
      */
-    public function getBlocks()
+    public function __construct(array $args = array())
     {
-        return Mage::getModel('newsblock/item')->getCollection()
-            ->addFieldToFilter(
-                'item_status',
-                array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED)
-            );
+        parent::__construct($args);
+        $collection = Mage::getModel('newsblock/item')->getCollection();
+        $this->setCollection($collection);
+    }
+
+    /**
+     * @return Oggetto_Newsblock_Model_Resource_Item_Collection
+     */
+    public function _getCollection()
+    {
+        $limit = Mage::getStoreConfig('newsblock/settings/news_count');
+        $curr_page = 1;
+        $dir = 'desc';
+
+        if (Mage::app()->getRequest()->getParam('p')) {
+            $curr_page = Mage::app()->getRequest()->getParam('p');
+        }
+        if (Mage::app()->getRequest()->getParam('limit')) {
+            $limit = Mage::app()->getRequest()->getParam('limit');
+        }
+        if (Mage::app()->getRequest()->getParam('dir')) {
+            $dir = Mage::app()->getRequest()->getParam('dir');
+        }
+        //Calculate Offset
+        $offset = ($curr_page - 1) * $limit;
+        $collection = Mage::getModel("newsblock/item")->getCollection()
+            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
+            ->setOrder('created_at',$dir );
+        $collection->getSelect()->limit($limit, $offset);
+        return $collection;
+    }
+
+    /**
+     * @return $this
+     */
+    public function _prepareLayout()
+    {
+        /** @var Mage_Page_Block_Html_Pager $pager */
+        parent::_prepareLayout();
+        $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
+        $pager->setAvailableLimit(array(15=>15));
+        $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
+        $pager->setShowPerPage(true);
+        $pager->setCollection($this->getCollection());
+        $this->setChild('pager', $pager);
+        $this->getCollection()->load();
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentDirection()
+    {
+        $dir = Mage::app()->getRequest()->getParam('dir');
+        if (!$dir) {
+            $dir = 'desc';
+        }
+        return $dir;
+    }
+
+    /**
+     * @param string $direction
+     * @return string
+     */
+    public function getOrderUrl($direction)
+    {
+        $params = [
+            'order' => 'created_at',
+            'dir' => $direction
+        ];
+        $urlParams = array();
+        $urlParams['_current']  = true;
+        $urlParams['_escape']   = true;
+        $urlParams['_use_rewrite']   = true;
+        $urlParams['_query']    = $params;
+        return $this->getUrl('*/*/*', $urlParams);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPagerHtml()
+    {
+        return $this->getChildHtml('pager');
     }
 }
