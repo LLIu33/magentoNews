@@ -54,5 +54,3 @@ class Oggetto_Newsblock_IndexController extends Mage_Core_Controller_Front_Actio
         $this->renderLayout();
     }
 }
-
-

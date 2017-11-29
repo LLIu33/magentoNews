@@ -34,6 +34,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
 {
     /**
      * Oggetto_Newsblock_Block_List constructor.
+     *
      * @param array $args
      */
     public function __construct(array $args = array())
@@ -44,16 +45,18 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     }
 
     /**
+     * Modifying collection depends on url attributes
+     *
      * @return Oggetto_Newsblock_Model_Resource_Item_Collection
      */
     public function _getCollection()
     {
         $limit = Mage::getStoreConfig('newsblock/settings/news_count');
-        $curr_page = 1;
+        $currPage = 1;
         $dir = 'desc';
 
         if (Mage::app()->getRequest()->getParam('p')) {
-            $curr_page = Mage::app()->getRequest()->getParam('p');
+            $currPage = Mage::app()->getRequest()->getParam('p');
         }
         if (Mage::app()->getRequest()->getParam('limit')) {
             $limit = Mage::app()->getRequest()->getParam('limit');
@@ -62,15 +65,17 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
             $dir = Mage::app()->getRequest()->getParam('dir');
         }
         //Calculate Offset
-        $offset = ($curr_page - 1) * $limit;
+        $offset = ($currPage - 1) * $limit;
         $collection = Mage::getModel("newsblock/item")->getCollection()
             ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
-            ->setOrder('created_at',$dir );
+            ->setOrder('created_at', $dir );
         $collection->getSelect()->limit($limit, $offset);
         return $collection;
     }
 
     /**
+     * Initial state for list of news
+     *
      * @return $this
      */
     public function _prepareLayout()
@@ -78,7 +83,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
         /** @var Mage_Page_Block_Html_Pager $pager */
         parent::_prepareLayout();
         $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
-        $pager->setAvailableLimit(array(15=>15));
+        $pager->setAvailableLimit(array(15 => 15));
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
         $pager->setCollection($this->getCollection());
@@ -88,6 +93,8 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     }
 
     /**
+     * Retrun current sort direction
+     *
      * @return string
      */
     public function getCurrentDirection()
@@ -97,13 +104,14 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     }
 
     /**
+     * Generate url with order rules
+     *
      * @param string $direction
      * @return string
      */
     public function getOrderUrl($direction)
     {
         $params = [
-            'order' => 'created_at',
             'dir' => $direction
         ];
         $urlParams = array();
@@ -115,6 +123,8 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     }
 
     /**
+     * Render pager
+     *
      * @return string
      */
     public function getPagerHtml()

@@ -33,22 +33,12 @@
 class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
 {
     /**
-     *
-     * @return Mage_Core_Block_Abstract
-     */
-//    protected function _prepareLayout()
-//    {
-//        return parent::_prepareLayout();
-//    }
-
-    /**
      * Retrieve current news
      *
      * @return Mage_Core_Model_Abstract
      */
     public function getNewsDetail()
     {
-        $news = Mage::getModel('newsblock/item')->load($this->getRequest()->getParam ( 'id' ));
-        return $news;
+        return Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
     }
 }
