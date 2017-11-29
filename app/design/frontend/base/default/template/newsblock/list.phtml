@@ -19,7 +19,7 @@
 </div>
 <br /><br /><br />
 <?php foreach($this->_getCollection() as $block):?>
-    <div class="newsblock-item">
+    <a class="newsblock-item" href="detail?id=<?php echo $block->getId();?>">
         <div class="block-title">
             <strong>Title: </strong>
             <span><?php echo $block->getTitle()?></span></div>
@@ -42,6 +42,6 @@
             <strong>Description</strong>
             <span><?php echo $block->getDescription()?></span>
         </div>
-    </div>
+    </a>
 <?php endforeach;?>
 <?php echo $this->getPagerHtml(); ?>

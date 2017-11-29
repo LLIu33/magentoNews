@@ -93,10 +93,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     public function getCurrentDirection()
     {
         $dir = Mage::app()->getRequest()->getParam('dir');
-        if (!$dir) {
-            $dir = 'desc';
-        }
-        return $dir;
+        return ($dir) ? $dir : 'desc';
     }
 
     /**

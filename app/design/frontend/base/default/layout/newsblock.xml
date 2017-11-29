@@ -34,4 +34,14 @@
             <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
         </reference>
     </newsblock_index_index>
+    <newsblock_index_detail>
+        <reference name="head">
+            <action method="setTitle">
+                <title>News detail</title>
+            </action>
+        </reference>
+        <reference name="content">
+            <block name="newsblock.detail" as="newsblock" type="newsblock/detail" template="newsblock/detail.phtml"/>
+        </reference>
+    </newsblock_index_detail>
 </layout>
