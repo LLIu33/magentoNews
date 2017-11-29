@@ -25,6 +25,11 @@
 -->
 <layout version="1.0.0">
     <newsblock_index_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
         <reference name="head">
             <action method="setTitle">
                 <title>News</title>
@@ -35,6 +40,11 @@
         </reference>
     </newsblock_index_index>
     <newsblock_index_detail>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
         <reference name="head">
             <action method="setTitle">
                 <title>News detail</title>
