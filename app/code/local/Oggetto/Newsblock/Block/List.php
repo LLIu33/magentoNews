@@ -54,7 +54,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $collection = Mage::getModel("newsblock/item")->getCollection();
+        $collection = Mage::getModel('newsblock/item')->getCollection();
         $this->setCollection($collection);
     }
 
@@ -66,8 +66,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
      */
     public function getSortDirection()
     {
-        $dir = $this->getRequest()->getParam('dir');
-        return ($dir) ? $dir : $this->_sortDirection;
+        return $this->getRequest()->getParam('dir', $this->_sortDirection);
     }
 
     /**
@@ -79,14 +78,15 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     public function _beforeToHtml()
     {
         /** @var Mage_Page_Block_Html_Pager $pager */
+        /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         parent::_beforeToHtml();
         $sortDirection = $this->getSortDirection();
         $pager = $this->getChild('pager');
-        $pager->setAvailableLimit(array(15 => 15));
+        $pager->setAvailableLimit([15 => 15]);
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
         $collection = $this->getCollection()
-            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
+            ->addEnabledFilter()
             ->setOrder($this->_sortField, $sortDirection);
         $pager->setCollection($collection);
         return $this;
@@ -103,7 +103,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
         $params = [
             'dir' => $direction
         ];
-        $urlParams = array();
+        $urlParams = [];
         $urlParams['_current']  = true;
         $urlParams['_escape']   = true;
         $urlParams['_use_rewrite']   = true;
@@ -114,12 +114,12 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     /**
      * Generating url for detail page
      *
-     * @param int $id
+     * @param Oggetto_Newsblock_Model_Item $block
      * @return string
      */
-    public function getDetailUrl($id)
+    public function getDetailUrl($block)
     {
-        return Mage::getUrl('newsblock/index/detail/id/' . $id);
+        return Mage::getUrl('newsblock/index/detail', ['id' => $block->getId()]);
     }
 
     /**

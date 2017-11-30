@@ -20,7 +20,7 @@
 </div>
 <br /><br /><br />
 <?php foreach($this->getCollection() as $block):?>
-    <a class="newsblock-item" href="<?php echo $this->getDetailUrl($block->getId());?>">
+    <a class="newsblock-item" href="<?php echo $this->getDetailUrl($block);?>">
         <div class="block-title">
             <strong>Title: </strong>
             <span><?php echo $block->getTitle()?></span></div>

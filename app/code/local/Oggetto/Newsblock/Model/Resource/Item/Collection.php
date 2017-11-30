@@ -42,4 +42,14 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
         parent::_construct();
         $this->_init('newsblock/item');
     }
+
+    /**
+     * Filter collection by status
+     *
+     * @return Oggetto_Newsblock_Model_Resource_Item_Collection
+     */
+    public function addEnabledFilter() {
+        $this->addFieldToFilter('item_status', Oggetto_Newsblock_Model_Source_Status::ENABLED);
+        return $this;
+    }
 }
