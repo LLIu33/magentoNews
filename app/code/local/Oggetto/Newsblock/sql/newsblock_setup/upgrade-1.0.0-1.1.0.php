@@ -34,20 +34,24 @@
 /** @var Mage_Core_Model_Resource_Setup $installer */
 
 $installer = $this;
-$connection = $installer->getConnection();
-
 $installer->startSetup();
 try {
     $installer->getConnection()
-        ->addColumn('page_title', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, [
+        ->addColumn($installer->getTable('newsblock/item'), 'page_title', array(
+            'type' => Varien_Db_Ddl_Table::TYPE_VARCHAR,
             'nullable' => false,
-        ], 'Page Title')
-        ->addColumn('meta_description', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'comment' => 'Page Title'
+        ))
+        ->addColumn($installer->getTable('newsblock/item'), 'meta_description', array(
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'nullable' => true,
-        ], 'Meta description')
-        ->addColumn('meta_keywords', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'comment' => 'Meta description'
+        ))
+        ->addColumn($installer->getTable('newsblock/item'), 'meta_keywords', array(
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'nullable' => true,
-        ], 'Meta Keywords');
+            'comment' => 'Meta Keywords'
+        ));
 } catch (Exception $e) {
     Mage::logException($e);
 }
