@@ -112,6 +112,16 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     }
 
     /**
+     * Generating url for detail page
+     *
+     * @param $id
+     * @return string
+     */
+    public function getDetailUrl($id){
+        return Mage::getUrl('newsblock/index/detail/id/' . $id);
+    }
+
+    /**
      * Render pager
      *
      * @return string
