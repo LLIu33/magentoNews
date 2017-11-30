@@ -42,4 +42,20 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
     {
         return Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
     }
+
+    /**
+     * Modifying head block
+     *
+     * @return Mage_Core_Block_Abstract
+     * @throws Exception
+     */
+    public function _prepareLayout()
+    {
+        $head = $this->getLayout()->getBlock('head');
+        $block = Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
+        $head->setTitle($block->getPageTitle());
+        $head->setKeywords($block->getMetaKeywords());
+        $head->setDescription($block->getMetaDescription());
+        return parent::_prepareLayout();
+    }
 }
