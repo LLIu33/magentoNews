@@ -37,25 +37,26 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
      *
      * @var string
      */
-    protected $sortField = 'created_at';
+    protected $_sortField = 'created_at';
 
     /**
      * Default sort direction
      *
      * @var string
      */
-    protected $sortDirection = 'desc';
+    protected $_sortDirection = 'desc';
 
     /**
      * Oggetto_Newsblock_Block_List constructor.
      *
+     * @return void
      */
     public function _construct()
     {
         parent::_construct();
         $collection = Mage::getModel("newsblock/item")->getCollection()
             ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
-            ->setOrder($this->sortField, $this->sortDirection );
+            ->setOrder($this->_sortField, $this->_sortDirection );
         $this->setCollection($collection);
     }
 
@@ -68,7 +69,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     public function getSortDirection()
     {
         $dir = $this->getRequest()->getParam('dir');
-        return ($dir) ? $dir : $this->sortDirection;
+        return ($dir) ? $dir : $this->_sortDirection;
     }
 
     /**
@@ -86,7 +87,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
         $pager->setAvailableLimit(array(15 => 15));
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
-        $collection = $this->getCollection()->setOrder($this->sortField, $sortDirection);
+        $collection = $this->getCollection()->setOrder($this->_sortField, $sortDirection);
         $pager->setCollection($collection);
         return $this;
     }
