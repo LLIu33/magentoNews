@@ -12,8 +12,8 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Oggetto Api module to newer versions in the future.
- * If you wish to customize the Oggetto Api module for your needs
+ * the Oggetto Newsblock module to newer versions in the future.
+ * If you wish to customize the Oggetto Newsblock module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Oggetto

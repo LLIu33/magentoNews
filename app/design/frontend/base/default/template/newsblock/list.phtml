@@ -1,0 +1,48 @@
+<?php /** @var Oggetto_Newsblock_Block_List $this */?>
+<?php echo $this->getPagerHtml(); ?>
+<div class="sorter">
+    <div class="sort-by">
+        <span>Sort direction:</span>
+        <?php if($this->getSortDirection() == 'desc'): ?>
+            <a
+                    href="<?php echo $this->getOrderUrl('asc') ?>"
+                    title="<?php echo Mage::helper('core')->__('Set Ascending Direction') ?>"
+                    class="sort-by-switcher sort-by-switcher--desc"
+            ></a>
+        <?php else: ?>
+            <a
+                    href="<?php echo $this->getOrderUrl( 'desc') ?>"
+                    title="<?php echo Mage::helper('newsblock')->__('Set Descending Direction') ?>"
+                    class="sort-by-switcher sort-by-switcher--asc"
+            ></a>
+        <?php endif; ?>
+    </div>
+</div>
+<br /><br /><br />
+<?php foreach($this->getCollection() as $block):?>
+    <a class="newsblock-item" href="<?php echo $this->getDetailUrl($block);?>">
+        <div class="block-title">
+            <strong>Title: </strong>
+            <span><?php echo $block->getTitle()?></span></div>
+        <div class="block-created-at">
+            <strong>Created at: </strong>
+            <span><?php echo $block->getCreatedAt()?></span></div>
+        <div class="block-image">
+            <strong>Image: </strong>
+    <?php if ($block->getImage()) : ?>
+            <img
+                    src="<?php echo Mage::getBaseUrl('media') . $block->getImage();?>"
+                    width="60"
+                    height="60"
+            />
+    <?php else :?>
+        <span>Empty image</span>
+    <?php endif;?>
+        </div>
+        <div class="block-description">
+            <strong>Description</strong>
+            <span><?php echo $block->getDescription()?></span>
+        </div>
+    </a>
+<?php endforeach;?>
+<?php echo $this->getPagerHtml(); ?>

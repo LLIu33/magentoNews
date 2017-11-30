@@ -27,30 +27,19 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage controlllers
+ * @subpackage Block
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Newsblock_IndexController extends Mage_Core_Controller_Front_Action
+class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
 {
     /**
-     * Render News list page
+     * Retrieve current news
      *
-     * @return void
+     * @return Mage_Core_Model_Abstract
+     * @throws Exception
      */
-    public function indexAction()
+    public function getNewsDetail()
     {
-        $this->loadLayout();
-        $this->renderLayout();
-    }
-
-    /**
-     * Render News page
-     *
-     * @return void
-     */
-    public function detailAction()
-    {
-        $this->loadLayout();
-        $this->renderLayout();
+        return Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
     }
 }
