@@ -36,7 +36,9 @@
             </action>
         </reference>
         <reference name="content">
-            <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml"/>
+            <block name="newsblock.list" as="newsblock" type="newsblock/list" template="newsblock/list.phtml">
+                <block name="newsblock.list.pager" as="pager" type="page/html_pager" />
+            </block>
         </reference>
     </newsblock_index_index>
     <newsblock_index_detail>

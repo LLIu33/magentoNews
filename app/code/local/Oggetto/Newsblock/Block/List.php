@@ -27,80 +27,68 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Item_List
+ * @subpackage Block
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
 {
     /**
+     * Default sort field
+     *
+     * @var string
+     */
+    protected $sortField = 'created_at';
+
+    /**
+     * Default sort direction
+     *
+     * @var string
+     */
+    protected $sortDirection = 'desc';
+
+    /**
      * Oggetto_Newsblock_Block_List constructor.
      *
-     * @param array $args
      */
-    public function __construct(array $args = array())
+    public function _construct()
     {
-        parent::__construct($args);
-        $collection = Mage::getModel('newsblock/item')->getCollection();
+        parent::_construct();
+        $collection = Mage::getModel("newsblock/item")->getCollection()
+            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
+            ->setOrder($this->sortField, $this->sortDirection );
         $this->setCollection($collection);
     }
 
     /**
-     * Modifying collection depends on url attributes
+     * Get current sort direction
      *
-     * @return Oggetto_Newsblock_Model_Resource_Item_Collection
+     * @return string
+     * @throws Exception
      */
-    public function _getCollection()
+    public function getSortDirection()
     {
-        $limit = Mage::getStoreConfig('newsblock/settings/news_count');
-        $currPage = 1;
-        $dir = 'desc';
-
-        if (Mage::app()->getRequest()->getParam('p')) {
-            $currPage = Mage::app()->getRequest()->getParam('p');
-        }
-        if (Mage::app()->getRequest()->getParam('limit')) {
-            $limit = Mage::app()->getRequest()->getParam('limit');
-        }
-        if (Mage::app()->getRequest()->getParam('dir')) {
-            $dir = Mage::app()->getRequest()->getParam('dir');
-        }
-        //Calculate Offset
-        $offset = ($currPage - 1) * $limit;
-        $collection = Mage::getModel("newsblock/item")->getCollection()
-            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
-            ->setOrder('created_at', $dir );
-        $collection->getSelect()->limit($limit, $offset);
-        return $collection;
+        $dir = $this->getRequest()->getParam('dir');
+        return ($dir) ? $dir : $this->sortDirection;
     }
 
     /**
      * Initial state for list of news
      *
      * @return $this
+     * @throws Exception
      */
-    public function _prepareLayout()
+    public function _beforeToHtml()
     {
         /** @var Mage_Page_Block_Html_Pager $pager */
-        parent::_prepareLayout();
-        $pager = $this->getLayout()->createBlock('page/html_pager', 'custom.pager');
+        parent::_beforeToHtml();
+        $sortDirection = $this->getSortDirection();
+        $pager = $this->getChild('pager');
         $pager->setAvailableLimit(array(15 => 15));
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
-        $pager->setCollection($this->getCollection());
-        $this->setChild('pager', $pager);
-        $this->getCollection()->load();
+        $collection = $this->getCollection()->setOrder($this->sortField, $sortDirection);
+        $pager->setCollection($collection);
         return $this;
-    }
-
-    /**
-     * Retrun current sort direction
-     *
-     * @return string
-     */
-    public function getCurrentDirection()
-    {
-        $dir = Mage::app()->getRequest()->getParam('dir');
-        return ($dir) ? $dir : 'desc';
     }
 
     /**

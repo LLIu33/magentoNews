@@ -27,7 +27,7 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Item_List
+ * @subpackage Block
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
@@ -36,6 +36,7 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
      * Retrieve current news
      *
      * @return Mage_Core_Model_Abstract
+     * @throws Exception
      */
     public function getNewsDetail()
     {
