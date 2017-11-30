@@ -33,6 +33,13 @@
 class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
 {
     /**
+     * Model for news detail
+     *
+     * @var Oggetto_Newsblock_Model_Item
+     */
+    protected $_newsDetail;
+
+    /**
      * Retrieve current news
      *
      * @return Mage_Core_Model_Abstract
@@ -40,7 +47,8 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
      */
     public function getNewsDetail()
     {
-        return Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
+        $this->_newsDetail = $this->_newsDetail ?? Mage::getModel('newsblock/item');
+        return $this->_newsDetail->load($this->getRequest()->getParam('id'));
     }
 
     /**
@@ -52,10 +60,10 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
     public function _prepareLayout()
     {
         $head = $this->getLayout()->getBlock('head');
-        $block = Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('id'));
-        $head->setTitle($block->getPageTitle());
-        $head->setKeywords($block->getMetaKeywords());
-        $head->setDescription($block->getMetaDescription());
+        $block = $this->getNewsDetail();
+        $head->setTitle($block->getPageTitle())
+            ->setKeywords($block->getMetaKeywords())
+            ->setDescription($block->getMetaDescription());
         return parent::_prepareLayout();
     }
 }
