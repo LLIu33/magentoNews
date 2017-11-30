@@ -54,9 +54,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $collection = Mage::getModel("newsblock/item")->getCollection()
-            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
-            ->setOrder($this->_sortField, $this->_sortDirection );
+        $collection = Mage::getModel("newsblock/item")->getCollection();
         $this->setCollection($collection);
     }
 
@@ -87,7 +85,9 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
         $pager->setAvailableLimit(array(15 => 15));
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
-        $collection = $this->getCollection()->setOrder($this->_sortField, $sortDirection);
+        $collection = $this->getCollection()
+            ->addFieldToFilter('item_status', array('eq' => Oggetto_Newsblock_Model_Source_Status::ENABLED))
+            ->setOrder($this->_sortField, $sortDirection);
         $pager->setCollection($collection);
         return $this;
     }
