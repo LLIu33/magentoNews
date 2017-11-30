@@ -36,23 +36,39 @@
 $installer = $this;
 $installer->startSetup();
 try {
-    $installer->getConnection()
-        ->addColumn($installer->getTable('newsblock/item'), 'page_title', array(
-            'type' => Varien_Db_Ddl_Table::TYPE_VARCHAR,
+    $connection = $installer->getConnection();
+
+    $connection->addColumn(
+        $installer->getTable('newsblock/item'),
+        'page_title',
+        [
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'nullable' => false,
             'comment' => 'Page Title'
-        ))
-        ->addColumn($installer->getTable('newsblock/item'), 'meta_description', array(
+        ]
+    );
+
+    $connection->addColumn(
+        $installer->getTable('newsblock/item'),
+        'meta_description',
+        [
             'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'nullable' => true,
             'comment' => 'Meta description'
-        ))
-        ->addColumn($installer->getTable('newsblock/item'), 'meta_keywords', array(
+        ]
+    );
+
+    $connection->addColumn(
+        $installer->getTable('newsblock/item'),
+        'meta_keywords',
+        [
             'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'nullable' => true,
             'comment' => 'Meta Keywords'
-        ));
+        ]
+    );
 } catch (Exception $e) {
     Mage::logException($e);
 }
+
 $installer->endSetup();
