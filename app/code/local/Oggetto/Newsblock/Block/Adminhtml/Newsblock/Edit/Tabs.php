@@ -44,19 +44,4 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tabs extends Mage_Adminht
         $this->setDestElementId('edit_form');
         $this->setTitle(Mage::helper('newsblock')->__('News Information'));
     }
-//
-//    protected function _prepareLayout()
-//    {
-//        $this->addTab('general_tab', [
-//            'label'     => $this->__('General info'),
-//            'title'     => $this->__('General info'),
-//            'content'   => $this->getLayout()->createBlock('newsblock/adminhtml_edit_tab_general')
-//        ]);
-//        $this->addTab('meta_tab', [
-//            'label'     => $this->__('Meta info'),
-//            'title'     => $this->__('Meta info'),
-//            'content'   => $this->getLayout()->createBlock('newsblock/adminhtml_edit_tab_meta')
-//        ]);
-//        return parent::_prepareLayout();
-//    }
 }

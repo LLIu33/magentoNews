@@ -66,12 +66,23 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
             ]
         );
 
+        $fieldset->addField('page_title', 'text', [
+            'name'      => 'page_title',
+            'label'     => Mage::helper('newsblock')->__('Page Title'),
+            'title'     => Mage::helper('newsblock')->__('Page Title'),
+            'required'  => true,
+        ]);
 
         $fieldset->addField('meta_description', 'textarea', [
-            'name'      => 'title',
+            'name'      => 'meta_description',
             'label'     => Mage::helper('newsblock')->__('Meta Description'),
             'title'     => Mage::helper('newsblock')->__('Meta Description'),
-            'required'  => true,
+        ]);
+
+        $fieldset->addField('meta_keywords', 'textarea', [
+            'name'      => 'meta_keywords',
+            'label'     => Mage::helper('newsblock')->__('Keywords'),
+            'title'     => Mage::helper('newsblock')->__('Keywords'),
         ]);
 
         $form->setValues($model->getData());
@@ -84,7 +95,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
      *
      * @return string
      */
-    public function getTabLabel() {
+    public function getTabLabel()
+    {
         return Mage::helper( 'newsblock' )->__('Meta Information');
     }
 
@@ -93,7 +105,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
      *
      * @return string
      */
-    public function getTabTitle() {
+    public function getTabTitle()
+    {
         return Mage::helper( 'newsblock' )->__('Meta');
     }
 
@@ -102,7 +115,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
      *
      * @return true
      */
-    public function canShowTab() {
+    public function canShowTab()
+    {
         return true;
     }
 
@@ -111,7 +125,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
      *
      * @return true
      */
-    public function isHidden() {
+    public function isHidden()
+    {
         return false;
     }
 
@@ -122,7 +137,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Meta
      *
      * @return bool
      */
-    protected function _isAllowedAction( $action ) {
+    protected function _isAllowedAction( $action )
+    {
         return true;
     }
 }

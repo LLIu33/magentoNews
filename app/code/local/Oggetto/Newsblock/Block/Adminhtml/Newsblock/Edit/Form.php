@@ -62,6 +62,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
      * Preparing form
      *
      * @return Mage_Adminhtml_Block_Widget_Form
+     * @throws Exception
      */
     protected function _prepareForm()
     {
@@ -79,7 +80,6 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
         );
 
         $form->setHtmlIdPrefix('item_');
-
         $form->setValues($model->getData());
         $form->setUseContainer(true);
         $this->setForm($form);

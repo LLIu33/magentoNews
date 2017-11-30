@@ -53,6 +53,15 @@ try {
         ->addColumn('content', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
             'nullable' => false,
         ], 'Content')
+        ->addColumn('page_title', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, [
+            'nullable' => false,
+        ], 'Page Title')
+        ->addColumn('meta_description', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'nullable' => true,
+        ], 'Meta description')
+        ->addColumn('meta_keywords', Varien_Db_Ddl_Table::TYPE_TEXT, null, [
+            'nullable' => true,
+        ], 'Meta Keywords')
         ->addColumn('image', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, [
             'nullable' => false,
         ], 'Image')

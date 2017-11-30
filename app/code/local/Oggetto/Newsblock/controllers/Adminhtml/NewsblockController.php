@@ -122,7 +122,6 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             $currentTime = Mage::app()->getLocale()->date();
             $block = Mage::getModel('newsblock/item')->load($id);
             $data = $this->getRequest()->getParams();
-
             $data = $this->processImage($data);
             $block->setData($data);
             if (!$block->getId()) {

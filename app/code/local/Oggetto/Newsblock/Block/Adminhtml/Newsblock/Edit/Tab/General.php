@@ -69,7 +69,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
         $model = Mage::registry('newsblock_item');
         $form = new Varien_Data_Form();
 
-        $form->setHtmlIdPrefix('item_');
+        $form->setHtmlIdPrefix('general_');
         $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
 
         $fieldset = $form->addFieldset(
@@ -166,7 +166,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
      *
      * @return string
      */
-    public function getTabLabel() {
+    public function getTabLabel()
+    {
         return Mage::helper( 'newsblock' )->__('General info');
     }
 
@@ -175,7 +176,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
      *
      * @return string
      */
-    public function getTabTitle() {
+    public function getTabTitle()
+    {
         return Mage::helper( 'cms' )->__('General');
     }
 
@@ -184,7 +186,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
      *
      * @return true
      */
-    public function canShowTab() {
+    public function canShowTab()
+    {
         return true;
     }
 
@@ -193,7 +196,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
      *
      * @return true
      */
-    public function isHidden() {
+    public function isHidden()
+    {
         return false;
     }
 
@@ -204,7 +208,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
      *
      * @return bool
      */
-    protected function _isAllowedAction( $action ) {
+    protected function _isAllowedAction( $action )
+    {
         return true;
     }
 }
