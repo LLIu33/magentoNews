@@ -34,5 +34,19 @@
         <reference name="content">
             <block type="newsblock/adminhtml_newsblock_edit" name="oggetto_newsblock_edit" />
         </reference>
+        <reference name="left">
+            <block type="newsblock/adminhtml_newsblock_edit_tabs" name="oggetto_newsblock_edit_tabs">
+                <block type="newsblock/adminhtml_newsblock_edit_tab_general" name="oggetto_newsblock_edit_tab_general" />
+                <block type="newsblock/adminhtml_newsblock_edit_tab_meta" name="oggetto_newsblock_edit_tab_meta" />
+                <action method="addTab">
+                    <name>general_section</name>
+                    <block>oggetto_newsblock_edit_tab_general</block>
+                </action>
+                <action method="addTab">
+                    <name>meta_section</name>
+                    <block>oggetto_newsblock_edit_tab_meta</block>
+                </action>
+            </block>
+        </reference>
     </adminhtml_newsblock_edit>
 </layout>

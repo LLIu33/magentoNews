@@ -62,6 +62,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
      * Preparing form
      *
      * @return Mage_Adminhtml_Block_Widget_Form
+     * @throws Exception
      */
     protected function _prepareForm()
     {
@@ -79,92 +80,6 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Form
         );
 
         $form->setHtmlIdPrefix('item_');
-        $dateFormatIso = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-
-        $fieldset = $form->addFieldset(
-            'base_fieldset',
-            [
-                'legend' => Mage::helper('newsblock')->__('General Information'),
-                'class' => 'fieldset-wide'
-            ]
-        );
-
-        $fieldset->addField('title', 'text', [
-            'name'      => 'title',
-            'label'     => Mage::helper('newsblock')->__('News Title'),
-            'title'     => Mage::helper('newsblock')->__('News Title'),
-            'required'  => true,
-        ]);
-
-        if ($model->getItemId()) {
-            $fieldset->addField(
-                'created_at',
-                'date',
-                [
-                    'label'     => Mage::helper('newsblock')->__('Created at'),
-                    'readonly'  => true,
-                    'class'     => 'readonly',
-                    'name'      => 'created_at',
-                    'format'    => $dateFormatIso,
-                    'time' => true,
-                ]
-            );
-
-            $fieldset->addField(
-                'updated_at',
-                'date',
-                [
-                    'label'     => Mage::helper('newsblock')->__('Updated at'),
-                    'readonly'  => true,
-                    'class'     => 'readonly',
-                    'name'      => 'updated_at',
-                    'format'    => $dateFormatIso,
-                    'time' => true,
-                ]
-            );
-        }
-
-        $fieldset->addField(
-            'item_status',
-            'select',
-            [
-                'label'     => Mage::helper('newsblock')->__('Status'),
-                'title'     => Mage::helper('newsblock')->__('Status'),
-                'name'      => 'item_status',
-                'required'  => true,
-                'options'   => Mage::getModel('newsblock/source_status')->toArray(),
-            ]
-        );
-
-        $fieldset->addField(
-            'image',
-            'image',
-            [
-                'name'      => 'image',
-                'label'     => Mage::helper('newsblock')->__('Image'),
-                'title'     => Mage::helper('newsblock')->__('Image'),
-                'required'  => false,
-            ]
-        );
-
-        $fieldset->addField('description', 'textarea', [
-            'name'      => 'description',
-            'label'     => Mage::helper('newsblock')->__('Description'),
-            'title'     => Mage::helper('newsblock')->__('Description'),
-            'style'     => 'height:12em',
-            'required'  => true,
-        ]);
-
-        $fieldset->addField('content', 'editor', [
-            'name'      => 'content',
-            'label'     => Mage::helper('newsblock')->__('Content'),
-            'title'     => Mage::helper('newsblock')->__('Content'),
-            'style'     => 'height:36em',
-            'required'  => true,
-            'config'    => Mage::getSingleton('cms/wysiwyg_config')->getConfig(),
-            'wysiwyg'   => true,
-        ]);
-
         $form->setValues($model->getData());
         $form->setUseContainer(true);
         $this->setForm($form);

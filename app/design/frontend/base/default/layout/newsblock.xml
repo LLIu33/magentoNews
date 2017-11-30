@@ -47,11 +47,6 @@
                 <template>page/1column.phtml</template>
             </action>
         </reference>
-        <reference name="head">
-            <action method="setTitle">
-                <title>News detail</title>
-            </action>
-        </reference>
         <reference name="content">
             <block name="newsblock.detail" as="newsblock" type="newsblock/detail" template="newsblock/detail.phtml"/>
         </reference>
