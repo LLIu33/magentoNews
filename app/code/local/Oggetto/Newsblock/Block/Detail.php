@@ -68,7 +68,6 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
         return parent::_prepareLayout();
     }
 
-
     /**
      * Initial state for list of news
      *
@@ -79,12 +78,8 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
     {
         /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         parent::_beforeToHtml();
-        $block = $this->getNewsDetail();
-        $products = $block->getProducts();
-        asort($products);
-        $collection = Mage::getResourceModel('catalog/product_collection')
-            ->addFieldToFilter('entity_id', ['in' => array_keys($products)])
-            ->addAttributeToSelect('*');
+        $newsItem = $this->getNewsDetail();
+        $collection = $newsItem->getProductCollection();
         /** @var Mage_Catalog_Block_Product_List $list */
         $list = $this->getChild('products');
         $list->setCollection($collection);

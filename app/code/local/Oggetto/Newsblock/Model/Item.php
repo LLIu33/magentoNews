@@ -74,11 +74,20 @@ class Oggetto_Newsblock_Model_Item extends Mage_Core_Model_Abstract
      *
      * @return mixed
      */
-    public function getProducts()
+    protected function _getProducts()
     {
         if (!is_array($this->getData('products'))) {
             $this->setData('products', (array)json_decode($this->getData('products')));
         }
         return $this->getData('products');
+    }
+
+    public function getProductCollection() {
+        $products = $this->_getProducts();
+        asort($products);
+        $collection = Mage::getResourceModel('catalog/product_collection')
+            ->addFieldToFilter('entity_id', ['in' => array_keys($products)])
+            ->addAttributeToSelect('*');
+        return $collection;
     }
 }

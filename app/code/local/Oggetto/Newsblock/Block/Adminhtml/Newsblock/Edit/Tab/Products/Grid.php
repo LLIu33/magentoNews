@@ -37,7 +37,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
     /**
      * @var Oggetto_Newsblock_Model_Item
      */
-    protected $_block;
+    protected $_newsItem;
     /**
      * Set grid params
      *
@@ -48,11 +48,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
         $this->setId('newsblock_product_grid');
         $this->setDefaultSort('entity_id');
         $this->setUseAjax(true);
-        if ($this->_getBlock()->getId()) {
+        if ($this->_getNewsItem()->getId()) {
             $this->setDefaultFilter(['in_products' => 1]);
-        }
-        if ($this->isReadonly()) {
-            $this->setFilterVisibility(false);
         }
     }
 
@@ -62,12 +59,12 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
      * @return Mage_Core_Model_Abstract
      * @throws Exception
      */
-    protected function _getBlock()
+    protected function _getNewsItem()
     {
-        if (!$this->_block) {
-            $this->_block = Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('item_id'));
+        if (!$this->_newsItem) {
+            $this->_newsItem = Mage::getModel('newsblock/item')->load($this->getRequest()->getParam('item_id'));
         }
-        return $this->_block;
+        return $this->_newsItem;
     }
 
     /**
@@ -78,32 +75,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
      */
     protected function _addColumnFilterToCollection($column)
     {
-        if ($column->getId() == 'in_products') {
-            $productIds = $this->_getSelectedProducts();
-            if (empty($productIds)) {
-                $productIds = 0;
-            }
-            if ($column->getFilter()->getValue()) {
-                $this->getCollection()->addFieldToFilter('entity_id', ['in' => $productIds]);
-            } else {
-                if ($productIds) {
-                    $this->getCollection()->addFieldToFilter('entity_id', ['nin' => $productIds]);
-                }
-            }
-        } else {
+        if ($column->getId() !== 'in_products') {
             parent::_addColumnFilterToCollection($column);
+            return $this;
         }
-        return $this;
-    }
 
-    /**
-     * Checks when this block is readonly
-     *
-     * @return boolean
-     */
-    public function isReadonly()
-    {
-        return $this->_getBlock()->getUpsellReadonly();
+        $productIds = $this->_getSelectedProducts();
+        $productIds = $productIds ?: 0;
+        $operator = $column->getFilter()->getValue() ? 'in' : 'nin';
+        $this->getCollection()->addFieldToFilter('entity_id', [$operator => $productIds]);
+        return $this;
     }
 
     /**
@@ -116,13 +97,6 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
         $collection = Mage::getResourceModel('catalog/product_collection')
             ->addAttributeToSelect('*');
 
-        if ($this->isReadonly()) {
-            $productIds = $this->_getSelectedProducts();
-            if (empty($productIds)) {
-                $productIds = [0];
-            }
-            $collection->addFieldToFilter('entity_id', ['in' => $productIds]);
-        }
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -134,7 +108,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
      */
     protected function _prepareColumns()
     {
-        if (!$this->_getBlock()->getUpsellReadonly()) {
+        if (!$this->_getNewsItem()->getUpsellReadonly()) {
             $this->addColumn('in_products', [
                 'header_css_class' => 'a-center',
                 'type'      => 'checkbox',
@@ -250,7 +224,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
         $selected = $this->getRequest()->getParam('newsblock_products');
 
         $products = [];
-        foreach ($this->_getBlock()->getProducts() as $product => $position) {
+        foreach ($this->_getNewsItem()->getProducts() as $product => $position) {
             $products[$product] = ['position' => $position];
         }
         foreach ($selected as $product) {
