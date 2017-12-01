@@ -36,17 +36,25 @@
 $installer = $this;
 $installer->startSetup();
 try {
-    $connection = $installer->getConnection();
-
-    $connection->addColumn(
-        $installer->getTable('newsblock/item'),
-        'products',
-        [
-            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+    $table = $installer->getConnection()
+        ->newTable($installer->getTable('newsblock/item_product'))
+        ->addColumn('item_product_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+            'identity' => true,
+            'unsigned' => true,
             'nullable' => false,
-            'comment' => 'Related products'
-        ]
-    );
+            'primary' => true,
+        ], 'Id')
+        ->addColumn('news_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+            'nullable' => false,
+        ], 'News Id')
+        ->addColumn('product_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+            'nullable' => false,
+        ], 'Product Id')
+        ->addColumn('position', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
+            'nullable' => true,
+        ], 'Position');
+
+    $installer->getConnection()->createTable($table);
 } catch (Exception $e) {
     Mage::logException($e);
 }

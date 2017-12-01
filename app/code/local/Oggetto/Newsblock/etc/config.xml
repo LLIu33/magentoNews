@@ -46,6 +46,9 @@
                     <item>
                         <table>oggetto_newsblock</table>
                     </item>
+                    <item_product>
+                        <table>oggetto_newsblock_product</table>
+                    </item_product>
                 </entities>
             </newsblock_resource>
         </models>
