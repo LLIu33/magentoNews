@@ -42,4 +42,43 @@ class Oggetto_Newsblock_Model_Item extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('newsblock/item');
     }
+
+    /**
+     * Serialize product data before save
+     *
+     * @return Mage_Core_Model_Abstract|void
+     */
+    protected function _beforeSave()
+    {
+        parent::_beforeSave();
+        if (is_array($this->getData('products'))) {
+            $this->setData('products', json_encode($this->getData('products')));
+        }
+    }
+
+    /**
+     * Deserialize product data after load
+     *
+     * @return Mage_Core_Model_Abstract|void
+     */
+    protected function _afterLoad()
+    {
+        parent::_beforeSave();
+        if (!empty($this->getData('products'))) {
+            $this->setData('products', (array)json_decode($this->getData('products')));
+        }
+    }
+
+    /**
+     * Deserialize product data
+     *
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        if (!is_array($this->getData('products'))) {
+            $this->setData('products', (array)json_decode($this->getData('products')));
+        }
+        return $this->getData('products');
+    }
 }

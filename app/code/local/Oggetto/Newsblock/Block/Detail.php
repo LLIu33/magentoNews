@@ -67,4 +67,37 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
             ->setDescription($block->getMetaDescription());
         return parent::_prepareLayout();
     }
+
+
+    /**
+     * Initial state for list of news
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function _beforeToHtml()
+    {
+        /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
+        parent::_beforeToHtml();
+        $block = $this->getNewsDetail();
+        $products = $block->getProducts();
+        asort($products);
+        $collection = Mage::getResourceModel('catalog/product_collection')
+            ->addFieldToFilter('entity_id', ['in' => array_keys($products)])
+            ->addAttributeToSelect('*');
+        /** @var Mage_Catalog_Block_Product_List $list */
+        $list = $this->getChild('products');
+        $list->setCollection($collection);
+        return $this;
+    }
+
+    /**
+     * Render product list
+     *
+     * @return string
+     */
+    public function getProductListHtml()
+    {
+        return $this->getChildHtml('products');
+    }
 }

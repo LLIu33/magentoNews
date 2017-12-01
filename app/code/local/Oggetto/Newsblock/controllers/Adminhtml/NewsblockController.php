@@ -45,6 +45,28 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     }
 
     /**
+     * Render Products
+     *
+     * @return void
+     */
+    public function productsAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
+     * Render Grid for Products
+     *
+     * @return void
+     */
+    public function productsgridAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    /**
      * Add News
      *
      * @return void
@@ -123,6 +145,19 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             $block = Mage::getModel('newsblock/item')->load($id);
             $data = $this->getRequest()->getParams();
             $data = $this->processImage($data);
+
+            $links = $this->getRequest()->getPost('links', []);
+
+            if (array_key_exists('products', $links)) {
+                $selectedProducts = Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']);
+                $products = [];
+
+                foreach ($selectedProducts as $product => $position) {
+                    $products[$product] = isset($position['position']) ? $position['position'] : $product;
+                }
+                $data['products'] = $products;
+            }
+
             $block->setData($data);
             if (!$block->getId()) {
                 $block->setCreatedAt($currentTime);
