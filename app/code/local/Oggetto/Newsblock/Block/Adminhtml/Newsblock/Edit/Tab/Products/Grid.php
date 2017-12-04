@@ -38,6 +38,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
      * @var Oggetto_Newsblock_Model_Item
      */
     protected $_newsItem;
+
     /**
      * Set grid params
      *
@@ -108,16 +109,14 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
      */
     protected function _prepareColumns()
     {
-        if (!$this->_getNewsItem()->getUpsellReadonly()) {
-            $this->addColumn('in_products', [
-                'header_css_class' => 'a-center',
-                'type'      => 'checkbox',
-                'name'      => 'in_products',
-                'values'    => $this->_getSelectedProducts(),
-                'align'     => 'center',
-                'index'     => 'entity_id'
-            ]);
-        }
+        $this->addColumn('in_products', [
+            'header_css_class' => 'a-center',
+            'type'      => 'checkbox',
+            'name'      => 'in_products',
+            'values'    => $this->_getSelectedProducts(),
+            'align'     => 'center',
+            'index'     => 'entity_id'
+        ]);
 
         $this->addColumn('entity_id', [
             'header'    => Mage::helper('catalog')->__('ID'),
@@ -222,16 +221,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
     public function getSelectedBlockProducts()
     {
         $selected = $this->getRequest()->getParam('newsblock_products');
-
-        $products = [];
-        foreach ($this->_getNewsItem()->getProducts() as $product => $position) {
-            $products[$product] = ['position' => $position];
+        $productIds = [];
+        $productsDataCollection = Mage::getModel('newsblock/product')->getProducts($this->_newsItem);
+        foreach ($productsDataCollection as $product) {
+            $productIds[$product->getProductId()] = ['position' => $product->getPosition()];
         }
         foreach ($selected as $product) {
-            if (!isset($products[$product])) {
-                $products[$product] = ['position' => $product];
+            if (!isset($productIds[$product])) {
+                $productIds[$product] = ['position' => $product];
             }
         }
-        return $products;
+        return $productIds;
     }
 }

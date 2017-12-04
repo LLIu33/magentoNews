@@ -27,19 +27,19 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Newsblock
- * @subpackage Model
+ * @subpackage Collection
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Newsblock_Model_Item extends Mage_Core_Model_Abstract
+class Oggetto_Newsblock_Model_Resource_Product_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     /**
-     * Init Model for News
+     * Init Collection for Product
      *
      * @return void
      */
     public function _construct()
     {
         parent::_construct();
-        $this->_init('newsblock/item');
+        $this->_init('newsblock/product');
     }
 }

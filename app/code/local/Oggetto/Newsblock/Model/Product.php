@@ -30,7 +30,7 @@
  * @subpackage Model
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Newsblock_Model_ItemProduct extends Mage_Core_Model_Abstract
+class Oggetto_Newsblock_Model_Product extends Mage_Core_Model_Abstract
 {
     /**
      * Init Model for News
@@ -40,6 +40,37 @@ class Oggetto_Newsblock_Model_ItemProduct extends Mage_Core_Model_Abstract
     public function _construct()
     {
         parent::_construct();
-        $this->_init('newsblock/item_product');
+        $this->_init('newsblock/product');
+    }
+
+    /**
+     * Load model by multiply fields
+     *
+     * @param int $itemId
+     * @param int $productId
+     * @return Oggetto_Newsblock_Model_Product
+     */
+    public function loadByMultiple($itemId, $productId)
+    {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('item_id', $itemId)
+            ->addFieldToFilter('product_id', $productId);
+        if ($collection->count() > 0) {
+            return $collection->getFirstItem();
+        }
+        return $this->setItemId($itemId)->setProductId($productId);
+    }
+
+    /**
+     * Return collection of products for current news
+     *
+     * @param Oggetto_Newsblock_Model_Item $newsItem
+     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
+     */
+    public function getProducts(Oggetto_Newsblock_Model_Item $newsItem)
+    {
+        $collection = $this->getCollection()
+            ->addFieldToFilter('item_id', $newsItem->getId());
+        return $collection;
     }
 }

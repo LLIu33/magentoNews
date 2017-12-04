@@ -30,7 +30,7 @@
  * @subpackage Model_Resource
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Newsblock_Model_Resource_ItemProduct extends Mage_Core_Model_Resource_Db_Abstract
+class Oggetto_Newsblock_Model_Resource_Product extends Mage_Core_Model_Resource_Db_Abstract
 {
     /**
      * Init Resource Model for News_Product
@@ -39,6 +39,6 @@ class Oggetto_Newsblock_Model_Resource_ItemProduct extends Mage_Core_Model_Resou
      */
     public function _construct()
     {
-        $this->_init('newsblock/item', 'item_product_id');
+        $this->_init('newsblock/product', 'item_product_id');
     }
 }
