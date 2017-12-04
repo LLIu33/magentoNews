@@ -55,12 +55,24 @@ class Oggetto_Newsblock_Model_Resource_Product extends Mage_Core_Model_Resource_
     }
 
     /**
+     * Delete Product Relatives by news
+     *
+     * @param int $newsId
+     * @return void
+     */
+    public function deleteByNewsId(int $newsId)
+    {
+        $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $write->delete($this->getMainTable(), ['item_id', $newsId]);
+    }
+
+    /**
      * Return collection of products for current news
      *
      * @param Oggetto_Newsblock_Model_Item $newsItem
      * @return Oggetto_Newsblock_Model_Resource_Product_Collection
      */
-    public function getProducts(Oggetto_Newsblock_Model_Item $newsItem)
+    public function getProductRelatives(Oggetto_Newsblock_Model_Item $newsItem)
     {
         $collection = Mage::getResourceModel('newsblock/product_collection')
             ->addFieldToFilter('item_id', $newsItem->getId());
@@ -80,7 +92,7 @@ class Oggetto_Newsblock_Model_Resource_Product extends Mage_Core_Model_Resource_
             ->joinTable(
                 array('rel_table' => $relativeTable),
                 'product_id = entity_id',
-                array('rel_table.item_id' => 'item_id')
+                array('rel_table.item_id' => 'item_id', 'rel_table.position' => 'position')
             )
             ->addFieldToFilter('rel_table.item_id', $newsItem->getId())
             ->setOrder('rel_table.position', 'ASC');

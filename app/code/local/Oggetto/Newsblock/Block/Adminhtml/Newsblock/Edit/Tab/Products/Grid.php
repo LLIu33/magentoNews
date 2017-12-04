@@ -222,7 +222,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_Products_Grid
     {
         $selected = $this->getRequest()->getParam('newsblock_products');
         $productIds = [];
-        $productsDataCollection = Mage::getResourceModel('newsblock/product')->getProducts($this->_newsItem);
+        $productsDataCollection = Mage::getResourceModel('newsblock/product')->getProductRelatives($this->_newsItem);
         foreach ($productsDataCollection as $product) {
             $productIds[$product->getProductId()] = ['position' => $product->getPosition()];
         }

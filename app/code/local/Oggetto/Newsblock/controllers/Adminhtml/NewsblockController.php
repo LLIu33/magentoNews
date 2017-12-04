@@ -152,22 +152,6 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     }
 
     /**
-     * Delete unchecked related products
-     *
-     * @param int  $itemId
-     * @return void
-     */
-    protected function _cleanUpRelatedProducts($itemId)
-    {
-        try {
-            $oldRelatedProducts = Mage::getResourceModel('newsblock/product_collection')
-                ->addFieldToFilter('item_id', $itemId);
-            $oldRelatedProducts->walk('delete');
-        } catch (Exception $e) {
-            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-        }
-    }
-    /**
      * Save changes for News
      *
      * @return Mage_Core_Controller_Varien_Action
@@ -184,7 +168,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
 
             $links = $this->getRequest()->getPost('links', []);
             if (array_key_exists('products', $links)) {
-                $this->_cleanUpRelatedProducts($id);
+                Mage::getResourceModel('newsblock/product')->deleteByNewsId($id);
                 $selectedProducts = Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']);
                 $this->_saveRelatedProducts($id, $selectedProducts);
             }
