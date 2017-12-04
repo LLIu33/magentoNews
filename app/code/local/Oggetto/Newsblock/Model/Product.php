@@ -42,49 +42,4 @@ class Oggetto_Newsblock_Model_Product extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('newsblock/product');
     }
-
-    /**
-     * Load model by multiply fields
-     *
-     * @param int $itemId
-     * @param int $productId
-     * @return Oggetto_Newsblock_Model_Product
-     */
-    public function loadByMultiple($itemId, $productId)
-    {
-        $collection = $this->getCollection()
-            ->addFieldToFilter('item_id', $itemId)
-            ->addFieldToFilter('product_id', $productId);
-        if ($collection->count() > 0) {
-            return $collection->getFirstItem();
-        }
-        return $this->setItemId($itemId)->setProductId($productId);
-    }
-
-    /**
-     * Return collection of products for current news
-     *
-     * @param Oggetto_Newsblock_Model_Item $newsItem
-     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
-     */
-    public function getProducts(Oggetto_Newsblock_Model_Item $newsItem)
-    {
-        $collection = $this->getCollection()
-            ->addFieldToFilter('item_id', $newsItem->getId());
-        return $collection;
-    }
-
-
-    /**
-     * Returned collection of related products
-     *
-     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
-     */
-    public function getProductCollection(Oggetto_Newsblock_Model_Item $newsItem) {
-        $productsIds = $this->getProducts($newsItem)->getColumnValues('product_id');
-        $collection = Mage::getResourceModel('catalog/product_collection')
-            ->addFieldToFilter('entity_id', ['in' => $productsIds])
-            ->addAttributeToSelect('*');
-        return $collection;
-    }
 }

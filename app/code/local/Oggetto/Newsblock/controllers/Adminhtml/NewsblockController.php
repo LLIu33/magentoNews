@@ -90,11 +90,11 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             'newsblock_item',
             Mage::getModel('newsblock/item')->load($id)
         );
-        $newsObject = (array)Mage::getSingleton('adminhtml/session')
+        $newsItemObject = (array)Mage::getSingleton('adminhtml/session')
             ->getBlockObject(true);
 
-        if (count($newsObject)) {
-            Mage::registry('newsblock_item')->setData($newsObject);
+        if (count($newsItemObject)) {
+            Mage::registry('newsblock_item')->setData($newsItemObject);
         }
         $this->loadLayout();
         $this->renderLayout();
@@ -106,7 +106,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
      * @param array $data
      * @return array
      */
-    protected function processImage(array $data)
+    protected function _processImage(array $data)
     {
         $imageFolder = 'newsblock';
         if (!empty($_FILES['image']['name'] )) {
@@ -132,19 +132,20 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     }
 
     /**
-     * Add/update related products
+     * Add related products
      *
-     * @param int $itemId
-     * @param int $productId
-     * @param int $position
+     * @param int   $itemId
+     * @param array $selectedProducts
      * @return void
      */
-    protected function _saveRelatedProduct($itemId, $productId, $position)
+    protected function _saveRelatedProducts($itemId, $selectedProducts)
     {
         try {
-            $relatedProduct = Mage::getModel('newsblock/product')->loadByMultiple($itemId, $productId);
-            $relatedProduct->setPosition($position);
-            $relatedProduct->save();
+            $rows = [];
+            foreach ($selectedProducts as $productId => $productData) {
+                $rows[] = ['item_id' => $itemId, 'product_id' => $productId, 'position' => $productData['position']];
+            }
+            Mage::getResourceModel('newsblock/product')->insertMultiple($rows);
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
         }
@@ -153,18 +154,15 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     /**
      * Delete unchecked related products
      *
-     * @param Oggetto_Newsblock_Model_Item  $news
-     * @param array                         $selectedProducts
+     * @param int  $itemId
      * @return void
      */
-    protected function _cleanUpRelatedProducts($news, $selectedProducts)
+    protected function _cleanUpRelatedProducts($itemId)
     {
         try {
-            $relatedProducts = Mage::getModel('newsblock/product')->getProducts($news);
-            $relatedProducts->addFieldToFilter('product_id', ['nin' => array_keys($selectedProducts)]);
-            foreach ($relatedProducts as $product) {
-                $product->delete();
-            }
+            $oldRelatedProducts = Mage::getResourceModel('newsblock/product_collection')
+                ->addFieldToFilter('item_id', $itemId);
+            $oldRelatedProducts->walk('delete');
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
         }
@@ -180,27 +178,25 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
         try {
             $id = $this->getRequest()->getParam('item_id');
             $currentTime = Mage::app()->getLocale()->date();
-            $news = Mage::getModel('newsblock/item')->load($id);
+            $newsItem = Mage::getModel('newsblock/item')->load($id);
             $data = $this->getRequest()->getParams();
-            $data = $this->processImage($data);
+            $data = $this->_processImage($data);
 
             $links = $this->getRequest()->getPost('links', []);
             if (array_key_exists('products', $links)) {
+                $this->_cleanUpRelatedProducts($id);
                 $selectedProducts = Mage::helper('adminhtml/js')->decodeGridSerializedInput($links['products']);
-                foreach ($selectedProducts as $productId => $productData) {
-                    $this->_saveRelatedProduct($id, $productId, $productData['position']);
-                }
-                $this->_cleanUpRelatedProducts($news, $selectedProducts);
+                $this->_saveRelatedProducts($id, $selectedProducts);
             }
 
-            $news->setData($data);
-            if (!$news->getId()) {
-                $news->setCreatedAt($currentTime);
+            $newsItem->setData($data);
+            if (!$newsItem->getId()) {
+                $newsItem->setCreatedAt($currentTime);
             }
-            $news->setUpdatedAt($currentTime);
-            $news->save();
+            $newsItem->setUpdatedAt($currentTime);
+            $newsItem->save();
 
-            if (!$news->getId()) {
+            if (!$newsItem->getId()) {
                 Mage::getSingleton('adminhtml/session')
                     ->addError(Mage::helper('newsblock')->__('Cannot save the news'));
             }
@@ -209,7 +205,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             Mage::getSingleton('adminhtml/session')
-                ->setBlockObject($news->getUserData());
+                ->setBlockObject($newsItem->getUserData());
             return  $this->_redirect(
                 '*/*/edit',
                 ['item_id' => $this->getRequest()->getParam('item_id')]
@@ -221,7 +217,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
 
         return $this->_redirect(
             '*/*/' . $this->getRequest()->getParam('back', 'index'),
-            ['item_id' => $news->getId()]
+            ['item_id' => $newsItem->getId()]
         );
     }
 
@@ -235,10 +231,10 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     public function deleteAction()
     {
         try {
-            $news = Mage::getModel('newsblock/item')
+            $newsItem = Mage::getModel('newsblock/item')
                 ->setId($this->getRequest()->getParam('item_id'))
                 ->delete();
-            if ($news->getId()) {
+            if ($newsItem->getId()) {
                 Mage::getSingleton('adminhtml/session')
                     ->addSuccess(Mage::helper('newsblock')->__('News has been successfully deleted !'));
             }
@@ -247,7 +243,7 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
             Mage::logException($e);
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             Mage::getSingleton('adminhtml/session')
-                ->setBlockObject($news->getUserData());
+                ->setBlockObject($newsItem->getUserData());
         }
         return $this->_redirect('*/*/');
     }
@@ -263,11 +259,11 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
     {
         $statuses = $this->getRequest()->getParams();
         try {
-            $newss = Mage::getModel('newsblock/item')
+            $news = Mage::getModel('newsblock/item')
                 ->getCollection()
                 ->addFieldToFilter('item_id', ['in' => $statuses['massaction']]);
-            foreach ($newss as $news) {
-                $news->setItemStatus($statuses['item_status'])->save();
+            foreach ($news as $newsItem) {
+                $newsItem->setItemStatus($statuses['item_status'])->save();
             }
         } catch (Exception $e) {
             Mage::logException($e);
@@ -289,11 +285,11 @@ class Oggetto_Newsblock_Adminhtml_NewsblockController
 
     public function massDeleteAction()
     {
-        $newss = $this->getRequest()->getParams();
+        $news = $this->getRequest()->getParams();
         try {
-            $news = Mage::getModel('newsblock/item');
-            foreach ($newss['massaction'] as $id) {
-                $news->setId($id)->delete();
+            $newsItem = Mage::getModel('newsblock/item');
+            foreach ($news['massaction'] as $id) {
+                $newsItem->setId($id)->delete();
             }
 
         } catch (Exception $e) {

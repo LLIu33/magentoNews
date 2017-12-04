@@ -41,4 +41,51 @@ class Oggetto_Newsblock_Model_Resource_Product extends Mage_Core_Model_Resource_
     {
         $this->_init('newsblock/product', 'item_product_id');
     }
+
+    /**
+     * Insert multiply items
+     *
+     * @param array $relatedProducts
+     * @return void
+     */
+    public function insertMultiple(array $relatedProducts)
+    {
+        $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $write->insertMultiple($this->getMainTable(), $relatedProducts);
+    }
+
+    /**
+     * Return collection of products for current news
+     *
+     * @param Oggetto_Newsblock_Model_Item $newsItem
+     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
+     */
+    public function getProducts(Oggetto_Newsblock_Model_Item $newsItem)
+    {
+        $collection = Mage::getResourceModel('newsblock/product_collection')
+            ->addFieldToFilter('item_id', $newsItem->getId());
+        return $collection;
+    }
+
+    /**
+     * Returned collection of related products
+     *
+     * @param Oggetto_Newsblock_Model_Item $newsItem
+     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
+     */
+    public function getProductCollection(Oggetto_Newsblock_Model_Item $newsItem)
+    {
+        $relativeTable = $this->getMainTable();
+        $collection = Mage::getResourceModel('catalog/product_collection')
+            ->joinTable(
+                array('rel_table' => $relativeTable),
+                'product_id = entity_id',
+                array('rel_table.item_id' => 'item_id')
+            )
+            ->addFieldToFilter('rel_table.item_id', $newsItem->getId())
+            ->setOrder('rel_table.position', 'ASC');
+
+        Mage::getSingleton('catalog/layer')->prepareProductCollection($collection);
+        return $collection;
+    }
 }

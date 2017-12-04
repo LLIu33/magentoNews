@@ -52,7 +52,14 @@ try {
         ], 'Product Id')
         ->addColumn('position', Varien_Db_Ddl_Table::TYPE_INTEGER, null, [
             'nullable' => true,
-        ], 'Position');
+        ], 'Position')
+        ->addForeignKey($installer->getFkName('newsblock/product', 'item_id', 'newsblock/item', 'item_id'),
+            'item_id', $installer->getTable('newsblock/item'), 'item_id',
+            Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        ->addForeignKey($installer->getFkName('newsblock/product', 'product_id', 'catalog/product', 'entity_id'),
+            'product_id', $installer->getTable('catalog/product'), 'entity_id',
+            Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
+        ->setComment('News Block To Products Linkage Table');
 
     $installer->getConnection()->createTable($table);
 } catch (Exception $e) {
