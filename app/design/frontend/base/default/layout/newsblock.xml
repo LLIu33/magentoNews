@@ -48,7 +48,9 @@
             </action>
         </reference>
         <reference name="content">
-            <block name="newsblock.detail" as="newsblock" type="newsblock/detail" template="newsblock/detail.phtml"/>
+            <block name="newsblock.detail" as="newsblock" type="newsblock/detail" template="newsblock/detail.phtml">
+                <block name="newsblock.detail.products" as="products" type="catalog/product_list" template="newsblock/product/list.phtml"/>
+            </block>
         </reference>
     </newsblock_index_detail>
 </layout>

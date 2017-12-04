@@ -77,14 +77,14 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
      */
     public function _beforeToHtml()
     {
-        /** @var Mage_Page_Block_Html_Pager $pager */
-        /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         parent::_beforeToHtml();
         $sortDirection = $this->getSortDirection();
+        /** @var Mage_Page_Block_Html_Pager $pager */
         $pager = $this->getChild('pager');
         $pager->setAvailableLimit([15 => 15]);
         $pager->setLimit(Mage::getStoreConfig('newsblock/settings/news_count'));
         $pager->setShowPerPage(true);
+        /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         $collection = $this->getCollection()
             ->addEnabledFilter()
             ->setOrder($this->_sortField, $sortDirection);
@@ -114,12 +114,12 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
     /**
      * Generating url for detail page
      *
-     * @param Oggetto_Newsblock_Model_Item $block
+     * @param Oggetto_Newsblock_Model_Item $newsItem
      * @return string
      */
-    public function getDetailUrl($block)
+    public function getDetailUrl(Oggetto_Newsblock_Model_Item $newsItem)
     {
-        return Mage::getUrl('newsblock/index/detail', ['id' => $block->getId()]);
+        return Mage::getUrl('newsblock/index/detail', ['id' => $newsItem->getId()]);
     }
 
     /**

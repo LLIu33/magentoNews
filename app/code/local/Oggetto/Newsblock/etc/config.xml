@@ -26,7 +26,7 @@
 <config>
     <modules>
         <Oggetto_Newsblock>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </Oggetto_Newsblock>
     </modules>
     <global>
@@ -46,6 +46,9 @@
                     <item>
                         <table>oggetto_newsblock</table>
                     </item>
+                    <product>
+                        <table>oggetto_newsblock_product</table>
+                    </product>
                 </entities>
             </newsblock_resource>
         </models>

@@ -38,6 +38,7 @@
             <block type="newsblock/adminhtml_newsblock_edit_tabs" name="oggetto_newsblock_edit_tabs">
                 <block type="newsblock/adminhtml_newsblock_edit_tab_general" name="oggetto_newsblock_edit_tab_general" />
                 <block type="newsblock/adminhtml_newsblock_edit_tab_meta" name="oggetto_newsblock_edit_tab_meta" />
+                <block type="newsblock/adminhtml_newsblock_edit_tab_products" name="oggetto_newsblock_edit_tab_products" />
                 <action method="addTab">
                     <name>general_section</name>
                     <block>oggetto_newsblock_edit_tab_general</block>
@@ -46,7 +47,35 @@
                     <name>meta_section</name>
                     <block>oggetto_newsblock_edit_tab_meta</block>
                 </action>
+                <action method="addTab">
+                    <name>products_section</name>
+                    <block>oggetto_newsblock_edit_tab_products</block>
+                </action>
             </block>
         </reference>
     </adminhtml_newsblock_edit>
+    <adminhtml_newsblock_products>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="newsblock/adminhtml_newsblock_edit_tab_products_grid" name="newsblock_products"/>
+            <block type="adminhtml/widget_grid_serializer" name="newsblock_products_serializer">
+                <reference name="newsblock_products_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>newsblock_products</grid_block_name>
+                        <data_callback>getSelectedBlockProducts</data_callback>
+                        <hidden_input_name>links[products]</hidden_input_name>
+                        <reload_param_name>newsblock_products</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_newsblock_products>
+
+    <adminhtml_newsblock_productsgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="newsblock/adminhtml_newsblock_edit_tab_products_grid" name="block_products"/>
+        </block>
+    </adminhtml_newsblock_productsgrid>
 </layout>
