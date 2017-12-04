@@ -73,4 +73,18 @@ class Oggetto_Newsblock_Model_Product extends Mage_Core_Model_Abstract
             ->addFieldToFilter('item_id', $newsItem->getId());
         return $collection;
     }
+
+
+    /**
+     * Returned collection of related products
+     *
+     * @return Oggetto_Newsblock_Model_Resource_Product_Collection
+     */
+    public function getProductCollection(Oggetto_Newsblock_Model_Item $newsItem) {
+        $productsIds = $this->getProducts($newsItem)->getColumnValues('product_id');
+        $collection = Mage::getResourceModel('catalog/product_collection')
+            ->addFieldToFilter('entity_id', ['in' => $productsIds])
+            ->addAttributeToSelect('*');
+        return $collection;
+    }
 }

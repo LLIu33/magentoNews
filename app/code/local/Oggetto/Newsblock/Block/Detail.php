@@ -79,7 +79,7 @@ class Oggetto_Newsblock_Block_Detail extends Mage_Core_Block_Template
         /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         parent::_beforeToHtml();
         $newsItem = $this->getNewsDetail();
-        $collection = $newsItem->getProductCollection();
+        $collection = Mage::getModel('newsblock/product')->getProductCollection($newsItem);
         /** @var Mage_Catalog_Block_Product_List $list */
         $list = $this->getChild('products');
         $list->setCollection($collection);
