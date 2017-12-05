@@ -68,8 +68,9 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
             ['store_id' => 'store_table.store_id']
         );
 
-        $this->addFieldToFilter(['store_id', 'store_id'],
+        $this->addFieldToFilter(['store_id', 'store_id', 'store_id'],
             [
+                ['eq' => Mage_Core_Model_App::ADMIN_STORE_ID],
                 ['eq' => Mage::app()->getStore()->getStoreId()],
                 ['null' => true ]
             ]
@@ -95,7 +96,7 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
         if ($withAdmin) {
             $store[] = Mage_Core_Model_App::ADMIN_STORE_ID;
         }
-        $this->addFilter('store', array('in' => $store), 'public');
+        $this->addFilter('store', $store, 'public');
         return $this;
     }
 

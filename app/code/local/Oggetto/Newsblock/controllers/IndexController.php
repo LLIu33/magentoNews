@@ -50,6 +50,12 @@ class Oggetto_Newsblock_IndexController extends Mage_Core_Controller_Front_Actio
      */
     public function detailAction()
     {
+        $newsId = $this->getRequest()->getParam('id');
+        $news = Mage::getModel('newsblock/item')->load($newsId);
+        if (!$news->isApplicableForCurrentStore()) {
+            $this->norouteAction();
+            return;
+        }
         $this->loadLayout();
         $this->renderLayout();
     }

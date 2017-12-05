@@ -42,4 +42,15 @@ class Oggetto_Newsblock_Model_Item extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('newsblock/item');
     }
+
+    /**
+     * Check applicable for current state
+     *
+     * @return bool
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function isApplicableForCurrentStore()
+    {
+        return in_array(Mage::app()->getStore()->getId(), $this->getStoreId());
+    }
 }
