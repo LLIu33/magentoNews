@@ -41,6 +41,7 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
     {
         parent::_construct();
         $this->_init('newsblock/item');
+        $this->_map['fields']['store'] = 'store_table.store_id';
     }
 
     /**
@@ -61,18 +62,60 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
      */
     public function addStoreFilter()
     {
-        $relativeTable = $this->getTable('newsblock/store');
         $this->getSelect()->joinLeft(
-            ['rel_table' => $relativeTable],
-            'main_table.item_id = rel_table.item_id',
-            ['store_id' => 'store_id']
+            ['store_table' => $this->getTable('newsblock/store')],
+            'main_table.item_id = store_table.item_id',
+            ['store_id' => 'store_table.store_id']
         );
-        $this->addFieldToFilter(['rel_table.store_id', 'rel_table.store_id'],
+
+        $this->addFieldToFilter(['store_id', 'store_id'],
             [
-                ['eq', Mage::app()->getStore()->getStoreId()],
+                ['eq' => Mage::app()->getStore()->getStoreId()],
                 ['null' => true ]
             ]
         );
         return $this;
+    }
+
+    /**
+     * Add filter by store for grid
+     *
+     * @param int|Mage_Core_Model_Store $store
+     * @param bool $withAdmin
+     * @return Mage_Cms_Model_Resource_Block_Collection
+     */
+    public function addStoreGridFilter($store, $withAdmin = true)
+    {
+        if ($store instanceof Mage_Core_Model_Store) {
+            $store = [$store->getId()];
+        }
+        if (!is_array($store)) {
+            $store = [$store];
+        }
+        if ($withAdmin) {
+            $store[] = Mage_Core_Model_App::ADMIN_STORE_ID;
+        }
+        $this->addFilter('store', array('in' => $store), 'public');
+        return $this;
+    }
+
+    /**
+     * Join store relation table if there is store filter
+     */
+    protected function _renderFiltersBefore()
+    {
+        if ($this->getFilter('store')) {
+            $this->getSelect()->join(
+                ['store_table' => $this->getTable('newsblock/store')],
+                'main_table.item_id = store_table.item_id',
+                []
+            )->group('main_table.item_id');
+
+            /*
+             * Allow analytic functions usage because of one field grouping
+             */
+            $this->_useAnalyticFunction = true;
+        }
+        return parent::_renderFiltersBefore();
     }
 }

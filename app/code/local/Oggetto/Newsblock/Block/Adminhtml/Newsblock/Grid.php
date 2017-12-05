@@ -79,6 +79,8 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
                 'store_all'     => true,
                 'store_view'    => true,
                 'sortable'      => false,
+                'filter_condition_callback'
+                    => array($this, '_filterStoreCondition'),
             ]);
         }
 
@@ -112,6 +114,14 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
 
 
         return parent::_prepareColumns();
+    }
+
+    protected function _filterStoreCondition($collection, $column)
+    {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+        $this->getCollection()->addStoreGridFilter($value);
     }
 
     /**
