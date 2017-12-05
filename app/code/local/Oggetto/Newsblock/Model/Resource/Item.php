@@ -41,4 +41,75 @@ class Oggetto_Newsblock_Model_Resource_Item extends Mage_Core_Model_Resource_Db_
     {
         $this->_init('newsblock/item', 'item_id');
     }
+
+    /**
+     * Perform operations after object save
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return Oggetto_Newsblock_Model_Resource_Item
+     */
+    protected function _afterSave(Mage_Core_Model_Abstract $object)
+    {
+        $oldStores = $this->lookupStoreIds($object->getId());
+        $newStores = (array)$object->getStores();
+
+        $table  = $this->getTable('newsblock/store');
+        $insert = array_diff($newStores, $oldStores);
+        $delete = array_diff($oldStores, $newStores);
+
+        if ($delete) {
+            $where = array(
+                'item_id = ?'     => (int) $object->getId(),
+                'store_id IN (?)' => $delete
+            );
+            $this->_getWriteAdapter()->delete($table, $where);
+        }
+
+        if ($insert) {
+            $data = array();
+            foreach ($insert as $storeId) {
+                $data[] = array(
+                    'item_id'  => (int) $object->getId(),
+                    'store_id' => (int) $storeId
+                );
+            }
+            $this->_getWriteAdapter()->insertMultiple($table, $data);
+        }
+        return parent::_afterSave($object);
+    }
+
+    /**
+     * Get store ids to which specified item is assigned
+     *
+     * @param int $id
+     * @return array
+     */
+    public function lookupStoreIds($id)
+    {
+        $adapter = $this->_getReadAdapter();
+        $select  = $adapter->select()
+            ->from($this->getTable('newsblock/store'), 'store_id')
+            ->where('item_id = :item_id');
+        $binds = array(
+            ':item_id' => (int) $id
+        );
+        return $adapter->fetchCol($select, $binds);
+    }
+
+
+    /**
+     * Perform operations after object load
+     *
+     * @param Mage_Core_Model_Abstract $object
+     * @return Oggetto_Newsblock_Model_Resource_Item
+     */
+    protected function _afterLoad(Mage_Core_Model_Abstract $object)
+    {
+        if ($object->getId()) {
+            $stores = $this->lookupStoreIds($object->getId());
+            $object->setData('store_id', $stores);
+            $object->setData('stores', $stores);
+        }
+        return parent::_afterLoad($object);
+    }
 }

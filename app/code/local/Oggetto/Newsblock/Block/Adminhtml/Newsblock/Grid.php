@@ -39,13 +39,13 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     public function __construct()
     {
         parent::__construct();
-        $this->setId('cmsBlockGrid');
+        $this->setId('cmsNewsGrid');
         $this->setDefaultSort('item_id');
         $this->setDefaultDir('ASC');
     }
 
     /**
-     * Prepearing collection
+     * Preparing collection
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
      */
@@ -58,7 +58,7 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
     }
 
     /**
-     * Prepearing columns
+     * Preparing columns
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
      */
@@ -70,6 +70,17 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
             'align'     => 'left',
             'index'     => 'title',
         ]);
+
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('store_id', [
+                'header'        => Mage::helper('newsblock')->__('Store View'),
+                'index'         => 'store_id',
+                'type'          => 'store',
+                'store_all'     => true,
+                'store_view'    => true,
+                'sortable'      => false,
+            ]);
+        }
 
         $this->addColumn('created_at', [
             'header'    => Mage::helper('newsblock')->__('Created At'),
@@ -103,6 +114,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
         return parent::_prepareColumns();
     }
 
+    /**
+     * Run afterLoad
+     *
+     * @return void
+     */
+    protected function _afterLoadCollection()
+    {
+        $this->getCollection()->walk('afterLoad');
+        parent::_afterLoadCollection();
+    }
     /**
      * Prepearing mass actions
      *

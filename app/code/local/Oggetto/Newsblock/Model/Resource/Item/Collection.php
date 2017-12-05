@@ -53,4 +53,26 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
         $this->addFieldToFilter('item_status', Oggetto_Newsblock_Model_Source_Status::ENABLED);
         return $this;
     }
+
+    /**
+     * Filter collection by store
+     *
+     * @return Oggetto_Newsblock_Model_Resource_Item_Collection
+     */
+    public function addStoreFilter()
+    {
+        $relativeTable = $this->getTable('newsblock/store');
+        $this->getSelect()->joinLeft(
+            ['rel_table' => $relativeTable],
+            'main_table.item_id = rel_table.item_id',
+            ['store_id' => 'store_id']
+        );
+        $this->addFieldToFilter(['rel_table.store_id', 'rel_table.store_id'],
+            [
+                ['eq', Mage::app()->getStore()->getStoreId()],
+                ['null' => true ]
+            ]
+        );
+        return $this;
+    }
 }

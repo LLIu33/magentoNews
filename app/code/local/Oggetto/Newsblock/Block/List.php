@@ -87,6 +87,7 @@ class Oggetto_Newsblock_Block_List extends Mage_Core_Block_Template
         /** @var Oggetto_Newsblock_Model_Resource_Item_Collection $collection */
         $collection = $this->getCollection()
             ->addEnabledFilter()
+            ->addStoreFilter()
             ->setOrder($this->_sortField, $sortDirection);
         $pager->setCollection($collection);
         return $this;

@@ -87,6 +87,32 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Edit_Tab_General
             'required'  => true,
         ]);
 
+        $storeFieldsetOptions = [
+            'type' => 'multiselect',
+            'params' => [
+                'name' => 'stores[]',
+                'label' => Mage::helper('newsblock')->__('Store View'),
+                'title' => Mage::helper('newsblock')->__('Store View'),
+                'required' => true,
+                'values' => Mage::getSingleton('adminhtml/system_store')
+                    ->getStoreValuesForForm(false, true)
+            ]
+        ];
+        if (Mage::app()->isSingleStoreMode()) {
+            $storeFieldsetOptions = [
+                'type' => 'hidden',
+                'params' => [
+                    'name' => 'stores[]',
+                    'value' => Mage::app()->getStore(true)->getId()
+                ]
+            ];
+        }
+        $fieldset->addField(
+            'store_id',
+            $storeFieldsetOptions['type'],
+            $storeFieldsetOptions['params']
+        );
+
         if ($model->getItemId()) {
             $fieldset->addField(
                 'created_at',
