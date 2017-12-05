@@ -81,7 +81,7 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
      * Add filter by store for grid
      *
      * @param int|Mage_Core_Model_Store $store
-     * @param bool $withAdmin
+     * @param bool                      $withAdmin
      * @return Mage_Cms_Model_Resource_Block_Collection
      */
     public function addStoreGridFilter($store, $withAdmin = true)
@@ -101,6 +101,8 @@ class Oggetto_Newsblock_Model_Resource_Item_Collection extends Mage_Core_Model_R
 
     /**
      * Join store relation table if there is store filter
+     *
+     * @return void
      */
     protected function _renderFiltersBefore()
     {

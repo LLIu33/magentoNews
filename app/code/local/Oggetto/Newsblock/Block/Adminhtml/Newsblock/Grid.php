@@ -112,10 +112,16 @@ class Oggetto_Newsblock_Block_Adminhtml_Newsblock_Grid
             'index'     => 'item_status'
         ]);
 
-
         return parent::_prepareColumns();
     }
 
+    /**
+     * Apply store filter
+     *
+     * @param Oggetto_Newsblock_Model_Resource_Item_Collection  $collection
+     * @param Varien_Object                                     $column
+     * @return void
+     */
     protected function _filterStoreCondition($collection, $column)
     {
         if (!$value = $column->getFilter()->getValue()) {
