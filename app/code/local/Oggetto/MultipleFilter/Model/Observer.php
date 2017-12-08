@@ -27,10 +27,10 @@
  *
  * @category   Oggetto
  * @package    Oggetto_MultipleFilter
- * @subpackage Model_Observer
+ * @subpackage Model
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_MultipleFilter_Model_Observer
+class Oggetto_MultipleFilter_Model_Observer extends Varien_Event_Observer
 {
     /**
      * Hook that allows us to edit the form that is used to create and/or edit attributes.
@@ -61,5 +61,11 @@ class Oggetto_MultipleFilter_Model_Observer
                 ]
             ]
         );
+    }
+
+    public function test($observer) {
+        /** @var $layout Mage_Core_Model_Layout */
+        $layout = $observer->getEvent()->getLayout();
+//        var_dump($layout);die;
     }
 }

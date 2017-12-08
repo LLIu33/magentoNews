@@ -34,6 +34,12 @@
             <multiplefilterblock>
                 <class>Oggetto_MultipleFilter_Block</class>
             </multiplefilterblock>
+            <catalog>
+                <rewrite>
+                    <layer_view>Oggetto_MultipleFilter_Block_Catalog_Layer_View</layer_view>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
+                </rewrite>
+            </catalog>>
         </blocks>
         <helpers>
             <multichoice>
@@ -41,6 +47,18 @@
             </multichoice>
         </helpers>
         <models>
+            <catalog>
+                <rewrite>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
+                    <layer_filter_item>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item</layer_filter_item>
+                    <layer>Oggetto_MultipleFilter_Model_Catalog_Layer</layer>
+                </rewrite>
+            </catalog>
+            <catalog_resource>
+                <rewrite>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Model_Catalog_Resource_Layer_Filter_Attribute</layer_filter_attribute>
+                </rewrite>
+            </catalog_resource>
             <multiplefilter>
                 <class>Oggetto_MultipleFilter_Model</class>
             </multiplefilter>
@@ -53,16 +71,27 @@
                 </setup>
             </multiplefilter_setup>
         </resources>
+        <events>
+            <controller_action_layout_load_before>
+                <observers>
+                    <multiplefilter>
+                        <type>singleton</type>
+                        <class>multiplefilter/observer</class>
+                        <method>test</method>
+                    </multiplefilter>
+                </observers>
+            </controller_action_layout_load_before>
+        </events>
     </global>
     <adminhtml>
         <events>
             <adminhtml_catalog_product_attribute_edit_prepare_form>
                 <observers>
-                    <multiplefilter>
+                    <addfield>
                         <type>singleton</type>
                         <class>multiplefilter/observer</class>
                         <method>addFieldToAttributeEditForm</method>
-                    </multiplefilter>
+                    </addfield>
                 </observers>
             </adminhtml_catalog_product_attribute_edit_prepare_form>
         </events>

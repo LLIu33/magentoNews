@@ -21,30 +21,21 @@
  * @copyright  Copyright (C) 2017 Oggetto Web ltd (http://oggettoweb.com/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 /**
  * Oggetto MultipleFilter
  *
  * @category   Oggetto
  * @package    Oggetto_MultipleFilter
- * @subpackage Helper_Data
+ * @subpackage Block
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_MultipleFilter_Helper_Data extends Mage_Core_Helper_Data
+class Oggetto_MultipleFilter_Block_Catalog_Layer_View
+    extends Mage_Catalog_Block_Layer_View
 {
-    /**
-     * Delimiter for multiple filters
-     */
-
-    const MULTIPLE_FILTERS_DELIMITER = ',';
-
-    /**
-     * Check if module is enabled or not
-     *
-     * @return boolean
-     */
-    public function isEnabled()
+    protected function _beforeToHtml()
     {
-        //TODO: add this setting to config
-        return true;
+        $this->setTemplate('multiplefilter/catalog/layer/view.phtml');
+        return $this;
     }
 }
