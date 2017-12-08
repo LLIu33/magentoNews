@@ -33,8 +33,18 @@
 class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_Catalog_Model_Layer_Filter_Attribute
 {
 
+    /**
+     * Attribute filter values
+     *
+     * @var array
+     */
     protected $_values = array();
 
+    /**
+     * Return values
+     *
+     * @return array
+     */
     public function getValues()
     {
         return $this->_values;
@@ -43,8 +53,8 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
     /**
      * Apply attribute filter to layer
      *
-     * @param Zend_Controller_Request_Abstract $request
-     * @param object $filterBlock
+     * @param Zend_Controller_Request_Abstract  $request
+     * @param object                            $filterBlock
      * @return Enterprise_Search_Model_Catalog_Layer_Filter_Attribute
      */
     public function apply(Zend_Controller_Request_Abstract $request, $filterBlock)

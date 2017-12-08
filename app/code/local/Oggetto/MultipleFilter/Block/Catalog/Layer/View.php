@@ -33,6 +33,11 @@
 class Oggetto_MultipleFilter_Block_Catalog_Layer_View
     extends Mage_Catalog_Block_Layer_View
 {
+    /**
+     * Set custom template
+     *
+     * @return $this|Mage_Core_Block_Abstract
+     */
     protected function _beforeToHtml()
     {
         $this->setTemplate('multiplefilter/catalog/layer/view.phtml');

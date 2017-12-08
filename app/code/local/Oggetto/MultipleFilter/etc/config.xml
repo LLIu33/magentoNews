@@ -51,7 +51,6 @@
                 <rewrite>
                     <layer_filter_attribute>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
                     <layer_filter_item>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item</layer_filter_item>
-                    <layer>Oggetto_MultipleFilter_Model_Catalog_Layer</layer>
                 </rewrite>
             </catalog>
             <catalog_resource>

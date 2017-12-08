@@ -32,9 +32,13 @@
  */
 class Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute extends Mage_Catalog_Block_Layer_Filter_Attribute
 {
+    /**
+     * Set custom template
+     *
+     * @return $this|Mage_Catalog_Block_Layer_Filter_Abstract
+     */
     protected function _prepareFilter()
     {
-        $this->setTemplate('multiplefilter/catalog/layer/filter.phtml');
         $this->_filter->setAttributeModel($this->getAttributeModel());
         $model = $this->getAttributeModel();
         if ($model && $model->getIsMultiple()) {

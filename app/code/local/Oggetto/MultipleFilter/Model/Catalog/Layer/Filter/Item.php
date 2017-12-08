@@ -33,14 +33,22 @@
 class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Model_Layer_Filter_Item
 {
 
-    protected $helper;
+    /**
+     * @var Mage_Core_Helper_Abstract
+     */
+    protected $_helper;
 
+    /**
+     * Set helper
+     *
+     * @return Mage_Core_Helper_Abstract
+     */
     protected function helper()
     {
-        if ($this->helper === null) {
-            $this->helper = Mage::helper('multichoice');
+        if ($this->_helper === null) {
+            $this->_helper = Mage::helper('multichoice');
         }
-        return $this->helper;
+        return $this->_helper;
     }
 
     /**
@@ -59,10 +67,10 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
         }
 
         $query = array(
-            $this->getFilter()->getRequestVar()=>$values,
+            $this->getFilter()->getRequestVar() => $values,
             Mage::getBlockSingleton('page/html_pager')->getPageVarName() => null
         );
-        return Mage::getUrl('*/*/*', array('_current'=>true, '_use_rewrite'=>true, '_query'=>$query));
+        return Mage::getUrl('*/*/*', array('_current' => true, '_use_rewrite' => true, '_query' => $query));
     }
 
     /**
@@ -100,6 +108,6 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
     public function isSelected()
     {
         $values = $this->getFilter()->getValues();
-        return (is_array($values) && in_array($this->getValue(), $values));
+        return is_array($values) && in_array($this->getValue(), $values);
     }
 }

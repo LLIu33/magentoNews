@@ -30,13 +30,14 @@
  * @subpackage Resource_Model
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute extends Mage_Catalog_Model_Resource_Layer_Filter_Attribute
+class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
+    extends Mage_Catalog_Model_Resource_Layer_Filter_Attribute
 {
     /**
      * Apply attribute filter to product collection
      *
      * @param Mage_Catalog_Model_Layer_Filter_Attribute $filter
-     * @param int $value
+     * @param int                                       $value
      * @return Mage_Catalog_Model_Resource_Layer_Filter_Attribute
      */
     public function applyFilterToCollection($filter, $value)
@@ -123,7 +124,11 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute exten
 
         $select
             ->join(
-                array($tableAlias => $this->getMainTable()), join(' AND ', $conditions), array('value', 'count' => new Zend_Db_Expr("COUNT({$tableAlias}.entity_id)")))
+                array(
+                    $tableAlias => $this->getMainTable()
+                ),
+                join(' AND ', $conditions),
+                array('value', 'count' => new Zend_Db_Expr("COUNT({$tableAlias}.entity_id)")))
             ->group("{$tableAlias}.value");
 
         return $connection->fetchPairs($select);

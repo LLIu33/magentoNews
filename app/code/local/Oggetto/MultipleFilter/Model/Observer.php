@@ -62,10 +62,4 @@ class Oggetto_MultipleFilter_Model_Observer extends Varien_Event_Observer
             ]
         );
     }
-
-    public function test($observer) {
-        /** @var $layout Mage_Core_Model_Layout */
-        $layout = $observer->getEvent()->getLayout();
-//        var_dump($layout);die;
-    }
 }
