@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Oggetto Web extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto MultipleFilter module to newer versions in the future.
+ * If you wish to customize the Oggetto MultipleFilter module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_MultipleFilter
+ * @copyright  Copyright (C) 2017
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Oggetto_MultipleFilter>
+            <version>0.0.1</version>
+        </Oggetto_MultipleFilter>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <multiplefilter module="multichoice">
+                    <file>multiplefilter.xml</file>
+                </multiplefilter>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <blocks>
+            <multiplefilterblock>
+                <class>Oggetto_MultipleFilter_Block</class>
+            </multiplefilterblock>
+            <catalog>
+                <rewrite>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
+                </rewrite>
+            </catalog>>
+        </blocks>
+        <helpers>
+            <multichoice>
+                <class>Oggetto_MultipleFilter_Helper</class>
+            </multichoice>
+        </helpers>
+        <models>
+            <catalog>
+                <rewrite>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
+                    <layer_filter_item>Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item</layer_filter_item>
+                </rewrite>
+            </catalog>
+            <catalog_resource>
+                <rewrite>
+                    <layer_filter_attribute>Oggetto_MultipleFilter_Model_Catalog_Resource_Layer_Filter_Attribute</layer_filter_attribute>
+                </rewrite>
+            </catalog_resource>
+            <multiplefilter>
+                <class>Oggetto_MultipleFilter_Model</class>
+            </multiplefilter>
+        </models>
+        <resources>
+            <multiplefilter_setup>
+                <setup>
+                    <module>Oggetto_MultipleFilter</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+            </multiplefilter_setup>
+        </resources>
+        <events>
+            <controller_action_layout_load_before>
+                <observers>
+                    <multiplefilter>
+                        <type>singleton</type>
+                        <class>multiplefilter/observer</class>
+                        <method>test</method>
+                    </multiplefilter>
+                </observers>
+            </controller_action_layout_load_before>
+        </events>
+    </global>
+    <adminhtml>
+        <events>
+            <adminhtml_catalog_product_attribute_edit_prepare_form>
+                <observers>
+                    <addfield>
+                        <type>singleton</type>
+                        <class>multiplefilter/observer</class>
+                        <method>addFieldToAttributeEditForm</method>
+                    </addfield>
+                </observers>
+            </adminhtml_catalog_product_attribute_edit_prepare_form>
+        </events>
+    </adminhtml>
+</config>

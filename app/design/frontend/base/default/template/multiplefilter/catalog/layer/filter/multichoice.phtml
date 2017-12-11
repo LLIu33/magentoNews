@@ -1,0 +1,22 @@
+<ol>
+    <?php foreach ($this->getItems() as $_key=>$_item): ?>
+        <li>
+            <?php
+            $id = $_item->getFilter()->getRequestVar() . '-' . $_item->getValue();
+            $url = $this->urlEscape(($_item->isSelected()) ? $_item->getRemoveUrl() : $_item->getUrl());
+            ?>
+            <div class="layered-nav-filter">
+                <label for="<?php echo $id; ?>" class="layered-nav-filter-label">
+                    <input
+                        type="checkbox"<?php if ($_item->isSelected()): ?> checked="checked" <?php endif; ?>
+                        value="<?php echo $url; ?>"
+                        id="<?php echo $id; ?>"
+                    />
+                    <a href="<?php echo $url ?>">
+                        <?php echo $_item->getLabel() ?>
+                    </a>
+                </label>
+            </div>
+        </li>
+    <?php endforeach ?>
+</ol>
