@@ -50,11 +50,11 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
         $attribute = $filter->getAttributeModel();
         $connection = $this->_getReadAdapter();
         $tableAlias = $attribute->getAttributeCode() . '_idx' . uniqid();
-        $conditions = array(
+        $conditions = [
             "{$tableAlias}.entity_id = e.entity_id",
             $connection->quoteInto("{$tableAlias}.attribute_id = ?", $attribute->getAttributeId()),
             $connection->quoteInto("{$tableAlias}.store_id = ?", $collection->getStoreId()),
-        );
+        ];
 
         if (!is_array($value)) {
             $options = $attribute->getSource()->getAllOptions(false);
@@ -74,7 +74,7 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
         }
 
         $collection->getSelect()->join(
-            array($tableAlias => $this->getMainTable()), implode(' AND ', $conditions), array()
+            [$tableAlias => $this->getMainTable()], implode(' AND ', $conditions), []
         );
         $collection->getSelect()->distinct();
 
@@ -105,15 +105,15 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
         $connection = $this->_getReadAdapter();
         $attribute = $filter->getAttributeModel();
         $tableAlias = sprintf('%s_idx', $attribute->getAttributeCode());
-        $conditions = array(
+        $conditions = [
             "{$tableAlias}.entity_id = e.entity_id",
             $connection->quoteInto("{$tableAlias}.attribute_id = ?", $attribute->getAttributeId()),
             $connection->quoteInto("{$tableAlias}.store_id = ?", $filter->getStoreId()),
-        );
+        ];
 
         // start removing all filters for current attribute - we need correct count
         $parts = $select->getPart(Zend_Db_Select::FROM);
-        $from = array();
+        $from = [];
         foreach ($parts as $key => $part) {
             if (stripos($key, $tableAlias) === false) {
                 $from[$key] = $part;
@@ -124,11 +124,10 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
 
         $select
             ->join(
-                array(
-                    $tableAlias => $this->getMainTable()
-                ),
+                [$tableAlias => $this->getMainTable()],
                 join(' AND ', $conditions),
-                array('value', 'count' => new Zend_Db_Expr("COUNT({$tableAlias}.entity_id)")))
+                ['value', 'count' => new Zend_Db_Expr("COUNT({$tableAlias}.entity_id)")]
+            )
             ->group("{$tableAlias}.value");
 
         return $connection->fetchPairs($select);

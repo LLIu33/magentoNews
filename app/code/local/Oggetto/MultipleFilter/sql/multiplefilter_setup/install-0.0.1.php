@@ -40,12 +40,12 @@ try {
     $installer->getConnection()->addColumn(
         $installer->getTable('catalog/eav_attribute'),
         'is_multiple',
-        array(
+        [
             'type'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
             'unsigned'  => true,
             'nullable'  => true,
             'comment'   => 'Is Multiple'
-        )
+        ]
     );
 } catch (Exception $e) {
     Mage::logException($e);

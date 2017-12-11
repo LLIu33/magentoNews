@@ -38,7 +38,7 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
      *
      * @var array
      */
-    protected $_values = array();
+    protected $_values = [];
 
     /**
      * Return values
@@ -80,6 +80,10 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
             foreach ($this->_values as $filter) {
                 $text = $this->_getOptionText($filter);
                 $this->getLayer()->getState()->addFilter($this->_createItem($text, $filter));
+                $model = $filterBlock->getAttributeModel();
+                if ($model && !$model->getIsMultiple()) {
+                    $this->_items = [];
+                }
             }
         }
         return $this;
@@ -104,7 +108,7 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
         if ($data === null) {
             $options = $attribute->getFrontend()->getSelectOptions();
             $optionsCount = $this->_getResource()->getCount($this);
-            $data = array();
+            $data = [];
 
             foreach ($options as $option) {
                 if (is_array($option['value'])) {
@@ -114,24 +118,22 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
                     // Check filter type
                     if ($this->_getIsFilterableAttribute($attribute) == self::OPTIONS_ONLY_WITH_RESULTS) {
                         if (!empty($optionsCount[$option['value']])) {
-                            $data[] = array(
+                            $data[] = [
                                 'label' => $option['label'],
                                 'value' => $option['value'],
                                 'count' => $optionsCount[$option['value']],
-                            );
+                            ];
                         }
                     } else {
-                        $data[] = array(
+                        $data[] = [
                             'label' => $option['label'],
                             'value' => $option['value'],
                             'count' => isset($optionsCount[$option['value']]) ? $optionsCount[$option['value']] : 0,
-                        );
+                        ];
                     }
                 }
             }
-            $tags = array(
-                Mage_Eav_Model_Entity_Attribute::CACHE_TAG . ':' . $attribute->getId()
-            );
+            $tags = [Mage_Eav_Model_Entity_Attribute::CACHE_TAG . ':' . $attribute->getId()];
 
             $tags = $this->getLayer()->getStateTags($tags);
             $this->getLayer()->getAggregator()->saveCacheData($data, $key, $tags);

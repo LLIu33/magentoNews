@@ -60,17 +60,22 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
     {
         $values = $this->getFilter()->getValues();
         if (!empty($values)) {
-            $tmp = array_merge($values, array($this->getValue()));
+            $tmp = array_merge($values, [$this->getValue()]);
             $values = implode(Oggetto_Multiplefilter_Helper_Data::MULTIPLE_FILTERS_DELIMITER, $tmp);
         } else {
             $values = $this->getValue();
         }
 
-        $query = array(
+        $query = [
             $this->getFilter()->getRequestVar() => $values,
             Mage::getBlockSingleton('page/html_pager')->getPageVarName() => null
-        );
-        return Mage::getUrl('*/*/*', array('_current' => true, '_use_rewrite' => true, '_query' => $query));
+        ];
+        $params = [
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_query' => $query
+        ];
+        return Mage::getUrl('*/*/*', $params);
     }
 
     /**
@@ -80,10 +85,9 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
      */
     public function getRemoveUrl()
     {
-        $filter = $this->getFilter();
         $values = $this->getFilter()->getValues();
         if (!empty($values)) {
-            $tmp = array_diff($values, array($this->getValue()));
+            $tmp = array_diff($values, [$this->getValue()]);
             if (!empty($tmp)) {
                 $values = implode(Oggetto_Multiplefilter_Helper_Data::MULTIPLE_FILTERS_DELIMITER, $tmp);
             } else {
@@ -94,9 +98,11 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
         }
 
         $query = [$this->getFilter()->getRequestVar() => $values];
-        $params['_current'] = true;
-        $params['_use_rewrite'] = true;
-        $params['_query'] = $query;
+        $params = [
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_query' => $query
+        ];
         return Mage::getUrl('*/*/*', $params);
     }
 
