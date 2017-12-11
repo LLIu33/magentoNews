@@ -39,7 +39,7 @@ class Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute extends Mage_C
      */
     protected function _prepareFilter()
     {
-        $this->_filter->setAttributeModel($this->getAttributeModel());
+        parent::_prepareFilter();
         $model = $this->getAttributeModel();
         if ($model && $model->getIsMultiple()) {
             $this->setTemplate('multiplefilter/catalog/layer/filter/multichoice.phtml');

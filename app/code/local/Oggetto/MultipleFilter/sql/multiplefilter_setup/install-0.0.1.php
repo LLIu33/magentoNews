@@ -41,7 +41,7 @@ try {
         $installer->getTable('catalog/eav_attribute'),
         'is_multiple',
         [
-            'type'      => Varien_Db_Ddl_Table::TYPE_SMALLINT,
+            'type'      => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'unsigned'  => true,
             'nullable'  => true,
             'comment'   => 'Is Multiple'

@@ -42,6 +42,7 @@ class Oggetto_MultipleFilter_Model_Observer extends Varien_Event_Observer
     {
         // Add an extra field to the base fieldset:
         $fieldset = $observer->getForm()->getElement('front_fieldset');
+
         $fieldset->addField(
             'is_multiple',
             'select',
@@ -49,16 +50,8 @@ class Oggetto_MultipleFilter_Model_Observer extends Varien_Event_Observer
                 'name' => 'is_multiple',
                 'label' => Mage::helper('multichoice')->__('Is Multiple'),
                 'title' => Mage::helper('multichoice')->__('Is Multiple'),
-                'values' => [
-                    [
-                        'value' => 0,
-                        'label' => Mage::helper('multichoice')->__('No')
-                    ],
-                    [
-                        'value' => 1,
-                        'label' => Mage::helper('multichoice')->__('Yes')
-                    ]
-                ]
+                'values' => Mage::getModel('Mage_Adminhtml_Model_System_Config_Source_Yesno')
+                    ->toOptionArray()
             ]
         );
     }

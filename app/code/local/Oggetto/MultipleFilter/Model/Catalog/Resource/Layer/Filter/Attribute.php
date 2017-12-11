@@ -53,20 +53,10 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
         ];
 
         if (!is_array($value)) {
-            $options = $attribute->getSource()->getAllOptions(false);
-            foreach ($options as $option) {
-                if ($option['label'] == $value) {
-                    $value = $option['value'];
-                }
-            }
             $conditions[] = $connection->quoteInto("{$tableAlias}.value = ?", $value);
         } else {
-            $conditions[] = "{$tableAlias}.value in ( ";
-            foreach ($value as $v) {
-                $conditions[count($conditions) - 1] .= $connection->quoteInto("?", $v) . ' ,';
-            }
-            $conditions[count($conditions) - 1] = rtrim($conditions[count($conditions) - 1], ',');
-            $conditions[count($conditions) - 1] .= ')';
+            $values = implode(Oggetto_Multiplefilter_Helper_Data::MULTIPLE_FILTERS_DELIMITER, $value);
+            $conditions[] = "{$tableAlias}.value in ({$values})";
         }
 
         $collection->getSelect()->join(
@@ -76,53 +66,4 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
 
         return $this;
     }
-
-    /**
-     * Retrieve array with products counts per attribute option
-     *
-     * @param Mage_Catalog_Model_Layer_Filter_Attribute $filter
-     * @return array
-     */
-    public function getCount($filter)
-    {
-        // clone select from collection with filters
-        $select = clone $filter->getLayer()->getProductCollection()->getSelect();
-        // reset columns, order and limitation conditions
-        $select->reset(Zend_Db_Select::COLUMNS);
-        $select->reset(Zend_Db_Select::ORDER);
-        $select->reset(Zend_Db_Select::LIMIT_COUNT);
-        $select->reset(Zend_Db_Select::LIMIT_OFFSET);
-
-
-        $connection = $this->_getReadAdapter();
-        $attribute = $filter->getAttributeModel();
-        $tableAlias = sprintf('%s_idx', $attribute->getAttributeCode());
-        $conditions = [
-            "{$tableAlias}.entity_id = e.entity_id",
-            $connection->quoteInto("{$tableAlias}.attribute_id = ?", $attribute->getAttributeId()),
-            $connection->quoteInto("{$tableAlias}.store_id = ?", $filter->getStoreId()),
-        ];
-
-        // start removing all filters for current attribute - we need correct count
-        $parts = $select->getPart(Zend_Db_Select::FROM);
-        $from = [];
-        foreach ($parts as $key => $part) {
-            if (stripos($key, $tableAlias) === false) {
-                $from[$key] = $part;
-            }
-        }
-        $select->setPart(Zend_Db_Select::FROM, $from);
-        // end of removing
-
-        $select
-            ->join(
-                [$tableAlias => $this->getMainTable()],
-                join(' AND ', $conditions),
-                ['value', 'count' => new Zend_Db_Expr("COUNT({$tableAlias}.entity_id)")]
-            )
-            ->group("{$tableAlias}.value");
-
-        return $connection->fetchPairs($select);
-    }
-
 }

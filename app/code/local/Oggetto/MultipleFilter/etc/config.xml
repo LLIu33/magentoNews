@@ -29,6 +29,15 @@
             <version>0.0.1</version>
         </Oggetto_MultipleFilter>
     </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <multiplefilter module="multichoice">
+                    <file>multiplefilter.xml</file>
+                </multiplefilter>
+            </updates>
+        </layout>
+    </frontend>
     <global>
         <blocks>
             <multiplefilterblock>
@@ -36,7 +45,6 @@
             </multiplefilterblock>
             <catalog>
                 <rewrite>
-                    <layer_view>Oggetto_MultipleFilter_Block_Catalog_Layer_View</layer_view>
                     <layer_filter_attribute>Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
                 </rewrite>
             </catalog>>

@@ -41,8 +41,8 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalo
     {
         $values = $this->getFilter()->getValues();
         if (!empty($values)) {
-            $tmp = array_merge($values, [$this->getValue()]);
-            $values = implode(Oggetto_Multiplefilter_Helper_Data::MULTIPLE_FILTERS_DELIMITER, $tmp);
+            $combinedValues = array_merge($values, [$this->getValue()]);
+            $values = implode(Oggetto_Multiplefilter_Helper_Data::MULTIPLE_FILTERS_DELIMITER, $combinedValues);
         } else {
             $values = $this->getValue();
         }
