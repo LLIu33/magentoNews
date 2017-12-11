@@ -47,7 +47,7 @@
                 <rewrite>
                     <layer_filter_attribute>Oggetto_MultipleFilter_Block_Catalog_Layer_Filter_Attribute</layer_filter_attribute>
                 </rewrite>
-            </catalog>>
+            </catalog>
         </blocks>
         <helpers>
             <multichoice>
@@ -78,17 +78,6 @@
                 </setup>
             </multiplefilter_setup>
         </resources>
-        <events>
-            <controller_action_layout_load_before>
-                <observers>
-                    <multiplefilter>
-                        <type>singleton</type>
-                        <class>multiplefilter/observer</class>
-                        <method>test</method>
-                    </multiplefilter>
-                </observers>
-            </controller_action_layout_load_before>
-        </events>
     </global>
     <adminhtml>
         <events>
