@@ -32,6 +32,18 @@
     <frontend>
     </frontend>
     <global>
+        <models>
+            <bestmodule>
+                <class>Oggetto_BestModule_Model</class>
+            </bestmodule>
+        </models>
+        <resources>
+            <bestmodule_setup>
+                <setup>
+                    <module>Oggetto_BestModule</module>
+                </setup>>
+            </bestmodule_setup>
+        </resources>
         <blocks>
             <checkout>
                 <rewrite>

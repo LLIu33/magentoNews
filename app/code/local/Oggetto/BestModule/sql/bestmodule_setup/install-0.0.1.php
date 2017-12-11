@@ -33,10 +33,35 @@
 
 /* @var $installer Mage_Catalog_Model_Resource_Eav_Mysql4_Setup */
 
-$installer = $this;
+
+/* @var $installer Mage_Catalog_Model_Resource_Setup */
+$installer = Mage::getResourceModel('catalog/setup','catalog_setup');
+
 $installer->startSetup();
 try {
-
+    $installer->addAttribute('catalog_product', 'is_best', array(
+        'group'           => 'General',
+        'label'           => 'Is Best',
+        'input'           => 'select',
+        'type'            => 'boolean',
+        'user_defined'    => 0,
+        'required'        => 0,
+        'visible_on_front'=> 1,
+        'filterable'      => 1,
+        'searchable'      => 1,
+        'comparable'      => 0,
+        'user_defined'    => 0,
+        'is_configurable' => 0,
+        'global'          => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
+        'option'          => [
+            'value' => [
+                'yes'   => ['Yes'],
+                'no'    => ['No'],
+                'maybe' => ['Maybe'],
+            ]
+        ],
+        'note'            => '',
+    ));
 } catch (Exception $e) {
     Mage::logException($e);
 }
