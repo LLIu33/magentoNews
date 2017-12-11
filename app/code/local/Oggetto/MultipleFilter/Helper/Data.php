@@ -36,15 +36,4 @@ class Oggetto_MultipleFilter_Helper_Data extends Mage_Core_Helper_Data
      */
 
     const MULTIPLE_FILTERS_DELIMITER = ',';
-
-    /**
-     * Check if module is enabled or not
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        //TODO: add this setting to config
-        return true;
-    }
 }

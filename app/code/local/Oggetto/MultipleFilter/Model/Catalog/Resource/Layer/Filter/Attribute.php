@@ -42,10 +42,6 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
      */
     public function applyFilterToCollection($filter, $value)
     {
-        if (!Mage::helper('multichoice')->isEnabled()) {
-            return parent::applyFilterToCollection($filter, $value);
-        }
-
         $collection = $filter->getLayer()->getProductCollection();
         $attribute = $filter->getAttributeModel();
         $connection = $this->_getReadAdapter();
@@ -89,10 +85,6 @@ class Oggetto_Multiplefilter_Model_Catalog_Resource_Layer_Filter_Attribute
      */
     public function getCount($filter)
     {
-        if (!Mage::helper('multichoice')->isEnabled()) {
-            return parent::getCount($filter);
-        }
-
         // clone select from collection with filters
         $select = clone $filter->getLayer()->getProductCollection()->getSelect();
         // reset columns, order and limitation conditions

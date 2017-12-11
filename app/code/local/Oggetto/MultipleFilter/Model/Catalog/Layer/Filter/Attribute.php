@@ -59,10 +59,6 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
      */
     public function apply(Zend_Controller_Request_Abstract $request, $filterBlock)
     {
-        if (!Mage::helper('multichoice')->isEnabled()) {
-            return parent::apply($request, $filterBlock);
-        }
-
         $filter = $request->getParam($this->_requestVar);
 
         if (is_array($filter)) {
@@ -96,10 +92,6 @@ class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Attribute extends Mage_C
      */
     protected function _getItemsData()
     {
-        if (!Mage::helper('multichoice')->isEnabled()) {
-            return parent::_getItemsData();
-        }
-
         $attribute = $this->getAttributeModel();
 
         $key = $this->getLayer()->getStateKey() . '_' . $this->_requestVar;

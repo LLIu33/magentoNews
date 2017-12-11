@@ -32,25 +32,6 @@
  */
 class Oggetto_MultipleFilter_Model_Catalog_Layer_Filter_Item extends Mage_Catalog_Model_Layer_Filter_Item
 {
-
-    /**
-     * @var Mage_Core_Helper_Abstract
-     */
-    protected $_helper;
-
-    /**
-     * Set helper
-     *
-     * @return Mage_Core_Helper_Abstract
-     */
-    protected function helper()
-    {
-        if ($this->_helper === null) {
-            $this->_helper = Mage::helper('multichoice');
-        }
-        return $this->_helper;
-    }
-
     /**
      * Get filter item url
      *
