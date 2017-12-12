@@ -62,7 +62,31 @@
                 </observers>
             </controller_action_postdispatch_checkout_onepage_savePayment>
         </events>
+        <helpers>
+            <bestmodule>
+                <class>Oggetto_BestModule_Helper</class>
+            </bestmodule>
+        </helpers>
     </global>
     <adminhtml>
+        <events>
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <addIsBestColumnToHtml>
+                        <type>singleton</type>
+                        <class>Oggetto_BestModule_Model_Observer</class>
+                        <method>beforeBlockToHtml</method>
+                    </addIsBestColumnToHtml>
+                </observers>
+            </core_block_abstract_to_html_before>
+            <eav_collection_abstract_load_before>
+                <observers>
+                    <addIsBestToCollection>
+                        <class>Oggetto_BestModule_Model_Observer</class>
+                        <method>beforeCollectionLoad</method>
+                    </addIsBestToCollection>
+                </observers>
+            </eav_collection_abstract_load_before>
+        </events>
     </adminhtml>
 </config>

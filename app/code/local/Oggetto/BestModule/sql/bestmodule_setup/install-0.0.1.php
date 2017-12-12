@@ -43,7 +43,7 @@ try {
         'group'           => 'General',
         'label'           => 'Is Best',
         'input'           => 'select',
-        'type'            => 'boolean',
+        'type'            => 'varchar',
         'user_defined'    => 0,
         'required'        => 0,
         'visible_on_front'=> 1,
