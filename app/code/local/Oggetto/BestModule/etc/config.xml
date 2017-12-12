@@ -36,12 +36,15 @@
             <bestmodule>
                 <class>Oggetto_BestModule_Model</class>
             </bestmodule>
+            <bestpayment>
+                <class>Oggetto_BestModule_Model_Payment</class>
+            </bestpayment>
         </models>
         <resources>
             <bestmodule_setup>
                 <setup>
                     <module>Oggetto_BestModule</module>
-                </setup>>
+                </setup>
             </bestmodule_setup>
         </resources>
         <blocks>
@@ -50,6 +53,9 @@
                     <onepage>Oggetto_BestModule_Block_Checkout_Onepage</onepage>
                 </rewrite>
             </checkout>
+            <bestpayment>
+                <class>Oggetto_BestModule_Block_Payment</class>
+            </bestpayment>
         </blocks>
         <events>
             <controller_action_postdispatch_checkout_onepage_savePayment>
@@ -89,4 +95,17 @@
             </eav_collection_abstract_load_before>
         </events>
     </adminhtml>
+    <default>
+        <payment>
+            <bestpayment>
+                <active>1</active>
+                <model>Oggetto_BestModule_Model_Payment</model>
+                <title>BestPayment</title>
+                <order_status>pending</order_status>
+                <allowspecific>0</allowspecific>
+                <sort_order>1</sort_order>
+                <group>offline</group>
+            </bestpayment>
+        </payment>
+    </default>
 </config>
