@@ -11,7 +11,7 @@ class Oggetto_BestModule_Model_Payment extends Mage_Payment_Model_Method_Abstrac
      */
     public function isAvailable($quote = null)
     {
-        $checkResult->isAvailable = parent::isAvailable();
+        $isAvailable = parent::isAvailable();
 
         $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
         $options = $attribute->getSource()->getAllOptions(false);
@@ -26,9 +26,9 @@ class Oggetto_BestModule_Model_Payment extends Mage_Payment_Model_Method_Abstrac
             $product = Mage::getModel('catalog/product')->load($item->getProductId());
 
             if(!in_array($product->getIsBest(), $values)) {
-                $checkResult->isAvailable = false;
+                $isAvailable = false;
             }
         }
-        return $checkResult->isAvailable;
+        return $isAvailable;
     }
 }

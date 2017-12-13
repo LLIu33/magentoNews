@@ -56,6 +56,11 @@
             <bestpayment>
                 <class>Oggetto_BestModule_Block_Payment</class>
             </bestpayment>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_create_search_grid>Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid</sales_order_create_search_grid>
+                </rewrite>
+            </adminhtml>
         </blocks>
         <events>
             <controller_action_postdispatch_checkout_onepage_savePayment>
@@ -75,6 +80,13 @@
         </helpers>
     </global>
     <adminhtml>
+        <layout>
+            <updates>
+                <oggetto_bestmodule>
+                    <file>bestmodule.xml</file>
+                </oggetto_bestmodule>
+            </updates>
+        </layout>
         <events>
             <core_block_abstract_to_html_before>
                 <observers>

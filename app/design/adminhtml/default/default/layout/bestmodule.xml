@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Oggetto Web extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto BestModule module to newer versions in the future.
+ * If you wish to customize the Oggetto BestModule module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_BestModule
+ * @copyright  Copyright (C) 2017
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<layout version="1.0.0">
+    <adminhtml_sales_order_view>
+        <reference name="order_items">
+            <action method="setTemplate"><template>bestmodule/sales/order/view/items.phtml</template></action>
+        </reference>
+        <reference name="order_items">
+            <action method="addItemRender">
+                <type>default</type>
+                <block>adminhtml/sales_order_view_items_renderer_default</block>
+                <template>bestmodule/sales/order/view/items/renderer/default.phtml</template>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+    <adminhtml_sales_order_create_index>
+        <reference name="items_grid">
+            <action method="setTemplate"><template>bestmodule/sales/order/create/items/grid.phtml</template></action>
+        </reference>
+    </adminhtml_sales_order_create_index>
+    <adminhtml_sales_order_create_load_block_items>
+        <reference name="items_grid">
+            <action method="setTemplate"><template>bestmodule/sales/order/create/items/grid.phtml</template></action>
+        </reference>
+    </adminhtml_sales_order_create_load_block_items>
+</layout>

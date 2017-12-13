@@ -39,7 +39,7 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
      *
      * @param $observer Varien_Event_Observer
      */
-    public function saveOrder($observer)
+    public function saveOrder(Varien_Event_Observer $observer)
     {
         /** @var $controllerAction Mage_Checkout_OnepageController */
         $controllerAction = $observer->getEvent()->getControllerAction();
