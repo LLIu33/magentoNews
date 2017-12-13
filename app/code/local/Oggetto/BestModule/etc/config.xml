@@ -119,5 +119,19 @@
                 <group>offline</group>
             </bestpayment>
         </payment>
+        <carriers>
+            <bestshipping>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Oggetto_BestModule_Model_Shipment</model>
+                <name>standard</name>
+                <ratio>1</ratio>
+                <type>O</type>
+                <sort_order>10</sort_order>
+                <title>Best Shipment</title>
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+            </bestshipping>
+        </carriers>
     </default>
 </config>
