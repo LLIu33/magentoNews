@@ -40,7 +40,7 @@ try {
         'group'            => 'General',
         'label'            => 'Is Best',
         'input'            => 'select',
-        'type'             => 'varchar',
+        'type'             => 'int',
         'user_defined'     => 0,
         'required'         => 0,
         'visible_on_front' => 1,
@@ -50,14 +50,9 @@ try {
         'user_defined'     => 0,
         'is_configurable'  => 0,
         'global'           => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-        'option'           => [
-            'value' => [
-                'yes'   => ['Yes'],
-                'no'    => ['No'],
-                'maybe' => ['Maybe'],
-            ]
-        ],
-        'note'            => '',
+        'source'           => 'bestmodule/attribute_source_option',
+        'apply_to'         => 'simple',
+        'note'             => '',
     ));
 } catch (Exception $e) {
     Mage::logException($e);

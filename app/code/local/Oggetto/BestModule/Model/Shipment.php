@@ -79,12 +79,10 @@ class Oggetto_BestModule_Model_Shipment
     {
         $isAvailable = true;
 
-        $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
-        $options = $attribute->getSource()->getAllOptions(false);
-        $values = [];
-        foreach ($options as $option) {
-            $values[$option['value']] = $option['label'];
-        }
+        $values = Mage::getModel('eav/config')
+            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
+            ->getSource()
+            ->toArray();
 
         /** @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($request->getAllItems() as $quoteItem) {

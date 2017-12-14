@@ -75,12 +75,10 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
     {
         $grid = $observer->getBlock();
 
-        $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
-        $options = $attribute->getSource()->getAllOptions(false);
-        $values = [];
-        foreach ($options as $option) {
-            $values[$option['value']] = $option['label'];
-        }
+        $values = Mage::getModel('eav/config')
+            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
+            ->getSource()
+            ->toArray();
 
         if ($grid instanceof Mage_Adminhtml_Block_Catalog_Product_Grid) {
             /* @var Mage_Adminhtml_Block_Catalog_Product_Grid $grid */

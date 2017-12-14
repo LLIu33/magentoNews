@@ -30,11 +30,28 @@
  * @subpackage Model
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_BestModule_Model_Source_Option extends Mage_Eav_Model_Entity_Attribute_Source_Table
+class Oggetto_BestModule_Model_Attribute_Source_Option extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
-    const YES = 'yes';
-    const NO = 'no';
-    const MAYBE = 'maybe';
+    const YES = 1;
+    const NO = 0;
+    const MAYBE = 2;
+
+    /**
+     * Options getter
+     *
+     * @return array
+     */
+    public function getAllOptions()
+    {
+        if (is_null($this->_options)) {
+            $this->_options = [
+                ['value' => self::YES, 'label' => Mage::helper('bestmodule')->__('Yes')],
+                ['value' => self::NO, 'label' => Mage::helper('bestmodule')->__('No')],
+                ['value' => self::MAYBE, 'label' => Mage::helper('bestmodule')->__('Maybe')]
+            ];
+        }
+        return $this->_options;
+    }
 
     /**
      * Options getter
@@ -43,20 +60,7 @@ class Oggetto_BestModule_Model_Source_Option extends Mage_Eav_Model_Entity_Attri
      */
     public function toOptionArray()
     {
-        return [
-            [
-                'value' => self::YES,
-                'label' => Mage::helper('bestmodule')->__('Yes')
-            ],
-            [
-                'value' => self::NO,
-                'label' => Mage::helper('bestmodule')->__('No')
-            ],
-            [
-                'value' => self::MAYBE,
-                'label' => Mage::helper('bestmodule')->__('Maybe')
-            ]
-        ];
+        return $this->getAllOptions();
     }
 
     /**

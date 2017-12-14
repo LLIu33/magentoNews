@@ -52,12 +52,10 @@ class Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid
     protected function _prepareColumns()
     {
         parent::_prepareColumns();
-        $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
-        $options = $attribute->getSource()->getAllOptions(false);
-        $values = [];
-        foreach ($options as $option) {
-            $values[$option['value']] = $option['label'];
-        }
+        $values = Mage::getModel('eav/config')
+            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
+            ->getSource()
+            ->toArray();
 
         $this->addColumnAfter(
             'is_best',
