@@ -31,35 +31,34 @@
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 
-/* @var $installer Mage_Catalog_Model_Resource_Setup */
-$installer = Mage::getResourceModel('catalog/setup','catalog_setup');
+/** @var Mage_Core_Model_Resource_Setup $installer */
 
+$installer = $this;
 $installer->startSetup();
 try {
-    $installer->addAttribute('catalog_product', 'is_best', array(
-        'group'           => 'General',
-        'label'           => 'Is Best',
-        'input'           => 'select',
-        'type'            => 'varchar',
-        'user_defined'    => 0,
-        'required'        => 0,
-        'visible_on_front'=> 1,
-        'filterable'      => 1,
-        'searchable'      => 1,
-        'comparable'      => 0,
-        'user_defined'    => 0,
-        'is_configurable' => 0,
-        'global'          => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-        'option'          => [
-            'value' => [
-                'yes'   => ['Yes'],
-                'no'    => ['No'],
-                'maybe' => ['Maybe'],
-            ]
-        ],
-        'note'            => '',
-    ));
+    /**
+     * Adding Extra Column to sales_flat_quote_address
+     * to store the delivery instruction field
+     */
+    $sales_quote_address = $installer->getTable('sales/quote_address');
+    $installer->getConnection()
+        ->addColumn($sales_quote_address, 'delivery_instruction', array(
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'comment' => 'New Delivery Instruction Field Added'
+        ));
+
+    /**
+     * Adding Extra Column to sales_flat_order_address
+     * to store the delivery instruction field
+     */
+    $sales_order_address = $installer->getTable('sales/order_address');
+    $installer->getConnection()
+        ->addColumn($sales_order_address, 'delivery_instruction', array(
+            'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'comment' => 'New Delivery Instruction Field Added'
+        ));
 } catch (Exception $e) {
     Mage::logException($e);
 }
+
 $installer->endSetup();

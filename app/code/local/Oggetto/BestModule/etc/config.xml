@@ -26,12 +26,26 @@
 <config>
     <modules>
         <Oggetto_BestModule>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
         </Oggetto_BestModule>
     </modules>
     <frontend>
+        <layout>
+            <updates>
+                <oggetto_bestmodule>
+                    <file>bestmodule.xml</file>
+                </oggetto_bestmodule>
+            </updates>
+        </layout>
     </frontend>
     <global>
+        <fieldsets>
+            <sales_convert_quote_address>
+                <delivery_instruction>
+                    <to_order_address>*</to_order_address>
+                </delivery_instruction>
+            </sales_convert_quote_address>
+        </fieldsets>
         <models>
             <bestmodule>
                 <class>Oggetto_BestModule_Model</class>
@@ -59,6 +73,7 @@
             <adminhtml>
                 <rewrite>
                     <sales_order_create_search_grid>Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid</sales_order_create_search_grid>
+                    <sales_order_address_form>Oggetto_BestModule_Block_Sales_Order_Address_Form</sales_order_address_form>
                 </rewrite>
             </adminhtml>
         </blocks>
