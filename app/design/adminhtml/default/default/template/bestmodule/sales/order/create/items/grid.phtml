@@ -73,6 +73,7 @@
                 <?php $i=0 ?>
                 <?php foreach ($_items as $_item):$i++ ?>
                     <?php $product =  Mage::getModel('catalog/product')->load($_item->getProductId())?>
+                    <?php $isBest = $product->getResource()->getAttribute('is_best')->getFrontend()->getValue($product) ?>
                     <tbody class="<?php echo ($i%2)?'even':'odd' ?>">
                     <tr>
                         <td class="first">
@@ -92,7 +93,7 @@
                         <td class="a-center v-middle">
                             <?php echo $this->getConfigureButtonHtml($_item) ?>
                         </td>
-                        <td><?php echo $product->getIsBest() ?></td>
+                        <td><?php echo $isBest ?></td>
                         <td class="price">
 
 

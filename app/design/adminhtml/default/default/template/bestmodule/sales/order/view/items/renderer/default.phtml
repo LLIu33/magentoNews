@@ -1,5 +1,6 @@
 <?php $_item = $this->getItem() ?>
 <?php $product = Mage::getModel('catalog/product')->load($_item->getProductId()) ?>
+<?php $isBest = $product->getResource()->getAttribute('is_best')->getFrontend()->getValue($product) ?>
 <?php $this->setPriceDataObject($_item) ?>
 <tr<?php if (!$this->canDisplayGiftmessage()): ?> class="border"<?php endif; ?>>
     <td>
@@ -13,7 +14,7 @@
         </div>
         <?php endif ?>
     </td>
-    <td class="a-center"><?php if ($product) echo $product->getIsBest() ?></td>
+    <td class="a-center"><?php echo $isBest ?></td>
     <td class="a-center"><?php echo $_item->getStatus() ?></td>
     <td class="a-right"><?php echo $this->displayPriceAttribute('original_price') ?></td>
     <td class="a-right">
