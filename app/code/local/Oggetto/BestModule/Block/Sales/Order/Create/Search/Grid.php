@@ -33,6 +33,11 @@
 class Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid
     extends Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid
 {
+    /**
+     * Set custom id
+     *
+     * @return void
+     */
     public function _construct()
     {
         parent::_construct();
@@ -50,7 +55,7 @@ class Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid
         $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
         $options = $attribute->getSource()->getAllOptions(false);
         $values = [];
-        foreach ($options as $option){
+        foreach ($options as $option) {
             $values[$option['value']] = $option['label'];
         }
 

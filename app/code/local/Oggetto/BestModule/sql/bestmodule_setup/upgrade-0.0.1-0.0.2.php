@@ -61,7 +61,8 @@ try {
         $entityTypeId, $attributeSetId, $attributeGroupId, 'delivery_instruction', '999'  //sort_order
     );
 
-    $attribute->setData("used_in_forms", 'customer_register_address','customer_address_edit','adminhtml_customer_address')
+    $attribute
+        ->setData("used_in_forms", ['customer_register_address', 'customer_address_edit', 'adminhtml_customer_address'])
         ->setData("is_used_for_customer_segment", true)
         ->setData("is_system", 0)
         ->setData("is_user_defined", 1)

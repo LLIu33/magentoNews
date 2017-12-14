@@ -35,9 +35,9 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
     /**
      * Save the order after having saved the payment method
      *
+     * @param Varien_Event_Observer $observer
      * @event controller_action_postdispatch_checkout_onepage_savePayment
-     *
-     * @param $observer Varien_Event_Observer
+     * @return void
      */
     public function saveOrder(Varien_Event_Observer $observer)
     {
@@ -48,8 +48,10 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
 
         $paymentResponse = Mage::helper('core')->jsonDecode($response->getBody());
         if (!isset($paymentResponse['error']) || !$paymentResponse['error']) {
-            $controllerAction->getRequest()->setParam('form_key', Mage::getSingleton('core/session')->getFormKey());
-            $controllerAction->getRequest()->setPost('agreement', array_flip(Mage::helper('checkout')->getRequiredAgreementIds()));
+            $controllerAction->getRequest()
+                ->setParam('form_key', Mage::getSingleton('core/session')->getFormKey());
+            $controllerAction->getRequest()
+                ->setPost('agreement', array_flip(Mage::helper('checkout')->getRequiredAgreementIds()));
             $controllerAction->saveOrderAction();
 
             $orderResponse = Mage::helper('core')->jsonDecode($response->getBody());
@@ -65,9 +67,9 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
     /**
      * Add is_best column to product grid
      *
+     * @param Varien_Event_Observer $observer
      * @event core_block_abstract_to_html_before
-     *
-     * @param $observer Varien_Event_Observer
+     * @return void
      */
     public function beforeBlockToHtml(Varien_Event_Observer $observer)
     {
@@ -76,7 +78,7 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
         $attribute = Mage::getModel('eav/config')->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best');
         $options = $attribute->getSource()->getAllOptions(false);
         $values = [];
-        foreach ($options as $option){
+        foreach ($options as $option) {
             $values[$option['value']] = $option['label'];
         }
 
@@ -98,9 +100,9 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
     /**
      * Add is_best data to product collection
      *
+     * @param Varien_Event_Observer $observer
      * @event eav_collection_abstract_load_before
-     *
-     * @param $observer Varien_Event_Observer
+     * @return void
      */
     public function beforeCollectionLoad(Varien_Event_Observer $observer)
     {

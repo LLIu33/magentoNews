@@ -12,21 +12,21 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Oggetto Newsblock module to newer versions in the future.
- * If you wish to customize the Oggetto Newsblock module for your needs
+ * the Oggetto BestModule module to newer versions in the future.
+ * If you wish to customize the Oggetto BestModule module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
  * @category   Oggetto
- * @package    Oggetto_Newsblock
+ * @package    Oggetto_BestModule
  * @copyright  Copyright (C) 2017 Oggetto Web ltd (http://oggettoweb.com/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Oggetto Newsblock
+ * Oggetto BestModule
  *
  * @category   Oggetto
- * @package    Oggetto_Newsblock
+ * @package    Oggetto_BestModule
  * @subpackage controlllers
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
@@ -36,6 +36,8 @@ class Oggetto_BestModuel_Checkout_OnepageController extends Mage_Checkout_Onepag
      * Save payment ajax action
      *
      * Sets either redirect or a JSON response
+     *
+     * @return Zend_Controller_Response_Abstract
      */
     public function savePaymentAction()
     {
