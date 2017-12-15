@@ -114,4 +114,18 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
             $collection->addAttributeToSelect('is_best');
         }
     }
+
+    /**
+     * Set is_best for quoteItem
+     *
+     * @param Varien_Event_Observer $observer
+     * @event sales_quote_item_set_product
+     * @return void
+     */
+    public function salesQuoteItemSetIsBest(Varien_Event_Observer $observer)
+    {
+        $quoteItem = $observer->getQuoteItem();
+        $product = $observer->getProduct();
+        $quoteItem->setIsBest($product->getIsBest());
+    }
 }

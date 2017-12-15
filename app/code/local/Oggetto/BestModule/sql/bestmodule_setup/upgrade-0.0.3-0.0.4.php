@@ -27,28 +27,31 @@
  *
  * @category   Oggetto
  * @package    Oggetto_BestModule
- * @subpackage Block
+ * @subpackage bestmodule_setup
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_BestModule_Block_Sales_Order_Address_Form
-    extends Mage_Adminhtml_Block_Sales_Order_Address_Form
-{
-    /**
-     * Prepare Form and add elements to form
-     *
-     * @return Mage_Adminhtml_Block_Sales_Order_Create_Form_Address
-     */
-    protected function _prepareForm()
-    {
-        parent::_prepareForm();
-        $fieldset = $this->_form->getElement('main');
 
-        $fieldset->addField('delivery_instruction', 'text', [
-            'name'      => 'delivery_instruction',
-            'label'     => Mage::helper('bestmodule')->__('Delivery Time'),
-            'title'     => Mage::helper('bestmodule')->__('Delivery Time'),
-        ]);
-        $this->_form->setValues($this->getFormValues());
-        return $this;
+/** @var Mage_Core_Model_Resource_Setup $installer */
+
+$installer = new Mage_Sales_Model_Resource_Setup('core_setup');
+$installer->startSetup();
+try {
+    $entities = [
+        'quote',
+        'quote_item',
+        'order',
+        'order_item'
+    ];
+    $options = [
+        'type'     => Varien_Db_Ddl_Table::TYPE_INTEGER,
+        'visible'  => true,
+        'required' => false
+    ];
+    foreach ($entities as $entity) {
+        $installer->addAttribute($entity, 'is_best', $options);
     }
+} catch (Exception $e) {
+    Mage::logException($e);
 }
+
+$installer->endSetup();

@@ -43,15 +43,11 @@ class Oggetto_BestModule_Model_Payment extends Mage_Payment_Model_Method_Abstrac
      */
     public function isAvailable($quote = null)
     {
-        $isAvailable = parent::isAvailable();
-
         foreach ($quote->getAllItems() as $item) {
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
-
-            if ($product->getIsBest() == Oggetto_BestModule_Model_Attribute_Source_Option::NO) {
-                $isAvailable = false;
+            if ($item->getIsBest() == Oggetto_BestModule_Model_Attribute_Source_Option::NO) {
+                return false;
             }
         }
-        return $isAvailable;
+        return parent::isAvailable();
     }
 }

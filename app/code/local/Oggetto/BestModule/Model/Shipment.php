@@ -54,18 +54,9 @@ class Oggetto_BestModule_Model_Shipment
         $weight = $request->getPackageWeight();
         $qty = $request->getPackageQty();
 
-        if (!$this->isShippingRestriction($request) || $qty <= 0) {
-            return $result;
+        if ($this->isShippingRestriction($request) && $qty) {
+            $result->append($this->_getStandardRate($weight, $qty));
         }
-
-        /** @var Mage_Shipping_Model_Rate_Result_Method $method */
-        $method = Mage::getModel('shipping/rate_result_method');
-
-        $method->setCarrier($this->_code);
-        $method->setCarrierTitle($this->getConfigData('title'));
-
-        $result->append($this->_getStandardRate($weight, $qty));
-
         return $result;
     }
 
@@ -78,21 +69,14 @@ class Oggetto_BestModule_Model_Shipment
     public function isShippingRestriction(Mage_Shipping_Model_Rate_Request $request)
     {
         $isAvailable = true;
-
-        $values = Mage::getModel('eav/config')
-            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
-            ->getSource()
-            ->toArray();
-
         /** @var Mage_Sales_Model_Quote_Item $quoteItem */
         foreach ($request->getAllItems() as $quoteItem) {
-            $product = Mage::getModel('catalog/product')->load($quoteItem->getProductId());
-            $isBest = ($product->getIsBest()) ? $values[$product->getIsBest()] : null;
-            if ($isBest == 'Yes') {
+            if ($quoteItem->getIsBest() == Oggetto_BestModule_Model_Attribute_Source_Option::YES) {
                 $isAvailable = true;
                 break;
             }
-            if (is_null($isBest) || $isBest == 'No') {
+
+            if ($quoteItem->getIsBest() == Oggetto_BestModule_Model_Attribute_Source_Option::NO) {
                 $isAvailable = false;
             }
         }

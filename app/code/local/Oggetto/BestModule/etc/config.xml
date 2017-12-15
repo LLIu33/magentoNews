@@ -26,7 +26,7 @@
 <config>
     <modules>
         <Oggetto_BestModule>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
         </Oggetto_BestModule>
     </modules>
     <frontend>
@@ -39,12 +39,31 @@
         </layout>
     </frontend>
     <global>
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <is_best />
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
         <fieldsets>
             <sales_convert_quote_address>
                 <delivery_instruction>
                     <to_order_address>*</to_order_address>
                 </delivery_instruction>
             </sales_convert_quote_address>
+            <sales_convert_quote_item>
+                <is_best>
+                    <to_order_item>*</to_order_item>
+                </is_best>
+            </sales_convert_quote_item>
+            <sales_convert_order_item>
+                <is_best>
+                    <to_quote_item>*</to_quote_item>
+                </is_best>
+            </sales_convert_order_item>
         </fieldsets>
         <models>
             <bestmodule>
@@ -74,11 +93,18 @@
             <adminhtml>
                 <rewrite>
                     <sales_order_create_search_grid>Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid</sales_order_create_search_grid>
-                    <sales_order_address_form>Oggetto_BestModule_Block_Sales_Order_Address_Form</sales_order_address_form>
                 </rewrite>
             </adminhtml>
         </blocks>
         <events>
+            <sales_quote_item_set_product>
+                <observers>
+                    <customattribute>
+                        <class>Oggetto_BestModule_Model_Observer</class>
+                        <method>salesQuoteItemSetIsBest</method>
+                    </customattribute>
+                </observers>
+            </sales_quote_item_set_product>
             <controller_action_postdispatch_checkout_onepage_savePayment>
                 <observers>
                     <bestmodule>
