@@ -32,16 +32,15 @@
  */
 
 /* @var $installer Mage_Catalog_Model_Resource_Setup */
-$installer = Mage::getResourceModel('catalog/setup', 'catalog_setup');
+$installer = $this;
 
 $installer->startSetup();
 try {
-    $installer->addAttribute('catalog_product', 'is_best', array(
+    $installer->addAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best', [
         'group'            => 'General',
         'label'            => 'Is Best',
         'input'            => 'select',
         'type'             => 'int',
-        'user_defined'     => 0,
         'required'         => 0,
         'visible_on_front' => 1,
         'filterable'       => 1,
@@ -53,7 +52,7 @@ try {
         'source'           => 'bestmodule/attribute_source_option',
         'apply_to'         => 'simple',
         'note'             => '',
-    ));
+    ]);
 } catch (Exception $e) {
     Mage::logException($e);
 }

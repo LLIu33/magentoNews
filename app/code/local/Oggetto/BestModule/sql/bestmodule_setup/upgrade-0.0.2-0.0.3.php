@@ -42,10 +42,10 @@ try {
      */
     $salesQuoteAddress = $installer->getTable('sales/quote_address');
     $installer->getConnection()
-        ->addColumn($salesQuoteAddress, 'delivery_instruction', array(
+        ->addColumn($salesQuoteAddress, 'delivery_instruction', [
             'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'comment' => 'New Delivery Instruction Field Added'
-        ));
+        ]);
 
     /**
      * Adding Extra Column to sales_flat_order_address
@@ -53,10 +53,10 @@ try {
      */
     $salesOrderAddress = $installer->getTable('sales/order_address');
     $installer->getConnection()
-        ->addColumn($salesOrderAddress, 'delivery_instruction', array(
+        ->addColumn($salesOrderAddress, 'delivery_instruction', [
             'type' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'comment' => 'New Delivery Instruction Field Added'
-        ));
+        ]);
 } catch (Exception $e) {
     Mage::logException($e);
 }

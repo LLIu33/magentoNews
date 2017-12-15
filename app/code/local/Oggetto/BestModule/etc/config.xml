@@ -58,6 +58,7 @@
             <bestmodule_setup>
                 <setup>
                     <module>Oggetto_BestModule</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </bestmodule_setup>
         </resources>

@@ -34,17 +34,6 @@ class Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid
     extends Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid
 {
     /**
-     * Set custom id
-     *
-     * @return void
-     */
-    public function _construct()
-    {
-        parent::_construct();
-        $this->setId('ogetto_bestmodule_adminhtml_block_sales_order_create_search_grid');
-    }
-
-    /**
      * Prepare columns
      *
      * @return Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid
@@ -52,10 +41,7 @@ class Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid
     protected function _prepareColumns()
     {
         parent::_prepareColumns();
-        $values = Mage::getModel('eav/config')
-            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
-            ->getSource()
-            ->toArray();
+        $values = Mage::getModel('Oggetto_BestModule_Model_Attribute_Source_Option')->toArray();
 
         $this->addColumnAfter(
             'is_best',

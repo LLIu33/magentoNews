@@ -75,10 +75,7 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
     {
         $grid = $observer->getBlock();
 
-        $values = Mage::getModel('eav/config')
-            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
-            ->getSource()
-            ->toArray();
+        $values = Mage::getModel('Oggetto_BestModule_Model_Attribute_Source_Option')->toArray();
 
         if ($grid instanceof Mage_Adminhtml_Block_Catalog_Product_Grid) {
             /* @var Mage_Adminhtml_Block_Catalog_Product_Grid $grid */

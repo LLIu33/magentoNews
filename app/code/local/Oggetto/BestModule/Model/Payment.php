@@ -45,11 +45,6 @@ class Oggetto_BestModule_Model_Payment extends Mage_Payment_Model_Method_Abstrac
     {
         $isAvailable = parent::isAvailable();
 
-        $values = Mage::getModel('eav/config')
-            ->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'is_best')
-            ->getSource()
-            ->toArray();
-
         foreach ($quote->getAllItems() as $item) {
             $product = Mage::getModel('catalog/product')->load($item->getProductId());
 
