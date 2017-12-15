@@ -30,6 +30,24 @@
         </Oggetto_Shield>
     </modules>
     <frontend>
+        <events>
+            <controller_action_predispatch_customer_account_loginPost>
+                <observers>
+                    <shield_observer>
+                        <class>shield/observer</class>
+                        <method>validateCustomerActivationBeforeLogin</method>
+                    </shield_observer>
+                </observers>
+            </controller_action_predispatch_customer_account_loginPost>
+            <controller_action_postdispatch_customer_account_loginPost>
+                <observers>
+                    <shield_observer>
+                        <class>shield/observer</class>
+                        <method>countFailedLogins</method>
+                    </shield_observer>
+                </observers>
+            </controller_action_postdispatch_customer_account_loginPost>
+        </events>
     </frontend>
     <global>
         <helpers>
@@ -42,6 +60,14 @@
                 <class>Oggetto_Shield_Model</class>
             </shield>
         </models>
+        <resources>
+            <shield_setup>
+                <setup>
+                    <module>Oggetto_Shield</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+            </shield_setup>
+        </resources>
     </global>
     <adminhtml>
         <translate>
