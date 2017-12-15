@@ -63,7 +63,7 @@ class Oggetto_BestModule_Model_Observer extends Varien_Event_Observer
             }
         }
     }
-    
+
     /**
      * Set is_best for quoteItem
      *

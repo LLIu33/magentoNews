@@ -25,8 +25,8 @@
 -->
 <layout version="0.1.0">
     <checkout_onepage_index>
-        <reference name="checkout.onepage.billing">
-            <block type="core/template" name="form.additional.info" template="bestmodule/checkout/onepage/billing_field.phtml"/>
+        <reference name="form.additional.info">
+            <block type="core/template" name="form.additional.delivery_time" template="bestmodule/checkout/onepage/billing_field.phtml"/>
         </reference>
     </checkout_onepage_index>
 </layout>

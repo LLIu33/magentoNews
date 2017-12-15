@@ -58,6 +58,7 @@ class Oggetto_BestModule_Block_Catalog_Product_Grid
      * Modifying setter collection
      *
      * @param Varien_Data_Collection $collection
+     * @return void
      */
     public function setCollection($collection)
     {
