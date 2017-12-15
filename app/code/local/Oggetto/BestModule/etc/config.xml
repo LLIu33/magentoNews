@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Oggetto Web extension for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade
+ * the Oggetto BestModule module to newer versions in the future.
+ * If you wish to customize the Oggetto BestModule module for your needs
+ * please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category   Oggetto
+ * @package    Oggetto_BestModule
+ * @copyright  Copyright (C) 2017
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Oggetto_BestModule>
+            <version>0.0.4</version>
+        </Oggetto_BestModule>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <oggetto_bestmodule>
+                    <file>bestmodule.xml</file>
+                </oggetto_bestmodule>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <is_best />
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+        <fieldsets>
+            <sales_convert_quote_address>
+                <delivery_instruction>
+                    <to_order_address>*</to_order_address>
+                </delivery_instruction>
+            </sales_convert_quote_address>
+            <sales_convert_quote_item>
+                <is_best>
+                    <to_order_item>*</to_order_item>
+                </is_best>
+            </sales_convert_quote_item>
+            <sales_convert_order_item>
+                <is_best>
+                    <to_quote_item>*</to_quote_item>
+                </is_best>
+            </sales_convert_order_item>
+        </fieldsets>
+        <models>
+            <bestmodule>
+                <class>Oggetto_BestModule_Model</class>
+            </bestmodule>
+            <bestpayment>
+                <class>Oggetto_BestModule_Model_Payment</class>
+            </bestpayment>
+        </models>
+        <resources>
+            <bestmodule_setup>
+                <setup>
+                    <module>Oggetto_BestModule</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </bestmodule_setup>
+        </resources>
+        <blocks>
+            <checkout>
+                <rewrite>
+                    <onepage>Oggetto_BestModule_Block_Checkout_Onepage</onepage>
+                </rewrite>
+            </checkout>
+            <bestpayment>
+                <class>Oggetto_BestModule_Block_Payment</class>
+            </bestpayment>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_create_search_grid>Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid</sales_order_create_search_grid>
+                    <catalog_product_grid>Oggetto_BestModule_Block_Catalog_Product_Grid</catalog_product_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <events>
+            <sales_quote_item_set_product>
+                <observers>
+                    <customattribute>
+                        <class>Oggetto_BestModule_Model_Observer</class>
+                        <method>salesQuoteItemSetIsBest</method>
+                    </customattribute>
+                </observers>
+            </sales_quote_item_set_product>
+            <controller_action_postdispatch_checkout_onepage_savePayment>
+                <observers>
+                    <bestmodule>
+                        <type>singleton</type>
+                        <class>Oggetto_BestModule_Model_Observer</class>
+                        <method>saveOrder</method>
+                    </bestmodule>
+                </observers>
+            </controller_action_postdispatch_checkout_onepage_savePayment>
+        </events>
+        <helpers>
+            <bestmodule>
+                <class>Oggetto_BestModule_Helper</class>
+            </bestmodule>
+        </helpers>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <oggetto_bestmodule>
+                    <file>bestmodule.xml</file>
+                </oggetto_bestmodule>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <payment>
+            <bestpayment>
+                <active>1</active>
+                <model>Oggetto_BestModule_Model_Payment</model>
+                <title>BestPayment</title>
+                <order_status>pending</order_status>
+                <allowspecific>0</allowspecific>
+                <sort_order>1</sort_order>
+                <group>offline</group>
+            </bestpayment>
+        </payment>
+        <carriers>
+            <bestshipping>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Oggetto_BestModule_Model_Shipment</model>
+                <name>standard</name>
+                <ratio>1</ratio>
+                <type>O</type>
+                <sort_order>10</sort_order>
+                <title>Best Shipment</title>
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+            </bestshipping>
+        </carriers>
+    </default>
+</config>
