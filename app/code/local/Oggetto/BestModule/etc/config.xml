@@ -93,6 +93,7 @@
             <adminhtml>
                 <rewrite>
                     <sales_order_create_search_grid>Oggetto_BestModule_Block_Sales_Order_Create_Search_Grid</sales_order_create_search_grid>
+                    <catalog_product_grid>Oggetto_BestModule_Block_Catalog_Product_Grid</catalog_product_grid>
                 </rewrite>
             </adminhtml>
         </blocks>
@@ -129,25 +130,6 @@
                 </oggetto_bestmodule>
             </updates>
         </layout>
-        <events>
-            <core_block_abstract_to_html_before>
-                <observers>
-                    <addIsBestColumnToHtml>
-                        <type>singleton</type>
-                        <class>Oggetto_BestModule_Model_Observer</class>
-                        <method>beforeBlockToHtml</method>
-                    </addIsBestColumnToHtml>
-                </observers>
-            </core_block_abstract_to_html_before>
-            <eav_collection_abstract_load_before>
-                <observers>
-                    <addIsBestToCollection>
-                        <class>Oggetto_BestModule_Model_Observer</class>
-                        <method>beforeCollectionLoad</method>
-                    </addIsBestToCollection>
-                </observers>
-            </eav_collection_abstract_load_before>
-        </events>
     </adminhtml>
     <default>
         <payment>
