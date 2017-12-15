@@ -42,15 +42,49 @@
                 <class>Oggetto_Shield_Model</class>
             </shield>
         </models>
-        <resources>
-            <shield_setup>
-                <setup>
-                    <module>Oggetto_Shield</module>
-                    <class>Mage_Eav_Model_Entity_Setup</class>
-                </setup>
-            </shield_setup>
-        </resources>
     </global>
     <adminhtml>
+        <translate>
+            <modules>
+                <Oggetto_Shield>
+                    <files>
+                        <default>Oggetto_Shield.csv</default>
+                    </files>
+                </Oggetto_Shield>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <shield>
+                                            <title>Shield - All</title>
+                                        </shield>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
+    <default>
+        <admin>
+            <security>
+                <wrong_password_flow_secure>1</wrong_password_flow_secure>
+                <requests_from_ip>5</requests_from_ip>
+                <blocking_period_for_ip>5</blocking_period_for_ip>
+                <requests_from_email>5</requests_from_email>
+                <blocking_period_for_email>5</blocking_period_for_email>
+            </security>
+        </admin>
+    </default>
 </config>
