@@ -58,9 +58,43 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      *
      * @return int Current Website ID
      */
-    public function _getWebsiteId()
+    protected function _getWebsiteId()
     {
         return Mage::app()->getWebsite()->getId();
+    }
+
+    /**
+     * Increment counter of incorrect password
+     *
+     * @param $customer
+     * @return void
+     */
+    protected function _incrementAttemptsCounterByEmail($customer) {
+        $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_EMAIL);
+        $attempts = $customer->getData('customer_login_attempts');
+        $blocked_at = null;
+        $customerIsActive = true;
+
+        if (!is_numeric($attempts)) {
+            $attempts = 1;
+        } else {
+            $attempts++;
+        }
+
+        if ($attempts == $attemptsLimit) {
+            $customerIsActive = false;
+            $blocked_at = now();
+        }
+
+        if ($attempts > $attemptsLimit) {
+            $attempts = 0;
+            $customerIsActive = false;
+        }
+
+        $customer->setData('customer_login_attempts', $attempts)
+            ->setData('customer_active', $customerIsActive)
+            ->setData('customer_blocked_at', $blocked_at)
+            ->save();
     }
 
     /**
@@ -77,40 +111,12 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
                 $validator = new Zend_Validate_EmailAddress();
 
                 if ($validator->isValid($loginParams['username'])) {
-
-                    // Load Customer
                     $customer = Mage::getModel('customer/customer')
                         ->setWebsiteId($this->_getWebsiteId())
                         ->loadByEmail($loginParams['username']);
 
-                    // If customer exists, set new values..
                     if ($customer->getId()) {
-                        $attempts = $customer->getData('customer_login_attempts');
-
-                        if (!is_numeric($attempts)) {
-                            $attempts = 1;
-                        } else {
-                            $attempts++;
-                        }
-
-                        $blocked_at = null;
-                        $customerIsActive = true;
-
-                        $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_EMAIL);
-                        if ($attempts == $attemptsLimit) {
-                            $customerIsActive = false;
-                            $blocked_at = now();
-                        }
-
-                        if ($attempts > $attemptsLimit) {
-                            $attempts = 0;
-                            $customerIsActive = false;
-                        }
-
-                        $customer->setData('customer_login_attempts', $attempts)
-                            ->setData('customer_active', $customerIsActive)
-                            ->setData('customer_blocked_at', $blocked_at)
-                            ->save();
+                        $this->_incrementAttemptsCounterByEmail($customer);
                     }
                 }
             }
@@ -127,7 +133,8 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      * @param $observer
      * @return void
      */
-    protected function _countFailedLoginsByIp($observer) {
+    protected function _countFailedLoginsByIp($observer)
+    {
         $remoteIp = Mage::helper('core/http')->getRemoteAddr();
         $ipData = Mage::getModel('shield/ip');
         $ipData->load($remoteIp, 'ip');
@@ -159,7 +166,8 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      * @param string $email
      * @return bool
      */
-    protected function isBlockedByEmail($email) {
+    protected function _isBlockedByEmail($email)
+    {
         $customer = Mage::getModel('customer/customer')
             ->setWebsiteId($this->_getWebsiteId())
             ->loadByEmail($email);
@@ -184,7 +192,8 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      * @param string $ip
      * @return bool
      */
-    protected function isBlockedByIp($ip) {
+    protected function _isBlockedByIp($ip)
+    {
         $ipData = Mage::getModel('shield/ip');
         $ipData->load($ip, 'ip');
         if (!$ipData->getId() || !$ipData->getData('blocked_at')) {
@@ -204,31 +213,84 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
     }
 
     /**
-     * Counts the number of failed logins of a current users.
-     * Validate the controller postDispatch action of customer_account_loginPost.
-     *
-     * If user is not logged in at this point in time but login parameters given,
-     * the user had wrong credentials -> so increment the number of failed logins.
-     * If otherwise the user is logged in successfully, we can forget about
-     * previous login failures.
-     *
-     * Observer for controller_action_postdispatch_customer_account_loginPost event
+     * Counts the number of failed attempts to change password of a current users.
      *
      * @param Varien_Event_Observer $observer Observer Instance
      */
-    public function countFailedLogins(Varien_Event_Observer $observer)
+    public function countFailedChangePassByEmail(Varien_Event_Observer $observer)
     {
-        $wronPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
-
-        if (!$wronPasswordFlow) {
+        $wrongPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
+        if ($wrongPasswordFlow != self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow != self::FLOW_BY_EMAIL) {
             return;
         }
 
-        if($wronPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wronPasswordFlow == self::FLOW_BY_EMAIL) {
+        $username = $observer->getControllerAction()->getRequest()->getParam('email');
+        $password = $observer->getControllerAction()->getRequest()->getParam['current_password'];
+        try {
+            Mage::getModel('customer/customer')
+                ->setWebsiteId($this->_getWebsiteId())
+                ->authenticate($username, $password);
+            $isCorrectPassword = 1;
+        }
+        catch(Exception $ex) {
+            $isCorrectPassword = 0;
+        }
+
+        $customer = Mage::getModel('customer/customer')
+            ->setWebsiteId($this->_getWebsiteId())
+            ->loadByEmail($username);
+
+        if (!$isCorrectPassword && $customer->getId()) {
+            $this->_incrementAttemptsCounterByEmail($customer);
+        }
+    }
+
+    /**
+     * Validates the customer before logging him in. A customer can be set to active/inactive
+     *
+     * @param Varien_Event_Observer $observer Observer Instance
+     * @return void
+     */
+    public function validateCustomerActivationBeforeChangePass(Varien_Event_Observer $observer)
+    {
+        $wrongPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
+        if ($wrongPasswordFlow != self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow != self::FLOW_BY_EMAIL) {
+            return;
+        }
+        $username = $observer->getControllerAction()->getRequest()->getParam('email');
+        $isBlocked = $this->_isBlockedByEmail($username);
+        try {
+            if ($isBlocked) {
+                throw new Exception(
+                    Mage::helper('shield')->__('Your account is locked due to too many failed login attempts.')
+                );
+            }
+        } catch (Exception $e) {
+            $this->_getSession()->addError(Mage::helper('shield')->__($e->getMessage()));
+
+            Mage::getSingleton('customer/session')->logout();
+        }
+    }
+
+    /**
+     * Counts the number of failed logins of a current users.
+     *
+     * @param Varien_Event_Observer $observer Observer Instance
+     * @return void
+     */
+    public function countFailedLogins(Varien_Event_Observer $observer)
+    {
+        $wrongPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
+
+        if (!$wrongPasswordFlow) {
+            return;
+        }
+
+        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
             $this->_countFailedLoginsByEmail($observer);
         }
 
-        if($wronPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wronPasswordFlow == self::FLOW_BY_IP) {
+        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
             $this->_countFailedLoginsByIp($observer);
         }
 
@@ -236,30 +298,28 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
 
     /**
      * Validates the customer before logging him in. A customer can be set to active/inactive
-     * and he can be inactivated if user tries to login with wrong user credentials.
-     *
-     * Observer for controller_action_predispatch_customer_account_loginPost event.
      *
      * @param Varien_Event_Observer $observer Observer Instance
+     * @return void
      */
     public function validateCustomerActivationBeforeLogin(Varien_Event_Observer $observer)
     {
-        $wronPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
-        if (!$wronPasswordFlow) {
+        $wrongPasswordFlow = Mage::getStoreConfig(self::WRONG_PASSWORD_FLOW);
+        if (!$wrongPasswordFlow) {
             return;
         }
         $controller = $observer->getControllerAction();
         $isBlocked = false;
 
-        if($wronPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wronPasswordFlow == self::FLOW_BY_EMAIL) {
+        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
             $loginParams = $controller->getRequest()->getParam('login');
             if (!isset($loginParams['username'])) {
                 return;
             }
-            $isBlocked = $this->isBlockedByEmail($loginParams['username']);
+            $isBlocked = $this->_isBlockedByEmail($loginParams['username']);
         }
-        if($wronPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wronPasswordFlow == self::FLOW_BY_IP) {
-            $isBlocked = $isBlocked || $this->isBlockedByIp(Mage::helper('core/http')->getRemoteAddr());
+        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
+            $isBlocked = $isBlocked || $this->_isBlockedByIp(Mage::helper('core/http')->getRemoteAddr());
         }
         try {
             if ($isBlocked) {

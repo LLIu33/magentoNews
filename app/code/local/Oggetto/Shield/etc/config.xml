@@ -47,6 +47,22 @@
                     </shield_observer>
                 </observers>
             </controller_action_predispatch_customer_account_loginPost>
+            <controller_action_postdispatch_customer_account_editPost>
+                <observers>
+                    <shield_observer>
+                        <class>shield/observer</class>
+                        <method>countFailedChangePassByEmail</method>
+                    </shield_observer>
+                </observers>
+            </controller_action_postdispatch_customer_account_editPost>
+            <controller_action_predispatch_customer_account_editPost>
+                <observers>
+                    <shield_observer>
+                        <class>shield/observer</class>
+                        <method>validateCustomerActivationBeforeChangePass</method>
+                    </shield_observer>
+                </observers>
+            </controller_action_predispatch_customer_account_editPost>
         </events>
     </frontend>
     <global>
