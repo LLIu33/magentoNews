@@ -40,8 +40,8 @@ class Oggetto_Shield_Model_Source_Isblocked
     public function toOptionArray()
     {
         return [
-            ['value' => 1, 'label'=>Mage::helper('shield')->__('Yes')],
-            ['value' => 0, 'label'=>Mage::helper('shield')->__('Enabled')],
+            ['value' => 1, 'label' => Mage::helper('shield')->__('Yes')],
+            ['value' => 0, 'label' => Mage::helper('shield')->__('Enabled')],
         ];
     }
 
