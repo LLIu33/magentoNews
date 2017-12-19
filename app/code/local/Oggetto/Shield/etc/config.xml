@@ -26,19 +26,11 @@
 <config>
     <modules>
         <Oggetto_Shield>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </Oggetto_Shield>
     </modules>
     <frontend>
         <events>
-            <controller_action_predispatch_customer_account_loginPost>
-                <observers>
-                    <shield_observer>
-                        <class>shield/observer</class>
-                        <method>validateCustomerActivationBeforeLogin</method>
-                    </shield_observer>
-                </observers>
-            </controller_action_predispatch_customer_account_loginPost>
             <controller_action_postdispatch_customer_account_loginPost>
                 <observers>
                     <shield_observer>
@@ -47,6 +39,14 @@
                     </shield_observer>
                 </observers>
             </controller_action_postdispatch_customer_account_loginPost>
+            <controller_action_predispatch_customer_account_loginPost>
+                <observers>
+                    <shield_observer>
+                        <class>shield/observer</class>
+                        <method>validateCustomerActivationBeforeLogin</method>
+                    </shield_observer>
+                </observers>
+            </controller_action_predispatch_customer_account_loginPost>
         </events>
     </frontend>
     <global>
@@ -58,7 +58,16 @@
         <models>
             <shield>
                 <class>Oggetto_Shield_Model</class>
+                <resourceModel>shield_resource</resourceModel>
             </shield>
+            <shield_resource>
+                <class>Oggetto_Shield_Model_Resource</class>
+                <entities>
+                    <ip>
+                        <table>oggetto_shield</table>
+                    </ip>
+                </entities>
+            </shield_resource>
         </models>
         <resources>
             <shield_setup>

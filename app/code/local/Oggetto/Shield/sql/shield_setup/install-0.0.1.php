@@ -67,35 +67,34 @@ try {
     /*
      * ATTRIBUTE: customer_logins_failed
      */
-    $attributeName = 'customer_logins_failed';
+    $attributeName = 'customer_login_attempts';
     $installer->addAttribute('customer', $attributeName,
         [
             'type' => 'int',
             'input' => 'text',
-            'label' => 'Last failed login',
+            'label' => 'Login attempts',
             'global' => true,
             'visible' => false,
             'required' => false,
             'user_defined' => false,
-            'default' => '1',
+            'default' => 0,
             'visible_on_front' => false
         ]
     );
 
     /*
-     * ATTRIBUTE: customer_last_login_failed
+     * ATTRIBUTE: customer_blocking_start
      */
-    $attributeName = 'customer_last_login_failed';
+    $attributeName = 'customer_blocked_at';
     $installer->addAttribute('customer', $attributeName,
         [
-            'type' => 'int',
-            'input' => 'text',
-            'label' => 'Failed logins',
+            'type' => 'datetime',
+            'input' => 'datetime',
+            'label' => 'Time of starting blocking',
             'global' => true,
             'visible' => false,
             'required' => false,
             'user_defined' => false,
-            'default' => '1',
             'visible_on_front' => false
         ]
     );
