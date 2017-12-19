@@ -104,22 +104,16 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      * return void
      */
     protected function _countFailedLoginsByEmail($observer) {
+        $loginParams = $observer->getControllerAction()->getRequest()->getParam('login');
+        $customer = Mage::getModel('customer/customer')
+            ->setWebsiteId($this->_getWebsiteId())
+            ->loadByEmail($loginParams['username']);
+        if (!$customer->getId()) {
+            return;
+        }
+
         if (!$this->_getSession()->isLoggedIn()) {
-            $loginParams = $observer->getControllerAction()->getRequest()->getParam('login');
-            if (isset($loginParams) && isset($loginParams['username'])) {
-
-                $validator = new Zend_Validate_EmailAddress();
-
-                if ($validator->isValid($loginParams['username'])) {
-                    $customer = Mage::getModel('customer/customer')
-                        ->setWebsiteId($this->_getWebsiteId())
-                        ->loadByEmail($loginParams['username']);
-
-                    if ($customer->getId()) {
-                        $this->_incrementAttemptsCounterByEmail($customer);
-                    }
-                }
-            }
+            $this->_incrementAttemptsCounterByEmail($customer);
         } else {
             $customer = $this->_getSession()->getCustomer();
             $customer->setData('customer_login_attempts', 0)

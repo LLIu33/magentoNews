@@ -29,6 +29,17 @@
             <version>0.0.2</version>
         </Oggetto_Shield>
     </modules>
+    <admin>
+        <routers>
+            <shield_unblock>
+                <use>admin</use>
+                <args>
+                    <module>Oggetto_Shield</module>
+                    <frontName>shield</frontName>
+                </args>
+            </shield_unblock>
+        </routers>
+    </admin>
     <frontend>
         <events>
             <controller_action_postdispatch_customer_account_loginPost>
@@ -66,6 +77,12 @@
         </events>
     </frontend>
     <global>
+        <blocks>
+            <adminhtml>
+                <rewrite><customer_grid>Oggetto_Shield_Block_Adminhtml_Customer_Grid</customer_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
         <helpers>
             <shield>
                 <class>Oggetto_Shield_Helper</class>
