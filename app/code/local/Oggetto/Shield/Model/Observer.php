@@ -66,13 +66,14 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
     /**
      * Increment counter of incorrect password
      *
-     * @param $customer
+     * @param Mage_Customer_Model_Customer $customer
      * @return void
      */
-    protected function _incrementAttemptsCounterByEmail($customer) {
+    protected function _incrementAttemptsCounterByEmail($customer)
+    {
         $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_EMAIL);
         $attempts = $customer->getData('customer_login_attempts');
-        $blocked_at = null;
+        $blockedAt = null;
         $customerIsActive = true;
 
         if (!is_numeric($attempts)) {
@@ -83,7 +84,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
 
         if ($attempts == $attemptsLimit) {
             $customerIsActive = false;
-            $blocked_at = now();
+            $blockedAt = now();
         }
 
         if ($attempts > $attemptsLimit) {
@@ -93,17 +94,18 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
 
         $customer->setData('customer_login_attempts', $attempts)
             ->setData('customer_active', $customerIsActive)
-            ->setData('customer_blocked_at', $blocked_at)
+            ->setData('customer_blocked_at', $blockedAt)
             ->save();
     }
 
     /**
      * Count attempts for ip
      *
-     * @param $observer
-     * return void
+     * @param Varien_Event_Observer $observer
+     * @return void
      */
-    protected function _countFailedLoginsByEmail($observer) {
+    protected function _countFailedLoginsByEmail($observer)
+    {
         $loginParams = $observer->getControllerAction()->getRequest()->getParam('login');
         $customer = Mage::getModel('customer/customer')
             ->setWebsiteId($this->_getWebsiteId())
@@ -124,7 +126,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
     /**
      * Count attempts for ip
      *
-     * @param $observer
+     * @param Varien_Event_Observer $observer
      * @return void
      */
     protected function _countFailedLoginsByIp($observer)
@@ -135,7 +137,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         if (!$ipData->getId()) {
             $ipData->setIp($remoteIp);
         }
-        $blocked_at = null;
+        $blockedAt = null;
         $attempts = 0;
 
         if (!$this->_getSession()->isLoggedIn()) {
@@ -146,11 +148,11 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
 
             $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_IP);
             if ($attempts >= $attemptsLimit) {
-                $blocked_at = time();
+                $blockedAt = time();
             }
         }
         $ipData->setData('attempts', $attempts)
-            ->setData('blocked_at', $blocked_at)
+            ->setData('blocked_at', $blockedAt)
             ->save();
     }
 
@@ -172,7 +174,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         $blockingPeriodSec = Mage::getStoreConfig(self::BLOCKING_PERIOD_FOR_EMAIL) * 60;
         $endBlockingTime = strtotime(date($customer->getData('customer_blocked_at'))) + $blockingPeriodSec;
         if ($customer->getData('customer_blocked_at') && $now > $endBlockingTime) {
-            $ipData->setData('customer_active', true)
+            $customer->setData('customer_active', true)
                 ->setData('customer_blocked_at', null)
                 ->save();
             return false;
@@ -210,6 +212,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      * Counts the number of failed attempts to change password of a current users.
      *
      * @param Varien_Event_Observer $observer Observer Instance
+     * @return void
      */
     public function countFailedChangePassByEmail(Varien_Event_Observer $observer)
     {
@@ -225,8 +228,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
                 ->setWebsiteId($this->_getWebsiteId())
                 ->authenticate($username, $password);
             $isCorrectPassword = 1;
-        }
-        catch(Exception $ex) {
+        } catch (Exception $ex) {
             $isCorrectPassword = 0;
         }
 
@@ -280,11 +282,11 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
             return;
         }
 
-        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
+        if ($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
             $this->_countFailedLoginsByEmail($observer);
         }
 
-        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
+        if ($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
             $this->_countFailedLoginsByIp($observer);
         }
 
@@ -305,14 +307,14 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         $controller = $observer->getControllerAction();
         $isBlocked = false;
 
-        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
+        if ($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_EMAIL) {
             $loginParams = $controller->getRequest()->getParam('login');
             if (!isset($loginParams['username'])) {
                 return;
             }
             $isBlocked = $this->_isBlockedByEmail($loginParams['username']);
         }
-        if($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
+        if ($wrongPasswordFlow == self::FLOW_BY_EMAIL_AND_IP || $wrongPasswordFlow == self::FLOW_BY_IP) {
             $isBlocked = $isBlocked || $this->_isBlockedByIp(Mage::helper('core/http')->getRemoteAddr());
         }
         try {
@@ -330,9 +332,8 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
                 Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH,
                 true
             );
-
-            // Redirect to login page
-            Mage::helper('shield/redirect')->_loginPostRedirect();
+            Mage::app()->getFrontController()->getResponse()
+                ->setRedirect(Mage::getUrl('customer/account/login'));
         }
     }
 }

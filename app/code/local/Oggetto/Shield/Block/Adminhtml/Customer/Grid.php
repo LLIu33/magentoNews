@@ -31,15 +31,16 @@
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
 class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
-    Mage_Adminhtml_Block_Customer_Grid {
-
+    Mage_Adminhtml_Block_Customer_Grid
+{
     /**
      * Modifying setter collection
      *
      * @param Varien_Data_Collection $collection
      * @return void
      */
-    public function setCollection($collection) {
+    public function setCollection($collection)
+    {
         $collection->addAttributeToSelect('customer_active');
         parent::setCollection($collection);
     }
@@ -49,7 +50,8 @@ class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
      *
      * @return Mage_Adminhtml_Block_Widget_Grid
      */
-    protected function _prepareColumns() {
+    protected function _prepareColumns()
+    {
         $this->addColumnAfter('customer_active', [
             'header' => Mage::helper('customer')->__('Is active'),
             'type' => 'options',
@@ -62,14 +64,14 @@ class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
 
         $this->addColumnAfter('unblock',
             [
-                'header'    =>  Mage::helper('customer')->__('Action'),
+                'header'    => Mage::helper('customer')->__('Action'),
                 'width'     => '100',
                 'type'      => 'action',
                 'getter'    => 'getId',
                 'actions'   => [
                     [
                         'caption'   => Mage::helper('shield')->__('Unblock'),
-                        'url'       => ['base'=> 'shield/adminhtml_unblock'],
+                        'url'       => ['base' => 'shield/adminhtml_unblock'],
                         'field'     => 'id'
                     ]
                 ],
@@ -80,16 +82,4 @@ class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
             ], 'action');
         return parent::_prepareColumns();
     }
-//
-//    protected function _prepareLayout()
-//    {
-//        $this->_addButton('add_new', array(
-//            'label'   => Mage::helper('customer')->__('Unblock'),
-//            'onclick' => "setLocation('{$this->getUrl('*/*/unblock')}')",
-//            'class'   => 'add'
-//        ));
-//
-////        $this->setChild('grid', $this->getLayout()->createBlock('adminhtml/catalog_product_grid', 'product.grid'));
-//        return parent::_prepareLayout();
-//    }
 }

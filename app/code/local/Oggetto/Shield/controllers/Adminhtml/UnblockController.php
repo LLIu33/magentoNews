@@ -37,7 +37,8 @@ class Oggetto_Shield_Adminhtml_UnblockController extends Mage_Adminhtml_Controll
      *
      * @return void
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $customerId = (int) $this->getRequest()->getParam('id');
         $customer = Mage::getModel('customer/customer')->load($customerId);
         if ($customer->getId()) {

@@ -42,16 +42,4 @@ class Oggetto_Shield_Model_Ip extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('shield/ip');
     }
-
-//    /**
-//     * Load data for current ip
-//     *
-//     * @param   string $customerEmail
-//     * @return  Mage_Customer_Model_Customer
-//     */
-//    public function getByIpAddress($customerEmail)
-//    {
-//        $this->_getResource()->getByIpAddress($this, $customerEmail);
-//        return $this;
-//    }
 }

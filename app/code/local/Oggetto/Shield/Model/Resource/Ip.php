@@ -41,14 +41,4 @@ class Oggetto_Shield_Model_Resource_Ip extends Mage_Core_Model_Resource_Db_Abstr
     {
         $this->_init('shield/ip', 'ip_id');
     }
-
-    public function getByIpAddress(string $address)
-    {
-        $adapter = $this->_getReadAdapter();
-        $select  = $adapter->select()
-            ->from($this->getTable('shield/ip'), ['ip_id', 'ip', 'attempts', 'blocked_at'])
-            ->where('ip = :ip');
-        $binds = [':ip' => (string) $address];
-        return $adapter->fetchCol($select, $binds);
-    }
 }
