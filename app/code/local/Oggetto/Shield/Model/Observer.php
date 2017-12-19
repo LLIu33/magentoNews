@@ -106,20 +106,18 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      */
     protected function _countFailedLoginsByEmail($observer)
     {
+        if ($this->_getSession()->isLoggedIn()) {
+            $customer = $this->_getSession()->getCustomer();
+            $customer->setData('customer_login_attempts', 0)
+                ->save();
+            return;
+        }
         $loginParams = $observer->getControllerAction()->getRequest()->getParam('login');
         $customer = Mage::getModel('customer/customer')
             ->setWebsiteId($this->_getWebsiteId())
             ->loadByEmail($loginParams['username']);
-        if (!$customer->getId()) {
-            return;
-        }
-
-        if (!$this->_getSession()->isLoggedIn()) {
-            $this->_incrementAttemptsCounterByEmail($customer);
-        } else {
-            $customer = $this->_getSession()->getCustomer();
-            $customer->setData('customer_login_attempts', 0)
-                ->save();
+        if ($customer->getId()) {
+            $this->_incrementAttemptsCounterByEmail($customer);;
         }
     }
 
@@ -131,6 +129,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
      */
     protected function _countFailedLoginsByIp($observer)
     {
+        $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_IP);
         $remoteIp = Mage::helper('core/http')->getRemoteAddr();
         $ipData = Mage::getModel('shield/ip');
         $ipData->load($remoteIp, 'ip');
@@ -146,7 +145,6 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
             }
             $attempts++;
 
-            $attemptsLimit = Mage::getStoreConfig(self::LOGIN_ATTEMPTS_LIMIT_BY_IP);
             if ($attempts >= $attemptsLimit) {
                 $blockedAt = time();
             }
