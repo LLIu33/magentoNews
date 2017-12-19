@@ -93,7 +93,7 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         }
 
         $customer->setData('customer_login_attempts', $attempts)
-            ->setData('customer_active', $customerIsActive)
+            ->setData('is_blocked', $customerIsActive)
             ->setData('customer_blocked_at', $blockedAt)
             ->save();
     }
@@ -165,14 +165,14 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         $customer = Mage::getModel('customer/customer')
             ->setWebsiteId($this->_getWebsiteId())
             ->loadByEmail($email);
-        if ($customer->getData('customer_active') !== '0') {
+        if ($customer->getData('is_blocked') !== '0') {
             return false;
         }
         $now = time();
         $blockingPeriodSec = Mage::getStoreConfig(self::BLOCKING_PERIOD_FOR_EMAIL) * 60;
         $endBlockingTime = strtotime(date($customer->getData('customer_blocked_at'))) + $blockingPeriodSec;
         if ($customer->getData('customer_blocked_at') && $now > $endBlockingTime) {
-            $customer->setData('customer_active', true)
+            $customer->setData('is_blocked', true)
                 ->setData('customer_blocked_at', null)
                 ->save();
             return false;
@@ -220,14 +220,14 @@ class Oggetto_Shield_Model_Observer extends Varien_Event_Observer
         }
 
         $username = $observer->getControllerAction()->getRequest()->getParam('email');
-        $password = $observer->getControllerAction()->getRequest()->getParam['current_password'];
+        $password = $observer->getControllerAction()->getRequest()->getParam('current_password');
         try {
             Mage::getModel('customer/customer')
                 ->setWebsiteId($this->_getWebsiteId())
                 ->authenticate($username, $password);
-            $isCorrectPassword = 1;
+            $isCorrectPassword = true;
         } catch (Exception $ex) {
-            $isCorrectPassword = 0;
+            $isCorrectPassword = false;
         }
 
         $customer = Mage::getModel('customer/customer')

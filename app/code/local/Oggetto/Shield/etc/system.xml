@@ -33,7 +33,7 @@
                            <label>Wrong password flow secure (frontend):</label>
                             <comment>Select type of protection</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>9000</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -42,7 +42,7 @@
                         <requests_from_ip translate="label" module="shield">
                            <label>Wrong password requests from 1 IP (frontend):</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9000</sort_order>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -52,7 +52,7 @@
                            <label>Blocking period for password requests from 1 IP (frontend):</label>
                             <comment>in minutes</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9000</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -61,7 +61,7 @@
                         <requests_from_email translate="label" module="shield">
                            <label>Wrong password requests from 1 email (frontend):</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9000</sort_order>
+                            <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -71,7 +71,7 @@
                            <label>Blocking period for password requests from 1 email (frontend):</label>
                             <comment>in minutes</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9000</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

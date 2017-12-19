@@ -27,26 +27,35 @@
  *
  * @category   Oggetto
  * @package    Oggetto_Shield
- * @subpackage ShieldController
+ * @subpackage Model
  * @author     Artem Grechko <agrechko@oggettoweb.com>
  */
-class Oggetto_Shield_Adminhtml_UnblockController extends Mage_Adminhtml_Controller_Action
+class Oggetto_Shield_Model_Source_Isblocked
 {
     /**
-     * Unblock customer from admin panel
+     * Options getter
      *
-     * @return void
+     * @return array
      */
-    public function indexAction()
+    public function toOptionArray()
     {
-        $customerId = (int) $this->getRequest()->getParam('id');
-        $customer = Mage::getModel('customer/customer')->load($customerId);
-        if ($customer->getId()) {
-            $customer->setData('customer_login_attempts', 0)
-                ->setData('is_blocked', 1)
-                ->setData('customer_blocked_at', null)
-                ->save();
-        }
-        $this->_redirectReferer();
+        return [
+            ['value' => 1, 'label'=>Mage::helper('shield')->__('Yes')],
+            ['value' => 0, 'label'=>Mage::helper('shield')->__('Enabled')],
+        ];
     }
+
+    /**
+     * Get options in "key-value" format
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            0 => Mage::helper('shield')->__('Blocked'),
+            1 => Mage::helper('shield')->__('Enabled'),
+        ];
+    }
+
 }

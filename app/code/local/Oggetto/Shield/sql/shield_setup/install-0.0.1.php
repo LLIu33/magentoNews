@@ -37,9 +37,9 @@ $installer = $this;
 $installer->startSetup();
 try {
     /*
-     * ATTRIBUTE: customer_active
+     * ATTRIBUTE: is_blocked
      */
-    $attributeName = 'customer_active';
+    $attributeName = 'is_blocked';
     $installer->addAttribute('customer', $attributeName,
         [
             'type' => 'int',

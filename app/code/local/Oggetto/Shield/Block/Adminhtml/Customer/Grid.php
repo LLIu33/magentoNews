@@ -41,7 +41,7 @@ class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
      */
     public function setCollection($collection)
     {
-        $collection->addAttributeToSelect('customer_active');
+        $collection->addAttributeToSelect('is_blocked');
         parent::setCollection($collection);
     }
 
@@ -52,14 +52,12 @@ class Oggetto_Shield_Block_Adminhtml_Customer_Grid extends
      */
     protected function _prepareColumns()
     {
-        $this->addColumnAfter('customer_active', [
+        $values = Mage::getModel('Oggetto_Shield_Model_Source_Isblocked')->toArray();
+        $this->addColumnAfter('is_blocked', [
             'header' => Mage::helper('customer')->__('Is active'),
             'type' => 'options',
-            'index' => 'customer_active',
-            'options' => [
-                '0' => 'Blocked',
-                '1' => 'Enabled'
-            ]
+            'index' => 'is_blocked',
+            'options' => $values
         ], 'name');
 
         $this->addColumnAfter('unblock',
