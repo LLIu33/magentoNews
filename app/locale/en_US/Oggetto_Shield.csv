@@ -1,0 +1,9 @@
+"Unblock","Unblock"
+"Your account is locked due to too many failed login attempts.","Your account is locked due to too many failed login attempts."
+"Wrong password flow secure (frontend):", "Wrong password flow secure (frontend):"
+"Select type of protection", "Select"
+"Wrong password requests from 1 IP (frontend):", "Wrong password requests from 1 IP (frontend):"
+"in minutes", "in minutes",
+"Blocking period for password requests from 1 IP (frontend):", "Blocking period for password requests from 1 IP (frontend):"
+"Wrong password requests from 1 email (frontend):", "Wrong password requests from 1 email (frontend):"
+"Blocking period for password requests from 1 email (frontend):", "Blocking period for password requests from 1 email (frontend):"
